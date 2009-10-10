@@ -12,12 +12,8 @@ import ubc.eece419.pod1.entity.Room;
 @Repository
 public class RoomDao implements RoomRepository {
 
-	private EntityManager em;
-
 	@PersistenceContext
-	public void setEntityManager(EntityManager entityManager) {
-		this.em = entityManager;
-	}
+	private EntityManager em;
 
 	public Room findById(long id) {
 		// this will return null, rather than throw an EntityNotFoundEx, or somesuch
@@ -30,8 +26,7 @@ public class RoomDao implements RoomRepository {
 	}
 
 	public Room save(Room entity) {
-		entity = em.merge(entity);
-		return entity;
+		return em.merge(entity);
 	}
 
 	public void delete(Room entity) {

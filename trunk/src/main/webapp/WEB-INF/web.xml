@@ -4,21 +4,32 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
 	<display-name>hotelapp</display-name>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>   
+      
 	<servlet>
-		<servlet-name>hotel</servlet-name>
+		<servlet-name>room</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<!-- gonna need a lot of these -->
+	<!-- instead, could map all to /spring/[rooms]/ with rewritefilter -->
 	<servlet-mapping>
-		<servlet-name>hotel</servlet-name>
-		<url-pattern>*.jsp</url-pattern>
+		<servlet-name>room</servlet-name>
+		<url-pattern>/room/*</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

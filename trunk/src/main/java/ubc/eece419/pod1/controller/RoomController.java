@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.annotation.Secured;
 import org.springframework.web.servlet.ModelAndView;
 
 import ubc.eece419.pod1.dao.RoomRepository;
@@ -12,10 +14,11 @@ import ubc.eece419.pod1.entity.Room;
 public class RoomController extends CRUDController<Room> {
 	private final Logger log = Logger.getLogger(RoomController.class.getName());
 
-	// TODO: validation
+	// TODO: validation, handle binding errors
 
 	private RoomRepository roomRepository;
 
+	@Autowired
 	public void setRoomRepository(RoomRepository roomRepository) {
 		this.roomRepository = roomRepository;
 	}
@@ -54,6 +57,7 @@ public class RoomController extends CRUDController<Room> {
 	}
 
 	@Override
+	@Secured("ROLE_ADMIN")
 	public ModelAndView delete(Long id) {
 		log.info("/room/delete?id=" + id);
 
