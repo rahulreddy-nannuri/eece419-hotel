@@ -1,6 +1,7 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %> 
 <html>
 <body>
+<p>User: <c:out value="${user}"/></p>
 <h2>Room :: List</h2>
 <p><c:out value="${fn:length(rooms)}" /> rooms in database. <a href="/room/edit">Add Room</a></p>
 <ul>

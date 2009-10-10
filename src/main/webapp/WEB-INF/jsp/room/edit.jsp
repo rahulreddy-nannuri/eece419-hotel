@@ -1,6 +1,7 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %> 
 <html>
 <body>
+<p>User: <c:out value="${user}"/></p>
 <h2>Room :: Edit</h2>
 <form:form commandName="room" action="/room/save">
 <form:hidden path="id"/>

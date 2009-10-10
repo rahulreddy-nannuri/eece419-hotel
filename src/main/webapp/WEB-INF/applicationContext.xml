@@ -3,12 +3,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
 		<property name="jpaVendorAdapter">
@@ -20,20 +23,34 @@
 		</property>
 	</bean>
 
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
+	<context:annotation-config />
+	
 	<tx:annotation-driven />
 
 	<bean id="roomRepository" class="ubc.eece419.pod1.dao.RoomDao" />
-	
+
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
-		<property name="prefix" value="/WEB-INF/jsp/"></property>
-		<property name="suffix" value=".jsp"></property>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
 	</bean>
+
+	<security:http auto-config='true'>
+		<security:intercept-url pattern="/**" access="ROLE_ANONYMOUS,ROLE_USER" />
+		<security:intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS,ROLE_USER" />
+	</security:http>
+	
+	<security:global-method-security secured-annotations="enabled" />
+
+	<security:authentication-provider>
+		<security:user-service>
+			<security:user name="admin" password="password" authorities="ROLE_USER,ROLE_ADMIN" />
+			<security:user name="user" password="password" authorities="ROLE_USER" />
+		</security:user-service>
+	</security:authentication-provider>
 
 </beans>

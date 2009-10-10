@@ -22,7 +22,6 @@ public class RoomControllerTest {
 
     private RoomController roomController;
     private RoomRepository roomRepository;
-    private boolean flag;
 
     @Before
     public void setUp() {
@@ -66,48 +65,32 @@ public class RoomControllerTest {
 
         model = (Room) mav.getModel().get("room");
         assertEquals(r1, model);
-
     }
 
     @Test
     public void testSave() {
         Room r1 = new Room();
-        flag = false;
-        EasyMock.expect(roomRepository.save(r1)).andReturn(r1).callback(new Runnable() {
 
-            public void run() {
-                flag = true;
-            }
-        });
+        EasyMock.expect(roomRepository.save(r1)).andReturn(r1);
         EasyMock.replay(roomRepository);
 
         ModelAndView mav = roomController.save(r1);
         EasyMock.verify(roomRepository);
 
         assertEquals("redirect:list", mav.getViewName());
-        assertTrue("room not saved", flag);
-
     }
 
     @Test
     public void testDelete() {
         Room r1 = new Room();
-        flag = false;
 
         EasyMock.expect(roomRepository.findById(r1.getId())).andReturn(r1);
         roomRepository.delete(r1);
-        EasyMock.expectLastCall().callback(new Runnable() {
-
-            public void run() {
-                flag = true;
-            }
-        });
         EasyMock.replay(roomRepository);
 
         ModelAndView mav = roomController.delete(r1.getId());
         EasyMock.verify(roomRepository);
         assertEquals("redirect:list", mav.getViewName());
-        assertTrue("room not deleted", flag);
 
     }
 }
