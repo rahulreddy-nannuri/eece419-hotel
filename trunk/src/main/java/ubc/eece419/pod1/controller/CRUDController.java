@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.GenericRepository;
+import ubc.eece419.pod1.entity.Databasable;
 
 @Transactional
 @Controller
-public abstract class CRUDController<T> {
+public abstract class CRUDController<T extends Databasable> {
 
     private final Logger log = Logger.getLogger(RoomController.class.getName());
 

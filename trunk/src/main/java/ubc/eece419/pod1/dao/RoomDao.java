@@ -9,7 +9,6 @@ import ubc.eece419.pod1.entity.Room;
 @Repository
 public class RoomDao extends GenericDao<Room> implements RoomRepository {
 
-
     @Override
     Class<Room> getClazz() {
         return Room.class;

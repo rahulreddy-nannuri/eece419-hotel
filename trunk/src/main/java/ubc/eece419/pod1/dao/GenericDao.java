@@ -7,12 +7,13 @@ package ubc.eece419.pod1.dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import ubc.eece419.pod1.entity.Databasable;
 
 /**
  *
  * @author yang
  */
-public abstract class GenericDao<T> implements GenericRepository<T> {
+public abstract class GenericDao<T extends Databasable> implements GenericRepository<T> {
 
     @PersistenceContext
     protected EntityManager em;
