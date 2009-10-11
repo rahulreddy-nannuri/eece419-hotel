@@ -3,8 +3,6 @@ package ubc.eece419.pod1.entity;
 import java.util.Arrays;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import org.springframework.security.GrantedAuthority;
@@ -12,62 +10,50 @@ import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.userdetails.UserDetails;
 
 @Entity
-public class User implements UserDetails {
-	private static final long serialVersionUID = 1L;
+public class User extends AbstractEntity<User> implements UserDetails {
 
-	@Id
-	@GeneratedValue
-	private long id;
+    private static final long serialVersionUID = 1L;
+    private String username;
+    private String password;
 
-	private String username;
+    public String getUsername() {
+        return username;
+    }
 
-	private String password;
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    @Transient
+    public GrantedAuthority[] getAuthorities() {
+        // TODO: what are our roles?
+        GrantedAuthority[] authorities = {new GrantedAuthorityImpl("ROLE_USER")};
+        Arrays.sort(authorities);
+        return authorities;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	@Transient
-	public GrantedAuthority[] getAuthorities() {
-		// TODO: what are our roles?
-		GrantedAuthority[] authorities = { new GrantedAuthorityImpl("ROLE_USER") };
-		Arrays.sort(authorities);
-		return authorities;
-	}
+    public boolean isEnabled() {
+        return true;
+    }
 
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	public boolean isEnabled() {
-		return true;
-	}
 }
