@@ -1,6 +1,5 @@
 package ubc.eece419.pod1.entity;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import javax.persistence.GeneratedValue;
@@ -8,8 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import ubc.eece419.pod1.reflection.ReflectionUtils;
+
 @MappedSuperclass
-public abstract class AbstractEntity<T> implements Databasable {
+public abstract class AbstractEntity<T> implements Databasable<T> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -62,22 +63,7 @@ public abstract class AbstractEntity<T> implements Databasable {
 
 	// this is hilarious, and probably pointless
 	static Type abstractEntityType(AbstractEntity<?> entity) {
-		Class<?> clazz = entity.getClass();
-		while (clazz != null) {
-			Type gs = clazz.getGenericSuperclass();
-			if (gs instanceof ParameterizedType) {
-				if (AbstractEntity.class.equals(((ParameterizedType) gs).getRawType())) {
-					Type[] ata = ((ParameterizedType) gs).getActualTypeArguments();
-					if (ata.length == 1) {
-						return ata[0];
-					} else {
-						return null;
-					}
-				}
-			}
-			clazz = clazz.getSuperclass();
-		}
-		return null;
+		return ReflectionUtils.getGenericParameter(entity.getClass(), AbstractEntity.class);
 	}
 
 }
