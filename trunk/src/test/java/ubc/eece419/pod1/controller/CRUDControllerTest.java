@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ubc.eece419.pod1.controller;
 
 import java.util.ArrayList;
@@ -14,10 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.Databasable;
 
-/**
- *
- * @author yang
- */
 public abstract class CRUDControllerTest<T extends Databasable> {
 
     protected CRUDController<T> controller;
@@ -28,10 +20,9 @@ public abstract class CRUDControllerTest<T extends Databasable> {
     @Before
     public abstract void setUp();
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testList() {
-
-
         List<T> entities = new ArrayList<T>();
         entities.add(getEntity());
         entities.add(getEntity());
@@ -44,12 +35,11 @@ public abstract class CRUDControllerTest<T extends Databasable> {
 
         List<T> model = (List<T>) mav.getModel().get(getEntity().getName() + "s");
         assertEquals(entities.size(), model.size());
-
     }
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void testEdit() {
-
         T entity = getEntity();
 
         EasyMock.expect(repository.findById(1)).andReturn(entity);
