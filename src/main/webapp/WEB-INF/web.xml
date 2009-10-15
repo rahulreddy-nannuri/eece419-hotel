@@ -24,12 +24,23 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>user</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 
 	<!-- gonna need a lot of these -->
 	<!-- instead, could map all to /spring/[rooms]/ with rewritefilter -->
 	<servlet-mapping>
 		<servlet-name>room</servlet-name>
 		<url-pattern>/room/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>user</servlet-name>
+		<url-pattern>/user/*</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

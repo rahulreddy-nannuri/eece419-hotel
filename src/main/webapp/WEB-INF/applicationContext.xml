@@ -32,6 +32,27 @@
 	<tx:annotation-driven />
 
 	<bean id="roomRepository" class="ubc.eece419.pod1.dao.RoomDao" />
+	
+	<bean id="userRepository" class="ubc.eece419.pod1.dao.UserDao" />
+	
+	<!-- pre-populate db. we're still setting users in the xml, but now we can add more at runtime -->
+	<bean class="ubc.eece419.pod1.config.DatabasePopulator">
+		<property name="users">
+			<value>
+				user=password
+			</value>
+		</property>
+		<property name="admins">
+			<value>
+				admin=password
+			</value>
+		</property>
+		<property name="staff">
+			<value>
+				staff=password
+			</value>
+		</property>
+	</bean>
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
@@ -46,11 +67,11 @@
 	
 	<security:global-method-security secured-annotations="enabled" />
 
-	<security:authentication-provider>
-		<security:user-service>
-			<security:user name="admin" password="password" authorities="ROLE_USER,ROLE_ADMIN" />
-			<security:user name="user" password="password" authorities="ROLE_USER" />
-		</security:user-service>
+	<security:authentication-provider user-service-ref="userRepository">
+		<!-- these settings are duplicated in User.encryptPassword(String, String) -->
+		<security:password-encoder hash="sha-256">
+			<security:salt-source user-property="username" />
+		</security:password-encoder>
 	</security:authentication-provider>
 
 </beans>

@@ -13,22 +13,18 @@ import ubc.eece419.pod1.entity.Room;
 public class RoomController extends CRUDController<Room> {
 
     // TODO: validation, handle binding errors
-    private RoomRepository roomRepository;
 
-    @Autowired
-    public void setRoomRepository(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
-    }
+	@Autowired
+    RoomRepository roomRepository;
+
+	public RoomController() {
+		super(Room.class);
+	}
 
     @Override
     @Secured("ROLE_ADMIN")
     public ModelAndView delete(Long id) {
         return super.delete(id);
-    }
-
-    @Override
-    protected Class<Room> getClazz() {
-        return Room.class;
     }
 
     @Override
