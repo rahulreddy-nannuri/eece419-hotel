@@ -10,10 +10,6 @@ import ubc.eece419.pod1.entity.User;
 @Repository
 public class UserDao extends GenericDao<User> implements UserRepository {
 
-	public UserDao() {
-		super(User.class);
-	}
-
 	// for Spring Security (UserDetailsService)
 	public User loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {

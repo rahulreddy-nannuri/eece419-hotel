@@ -1,19 +1,28 @@
 package ubc.eece419.pod1.dao;
 
+import java.lang.reflect.Type;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import ubc.eece419.pod1.entity.Databasable;
 
-public abstract class GenericDao<T extends Databasable> implements GenericRepository<T> {
+import ubc.eece419.pod1.entity.Databasable;
+import ubc.eece419.pod1.reflection.ReflectionUtils;
+
+public abstract class GenericDao<T extends Databasable<?>> implements GenericRepository<T> {
 
 	@PersistenceContext
 	protected EntityManager em;
 
 	protected final Class<T> entityClass;
 
-	protected GenericDao(Class<T> entityClass) {
-		this.entityClass = entityClass;
+	@SuppressWarnings("unchecked")
+	public GenericDao() {
+		Type dt = ReflectionUtils.getInterfaceGenericParameters(getClass(), GenericRepository.class)[0];
+		if (!(dt instanceof Class<?>)) {
+			throw new IllegalStateException("Subclassing GenericDao without specifiying Databaseable type");
+		}
+		this.entityClass = (Class<T>) dt;
 	}
 
 	public Class<T> getEntityClass() {

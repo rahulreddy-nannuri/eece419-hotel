@@ -9,8 +9,4 @@ import ubc.eece419.pod1.entity.Room;
 @Repository
 public class RoomDao extends GenericDao<Room> implements RoomRepository {
 
-	public RoomDao() {
-		super(Room.class);
-	}
-
 }
