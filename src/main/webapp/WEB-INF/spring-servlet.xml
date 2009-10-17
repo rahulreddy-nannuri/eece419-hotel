@@ -18,7 +18,23 @@
 	<tx:annotation-driven />
 	
 	<security:global-method-security secured-annotations="enabled" />
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/=welcomeController
+				/user=userController
+				/user/**=userController
+				/room=roomController
+				/room/**=roomController
+			</value>
+		</property>
+	</bean>
 
-	<bean class="ubc.eece419.pod1.controller.RoomController" />
+	<bean id="welcomeController" class="ubc.eece419.pod1.controller.WelcomeController" />
+
+	<bean id="userController" class="ubc.eece419.pod1.controller.UserController" />
+	
+	<bean id="roomController" class="ubc.eece419.pod1.controller.RoomController" />
 
 </beans>

@@ -7,7 +7,7 @@ import org.springframework.security.context.SecurityContextHolder;
 
 import ubc.eece419.pod1.entity.User;
 
-public class SecurityUtils {
+public abstract class SecurityUtils {
 
 	public static void assertUser() {
 		assertHasRole(Roles.USER);

@@ -1,5 +1,6 @@
 package ubc.eece419.pod1.controller;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
@@ -11,18 +12,26 @@ import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.Databasable;
 import ubc.eece419.pod1.entity.User;
+import ubc.eece419.pod1.reflection.ReflectionUtils;
 import ubc.eece419.pod1.security.SecurityUtils;
 
 @Transactional
 @Controller
-public abstract class CRUDController<T extends Databasable> {
+public abstract class CRUDController<T extends Databasable<?>> {
 
-	private final Logger log = Logger.getLogger(RoomController.class.getName());
+	private final Logger log = Logger.getLogger(CRUDController.class.getName());
 
 	protected final Class<T> entityClass;
+	protected final String basePath;
 
-	protected CRUDController(Class<T> entityClass) {
-		this.entityClass = entityClass;
+	@SuppressWarnings("unchecked")
+	public CRUDController() {
+		Type dt = ReflectionUtils.getGenericParameter(getClass(), CRUDController.class);
+		if (!(dt instanceof Class<?>)) {
+			throw new IllegalStateException("Subclassing CRUDController without specifiying Databaseable type");
+		}
+		this.entityClass = (Class<T>) dt;
+		this.basePath = "/" + entityClass.getSimpleName().toLowerCase();
 	}
 
 	protected abstract T getNewEntity();
@@ -40,7 +49,7 @@ public abstract class CRUDController<T extends Databasable> {
 
 	@RequestMapping("/**/")
 	public ModelAndView index() {
-		return new ModelAndView("redirect:list");
+		return redirectToListView();
 	}
 
 	@RequestMapping("/**/list")
@@ -48,7 +57,7 @@ public abstract class CRUDController<T extends Databasable> {
 		log.info("list " + getEntityName());
 		List<T> models = getRepository().findAll();
 		String modelName = getEntityName() + "s";
-		String viewName = getEntityName() + "/list";
+		String viewName = basePath + "/list";
 		return new ModelAndView(viewName, modelName, models);
 	}
 
@@ -66,21 +75,25 @@ public abstract class CRUDController<T extends Databasable> {
 
 	protected ModelAndView editView(T entity) {
 		String modelName = getEntityName();
-		String viewName = getEntityName() + "/edit";
+		String viewName = basePath + "/edit";
 		return new ModelAndView(viewName, modelName, entity);
+	}
+
+	protected ModelAndView redirectToListView() {
+		return new ModelAndView("redirect:" + basePath + "/list");
 	}
 
 	@RequestMapping("/**/save")
 	public ModelAndView save(T bound) {
 		log.info("save " + getEntityName());
 		getRepository().save(bound);
-		return new ModelAndView("redirect:list");
+		return redirectToListView();
 	}
 
 	@RequestMapping("/**/delete")
 	public ModelAndView delete(@RequestParam(value = "id") Long id) {
 		log.info("delete " + getEntityName());
 		getRepository().delete(getRepository().findById(id));
-		return new ModelAndView("redirect:list");
+		return redirectToListView();
 	}
 }
