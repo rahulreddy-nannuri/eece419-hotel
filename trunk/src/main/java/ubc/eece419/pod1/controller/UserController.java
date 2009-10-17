@@ -1,27 +1,23 @@
 package ubc.eece419.pod1.controller;
 
-import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.annotation.Secured;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
-import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.security.SecurityUtils;
 
+@Transactional
+@Controller
 public class UserController extends CRUDController<User> {
-	private static final Logger log = Logger.getLogger(UserController.class.getName());
 
 	@Autowired
 	UserRepository userRepository;
-
-	public UserController() {
-		super(User.class);
-	}
 
 	@Override
 	@Secured("ROLE_ADMIN")
@@ -31,6 +27,7 @@ public class UserController extends CRUDController<User> {
 
 	@Override
 	public ModelAndView save(User bound) {
+		// TODO Auto-generated method stub
 		if (!(bound.isNewEntity() || bound.equals(SecurityUtils.getCurrentUser()))) {
 			// only admins can edit /other/ users
 			SecurityUtils.assertAdmin();
@@ -56,13 +53,11 @@ public class UserController extends CRUDController<User> {
 			bound.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
 			userRepository.save(bound);
 		}
-		return new ModelAndView("redirect:list");
+		return redirectToListView();
 	}
-
 
 	@Override
 	public ModelAndView edit(Long id) {
-		log.info("edit " + getEntityName());
 		User entity;
 		if (id == null) {
 			entity = getNewEntity();
@@ -77,7 +72,6 @@ public class UserController extends CRUDController<User> {
 		return editView(entity);
 	}
 
-
 	@Override
 	protected User getNewEntity() {
 		User u = new User();
@@ -86,7 +80,7 @@ public class UserController extends CRUDController<User> {
 	}
 
 	@Override
-	protected GenericRepository<User> getRepository() {
+	protected UserRepository getRepository() {
 		return userRepository;
 	}
 
