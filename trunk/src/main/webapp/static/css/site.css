@@ -1,5 +1,74 @@
 /* overall site css */
-.header {
-	background-color: #DDD;
-	font-size: small;
+
+body, html{
+    color:#000;
+    background-color: #cccccc;
+}
+
+#wrap {
+    width:750px;
+    margin:0 auto;
+    background-color: #ccccff;
+}
+
+#header {
+    background-color: #ccccff;
+}
+#nav, #user {
+    background-color: #ccccff;
+}
+#nav{
+    float:left;
+}
+#user{
+    float:right;
+}
+
+#nav ul, #user ul{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+#nav li, #user li{
+    display:inline;
+    margin:0 0.15em;
+    padding:0;
+}
+
+#main {
+    background-color: #ccccff;
+    float:right;
+    width:550px;
+    height:400px;
+}
+#sidebar {
+    background-color:#ccccff;
+    float:left;
+    width:200px;
+}
+#sidebar ul{
+    padding:0;
+    margin:15px;
+}
+
+#sidebar li{
+    font-weight:bold;
+    list-style:none;
+    border-style:solid;
+    border-color:#ddddff;
+}
+
+#sidebar li a{
+    font-weight:normal;
+    border-style:none;
+    border-color:#ccccff;
+}
+
+#footer {
+    background:#ccccff;
+    clear:both;
+}
+#footer p{
+    text-align:center;
 }
