@@ -1,9 +1,11 @@
 <%@include file="/WEB-INF/jsp/include.jsp" %>
 
-
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
     <h3>Login</h3>
+    <c:if test="${login_error == 1}">
+        <p class="error">login failed</p>
+    </c:if>
     <form action="j_spring_security_check">
         <label for="j_username">Username</label>
         <input type="text" name="j_username" id="j_username"/>
