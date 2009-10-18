@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.Databasable;
 
-public abstract class CRUDControllerTest<T extends Databasable> {
+public abstract class CRUDControllerTest<T extends Databasable<?>> {
 
     protected CRUDController<T> controller;
     protected GenericRepository<T> repository;

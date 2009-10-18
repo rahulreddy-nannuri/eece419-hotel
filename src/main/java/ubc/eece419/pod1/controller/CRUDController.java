@@ -19,7 +19,7 @@ import ubc.eece419.pod1.security.SecurityUtils;
 @Controller
 public abstract class CRUDController<T extends Databasable<?>> {
 
-	private final Logger log = Logger.getLogger(CRUDController.class.getName());
+	protected final Logger log = Logger.getLogger(CRUDController.class.getName());
 
 	protected final Class<T> entityClass;
 	protected final String basePath;

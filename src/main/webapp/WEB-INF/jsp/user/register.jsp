@@ -12,18 +12,22 @@
         <div id="wrap">
             <jsp:include flush="true" page="/WEB-INF/jsp/navigation/header.jsp"/>
             <div id="main">
-                <h3>All Rooms</h3>
-                <p><c:out value="${fn:length(rooms)}" /> rooms in database. </p>
-                <ul>
-                    <c:forEach items="${rooms}" varStatus="idx"><%-- TODO: use spring:bind in the loop? --%>
-                        <li><c:out value="${rooms[idx.index].number}" />: <c:out value="${rooms[idx.index].description}" /> <a href="/room/edit?id=<c:out value="${rooms[idx.index].id}" />">Edit</a> <a href="/room/delete?id=<c:out value="${rooms[idx.index].id}" />">Delete</a></li>
-                    </c:forEach>
-                </ul>
+                <h3>Edit User</h3>
+                <form action="j_spring_security_check">
+                    <label for="j_username">Username</label>
+                    <input type="text" name="j_username" id="j_username"/>
+                    <br/>
+                    <label for="j_password">Password</label>
+                    <input type="password" name="j_password" id="j_password"/>
+                    <br/>
+                    <input type='checkbox' name='_spring_security_remember_me'/> Remember me
+                    <br/>
+                    <input type="submit" value="Login"/>
+                </form>
             </div>
             <div id="sidebar">
                 <ul>
-                    <li>View Rooms</li>
-                    <li><a href="/room/edit">New Room</a></li>
+                    <li>Login</li>
                 </ul>
             </div>
             <jsp:include flush="true" page="/WEB-INF/jsp/navigation/footer.jsp"/>

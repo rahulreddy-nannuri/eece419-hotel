@@ -63,6 +63,7 @@
 	<security:http auto-config='true'>
 		<security:intercept-url pattern="/**" access="ROLE_ANONYMOUS,ROLE_USER" />
 		<security:intercept-url pattern="/favicon.ico" access="ROLE_ANONYMOUS,ROLE_USER" />
+                <security:form-login login-page="/user/login"/>
 	</security:http>
 	
 	<security:global-method-security secured-annotations="enabled" />
