@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.User;
@@ -86,9 +87,12 @@ public class UserController extends CRUDController<User> {
     }
 
     @RequestMapping("/**/login")
-    public ModelAndView login() {
+    public ModelAndView login(@RequestParam(value = "login_error", required = false) Integer error) {
         log.info("login " + getEntityName());
         ModelAndView mav = new ModelAndView("user/login");
+        if(error!=null){
+            mav.addObject("login_error", error);
+        }
         return mav;
 
     }
