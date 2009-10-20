@@ -72,7 +72,7 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
         EasyMock.expect(bindingResult.hasErrors()).andReturn(false).anyTimes();
         EasyMock.replay(bindingResult);
 
-        ModelAndView mav = controller.save(entity, bindingResult);
+        ModelAndView mav = controller.save(entity, bindingResult,null);
         EasyMock.verify(repository);
         EasyMock.verify(bindingResult);
 

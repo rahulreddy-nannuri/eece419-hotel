@@ -1,6 +1,5 @@
 package ubc.eece419.pod1.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.annotation.Secured;
@@ -34,9 +33,12 @@ public class UserController extends CRUDController<User> {
 	}
 
 	@Override
-	public ModelAndView save(User bound, BindingResult errors) {
+	public ModelAndView save(User bound, BindingResult errors,
+			@RequestParam(value = "view", required = false) String view) {
 
-		if (validate(bound, errors)) return editView(bound);
+		if (hasError(bound, errors)) {
+			return editView(bound);
+		}
 
 		// TODO Auto-generated method stub
 		if (!(bound.isNewEntity() || bound.equals(SecurityUtils.getCurrentUser()))) {
@@ -63,6 +65,16 @@ public class UserController extends CRUDController<User> {
 		} else {
 			bound.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
 			userRepository.save(bound);
+		}
+
+		// login the user if neede
+		if(SecurityUtils.currentUserIsAnonymous()){
+			SecurityUtils.login(bound);
+		}
+
+		// provide custom view support
+		if (view != null && view.length() > 0) {
+			return new ModelAndView("redirect:" + view);
 		}
 		return redirectToListView();
 	}
@@ -110,6 +122,7 @@ public class UserController extends CRUDController<User> {
 		log.info("register new user");
 		ModelAndView mav = new ModelAndView("user/register");
 		mav.addObject(getEntityName(), getNewEntity());
+		mav.addObject("view", "/user/login");
 		return mav;
 
 	}

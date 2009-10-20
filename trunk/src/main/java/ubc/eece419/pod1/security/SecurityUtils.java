@@ -5,6 +5,7 @@ import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
 
+import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 import ubc.eece419.pod1.entity.User;
 
 public abstract class SecurityUtils {
@@ -81,4 +82,11 @@ public abstract class SecurityUtils {
 		throw new AccessDeniedException("SecurityContextHolder held " + principal + ", not a User");
 	}
 
+	public static void login(User user) {
+		if (currentUserIsAnonymous()) {
+			SecurityContextHolder.getContext().setAuthentication(
+					new UsernamePasswordAuthenticationToken(
+					user.getUsername(), user.getPassword(),user.getAuthorities()));
+		}
+	}
 }
