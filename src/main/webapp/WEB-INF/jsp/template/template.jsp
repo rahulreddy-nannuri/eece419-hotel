@@ -6,14 +6,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
         <title>X-Reserve</title>
+        <link type="text/css" href="/static/css/redmond/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
         <link rel="stylesheet" type="text/css" href="/static/css/site.css" />
+
+        <script type="text/javascript" src="/static/js/jquery-1.3.2.js"></script>
+        <script type="text/javascript" src="/static/js/jquery-ui-1.7.2.custom.min.js"></script>
+
+        <c:if test="${js != null}">
+            <script type="text/javascript">
+                ${js}
+            </script>
+        </c:if>
+
     </head>
     <body>
         <div id="wrap">
             <div id="header">
                 <h1>X-Reserver</h1>
-            </div>
-            <div id="nav">
+                  <div id="nav">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/room">Manage Room</a></li>
@@ -34,6 +44,8 @@
                     </c:choose>
                 </ul>
             </div>
+            </div>
+          
             <div id="main">
                 ${main}
             </div>

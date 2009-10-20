@@ -155,6 +155,7 @@
                     <contextPath>/</contextPath>
                     <stopKey>stop</stopKey>
                     <stopPort>8889</stopPort>
+                    <webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
                 </configuration>
             </plugin>
             <plugin>
