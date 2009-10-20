@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" x="48" y="48">
+    <screen href="Layout.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="64" y="192" text="Reserve a Room">
+    <font size="16"/>
+  </widgets>
+  <widgets xsi:type="model:Text" x="72" y="232" text="1. Login&#xA;*2. Enter Payment Details*&#xA;3. Confirm Reservation&#xA;4. Finish">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" x="320" y="264" width="385" height="161" text="Payment Information"/>
+  <widgets xsi:type="model:Label" x="330" y="288" text="Card Number:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="330" y="320" text="Expiry Date:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="330" y="352" text="Security Code:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="330" y="384" text="Card Type:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="432" y="288" width="261"/>
+  <widgets xsi:type="model:Combo" x="432" y="320" width="105" text="01 - January"/>
+  <widgets xsi:type="model:Combo" x="552" y="320" width="73" text="2009"/>
+  <widgets xsi:type="model:TextField" x="432" y="352" width="105"/>
+  <widgets xsi:type="model:Combo" x="432" y="384" width="193" text="Visa"/>
+  <widgets xsi:type="model:Label" x="320" y="192" text="Enter Payment Details">
+    <font size="20"/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" x="322" y="236" text="Use my saved payment details"/>
+  <widgets xsi:type="model:Button" x="320" y="440" text="Continue"/>
+  <hRuler/>
+  <vRuler/>
+  <font/>
+</model:Screen>

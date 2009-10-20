@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" x="48" y="48">
+    <screen href="Layout.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="320" y="192" text="Delete &quot;Executive Suite&quot;">
+    <font size="20"/>
+  </widgets>
+  <widgets xsi:type="model:Button" x="320" y="339" text="Delete Room Type"/>
+  <widgets xsi:type="model:Button" x="472" y="339" text="Cancel"/>
+  <widgets xsi:type="model:Link" x="75" y="226" text="Create Room">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="75" y="250" text="View Room Types">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="75" y="274" text="Create Room Types">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="64" y="195" text="Manage">
+    <font size="16"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="328" y="231" text="Rooms: 2">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="328" y="255" text="Replacement Type:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" x="464" y="255" text="Select a Room Type"/>
+  <widgets xsi:type="model:Text" x="336" y="287" width="299" height="52" text="Select a new room type for the rooms that will be affected by this deletion.">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font/>
+</model:Screen>
