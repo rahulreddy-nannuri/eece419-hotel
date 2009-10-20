@@ -15,8 +15,8 @@ import ubc.eece419.pod1.security.Roles;
 
 @Entity
 public class User extends AbstractEntity<User> implements UserDetails {
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
 	private String roles;
@@ -32,7 +32,8 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.roles = roles;
 	}
 
-	@Column(unique=true)
+	@Column(unique = true)
+	@Override
 	public String getUsername() {
 		return username;
 	}
@@ -41,6 +42,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.username = username;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -49,6 +51,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.password = password;
 	}
 
+	
 	public String getAddress() {
 		return address;
 	}
@@ -58,6 +61,8 @@ public class User extends AbstractEntity<User> implements UserDetails {
 	}
 
 	// did we want to use email as username?
+	// probably not!
+	@Column(unique = true)
 	public String getEmail() {
 		return email;
 	}
@@ -81,6 +86,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 	}
 
 	@Transient
+	@Override
 	public GrantedAuthority[] getAuthorities() {
 		String[] roleNames = roles.split("[,\\s]+"); // split on commas, whitespace
 		GrantedAuthority[] authorities = new GrantedAuthority[roleNames.length];
@@ -101,20 +107,23 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		return roles.contains(Roles.STAFF);
 	}
 
+	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
+	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
+	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return true;
 	}
-
 }
