@@ -3,24 +3,44 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-    <h3>Edit User</h3>
-    <form action="j_spring_security_check">
-        <label for="j_username">Username</label>
-        <input type="text" name="j_username" id="j_username"/>
-        <br/>
-        <label for="j_password">Password</label>
-        <input type="password" name="j_password" id="j_password"/>
-        <br/>
-        <input type='checkbox' name='_spring_security_remember_me'/> Remember me
-        <br/>
-        <input type="submit" value="Login"/>
-    </form>
+
+    <form:form commandName="user" action="/user/save" cssClass="std-form">
+        <form:hidden path="id"/>
+        <fieldset>
+            <legend>User details</legend>
+            <ol>
+                <li>
+                    <form:label path="username">Username:</form:label>
+                    <form:input path="username" cssClass="text"/>
+                </li>
+                <li>
+                    <form:label path="password">Password:</form:label>
+                    <form:password path="password" cssClass="text"/>
+                </li>
+                <li>
+                    <form:label path="email">Email:</form:label>
+                    <form:input path="email" cssClass="text"/>
+                </li>
+                <li>
+                    <form:label path="address">Address:</form:label>
+                    <form:input path="address" cssClass="text"/>
+                </li>
+            </ol>
+            <input type="submit" class="submit" value="Register"/>
+        </fieldset>
+
+    </form:form>
+
+
 </c:set>
 
 <%-- sidebar contains the second navigation bar --%>
 <c:set var="sidebar" scope="request">
-    <li><a href="/user/login">Login</a></li>
-    <li>Register</li>
+    <ul>
+        <li><a href="/user/login">Login</a></li>
+        <li>Register</li>
+    </ul>
+
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp"/>
