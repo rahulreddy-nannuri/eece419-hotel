@@ -23,7 +23,7 @@
 <c:set var="sidebar" scope="request">
     <ul>
         <li>Login</li>
-        <li><a href="/user/register">Register</a></li>
+        <li><a href="/user/edit">Register</a></li>
     </ul>
 </c:set>
 
