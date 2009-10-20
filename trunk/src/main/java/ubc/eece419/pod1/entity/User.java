@@ -15,7 +15,6 @@ import org.springframework.security.userdetails.UserDetails;
 public class User extends AbstractEntity<User> implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	@Column(unique=true)
 	private String username;
 	private String password;
 	private String roles;
@@ -29,6 +28,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.roles = roles;
 	}
 
+	@Column(unique=true)
 	public String getUsername() {
 		return username;
 	}
