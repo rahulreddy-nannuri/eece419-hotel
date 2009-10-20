@@ -3,9 +3,9 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 
+	<h3>Edit Room Details</h3>
 	<form:form commandName="room" action="/room/save" cssClass="std-form">
 		<fieldset>
-			<legend>Edit Room Details</legend>
 			<form:hidden path="id" />
 			<ol>
 				<li>

@@ -2,10 +2,9 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-
+	<h3>Edit Profile</h3>
     <form:form commandName="user" action="/user/save" cssClass="std-form">
 		<fieldset>
-			<legend>Edit Profile</legend>
 			<form:hidden path="id"/>
 			<ol>
 				
