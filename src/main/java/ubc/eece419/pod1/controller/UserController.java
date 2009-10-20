@@ -23,7 +23,7 @@ public class UserController extends CRUDController<User> {
 	UserRepository userRepository;
 
 	@Override
-	@Secured("ROLE_ADMIN")
+	@Secured(Roles.ADMIN)
 	public ModelAndView delete(Long id) {
 		return super.delete(id);
 	}
@@ -78,7 +78,7 @@ public class UserController extends CRUDController<User> {
 	@Override
 	protected User getNewEntity() {
 		User u = new User();
-		u.setRoles("ROLE_USER"); // default to least privilege
+		u.setRoles(Roles.USER); // default to least privilege
 		return u;
 	}
 
@@ -95,10 +95,9 @@ public class UserController extends CRUDController<User> {
 			mav.addObject("login_error", error);
 		}
 		return mav;
-
 	}
 
-        @RequestMapping("/**/register")
+	@RequestMapping("/**/register")
 	public ModelAndView register() {
 		log.info("register new user");
 		ModelAndView mav = new ModelAndView("user/register");

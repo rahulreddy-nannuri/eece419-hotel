@@ -1,12 +1,7 @@
 <%@include file="/WEB-INF/jsp/include.jsp" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-
-
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
         <title>X-Reserve</title>
         <link type="text/css" href="/static/css/redmond/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
         <link rel="stylesheet" type="text/css" href="/static/css/site.css" />
@@ -19,7 +14,6 @@
                 ${js}
             </script>
         </c:if>
-
     </head>
     <body>
         <div id="wrap">
@@ -42,7 +36,6 @@
                                 <li><a href="#">My Bookings</a></li>
                             </c:otherwise>
                         </c:choose>
-
                     </ul>
                 </div>
                 <div id="nav2">
@@ -59,6 +52,7 @@
                         </c:choose>
                     </ul>
                 </div>
+                <br style="clear:both;" />
             </div>
             <div id="sidebar">
                 ${sidebar}
@@ -66,9 +60,7 @@
             <div id="main">
                 ${main}
             </div>
-            <div id="footer">
-                <p>&copy;2009 EECE419 Pod1</p>
-            </div>
+            <p id="footer">&copy;2009 EECE419 Pod1</p>
         </div>
     </body>
 </html>

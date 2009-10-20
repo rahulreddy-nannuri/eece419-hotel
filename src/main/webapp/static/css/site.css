@@ -1,100 +1,114 @@
-overall site css
+/* overall site css */
 
-
-a:link, a:visited{
-    color: #3333ff;
+a:link,a:visited {
+	color: #3333ff;
 }
 
-a:hover{
-    color:#ff66ff;
+a:hover {
+	color: #ff66ff;
 }
 
-a:active{
-    color: #33ff00;
+a:active {
+	color: #33ff00;
 }
 
-
-body, html{
-    background-color: #ccccff;
+body,html {
+	background-color: #ccccff;
 }
 
 #wrap {
-    width:80%;
-    margin:0px auto;
-    border: 1px solid #99c;
-    background-color: #fff;
+	width: 80%;
+	margin: 0px auto;
+	border: 1px solid #99c;
+	background-color: #fff;
 }
 
 #header {
-    height:80px;
+	border-bottom: 1px solid #99c;
+	padding: 0 1em 0.2em;
+}
+
+#header h1 {
+	margin: 0.2em 0;
+	padding: 0;
 }
 
 #main {
-    margin-left:30%;
-    padding:5px;
+	border-left: 1px solid #99c;
+	margin-left: -1px;
+	padding: 0.5%;
+	width: 68%;
+	float: left;
 }
+
 #sidebar {
-    padding:5px;
-    float:left;
-    width:30%;
+	padding: 0.5%;
+	float: left;
+	width: 28%;
+	border-right: 1px solid #99c;
 }
 
 #footer {
-    clear:both;
-}
-#footer p{
-    text-align:center;
-}
-
-.error{
-    color: #ff0000;
+	clear: both;
+	text-align: center;
+	border-top: 1px solid #99c;
+	font-size: smaller;
+	padding: 0;
+	margin: 0;
 }
 
-#nav{
-    float:left;
-
-}
-#nav2{
-    float:right;
+.error {
+	color: #ff0000;
 }
 
-#nav ul, #nav2 ul{
-    margin:0;
-    padding:0;
-    list-style:none;
+#nav {
+	float: left;
 }
 
-#nav li, #nav2 li{
-    display:inline;
-    margin:0 0.15em;
-    padding:0;
+#nav2 {
+	float: right;
+}
+
+#nav ul, #nav2 ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#nav li, #nav2 li {
+	display: inline;
+	margin: 0 0.15em;
+	padding: 0;
 }
 
 .std-form fieldset {
-    margin: 1.5em 0 0 0;
-    padding: 0;
-    border-style:none;
+	margin: 0;
+	padding: 0;
+	border-style: none;
 }
+
 .std-form legend {
-    margin-left: 1em;
-    color: #000000;
-    font-weight: bold;
+	margin-left: 1em;
+	color: #000000;
+	font-weight: bold;
 }
+
 .std-form fieldset ol {
-    padding: 1em 1em 0 1em;
-    list-style: none;
+	padding: 0 1em;
+	list-style: none;
 }
+
 .std-form fieldset li {
-    padding-bottom: 1em;
+	padding-bottom: 1em;
 }
 
-.std-form label{
-    float:left;
-    width:7em;
-    margin-right:1em;
-    text-align:right;
+.std-form label {
+	float: left;
+	width: 7em;
+	margin-right: 1em;
+	text-align: right;
 }
 
-.std-form .error{
-	margin-left:1em;
+.std-form .error {
+	margin-left: 1em;
 }

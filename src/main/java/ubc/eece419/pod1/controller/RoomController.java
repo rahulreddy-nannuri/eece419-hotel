@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.entity.Room;
+import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.validator.ReflectionEntityValidator;
 
 // apparently @Controller and InitalizingBean don't play nicely together
@@ -25,7 +26,7 @@ public class RoomController extends CRUDController<Room> {
     RoomRepository roomRepository;
 
     @Override
-	@Secured("ROLE_ADMIN")
+	@Secured(Roles.ADMIN)
     public ModelAndView delete(Long id) {
     	return super.delete(id);
     }
