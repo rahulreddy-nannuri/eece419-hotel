@@ -1,4 +1,4 @@
-/* overall site css */
+overall site css
 
 
 a:link, a:visited{
@@ -54,19 +54,43 @@ body, html{
     float:left;
 
 }
-#user{
+#nav2{
     float:right;
 }
 
-#nav ul, #user ul{
+#nav ul, #nav2 ul{
     margin:0;
     padding:0;
     list-style:none;
 }
 
-#nav li, #user li{
+#nav li, #nav2 li{
     display:inline;
     margin:0 0.15em;
     padding:0;
 }
 
+.std-form fieldset {
+    margin: 1.5em 0 0 0;
+    padding: 0;
+    border-style:none;
+}
+.std-form legend {
+    margin-left: 1em;
+    color: #000000;
+    font-weight: bold;
+}
+.std-form fieldset ol {
+    padding: 1em 1em 0 1em;
+    list-style: none;
+}
+.std-form fieldset li {
+    padding-bottom: 1em;
+}
+
+.std-form label{
+    float:left;
+    width:7em;
+    margin-right:1em;
+    text-align:right;
+}

@@ -28,7 +28,6 @@ public class UserController extends CRUDController<User> {
 		return super.delete(id);
 	}
 
-	@Override
 	public ModelAndView save(User bound, BindingResult errors) {
 		// TODO Auto-generated method stub
 		if (!(bound.isNewEntity() || bound.equals(SecurityUtils.getCurrentUser()))) {
@@ -94,6 +93,15 @@ public class UserController extends CRUDController<User> {
 		if(error!=null){
 			mav.addObject("login_error", error);
 		}
+		return mav;
+
+	}
+
+        @RequestMapping("/**/register")
+	public ModelAndView register() {
+		log.info("register new user");
+		ModelAndView mav = new ModelAndView("user/register");
+		mav.addObject(getEntityName(), getNewEntity());
 		return mav;
 
 	}

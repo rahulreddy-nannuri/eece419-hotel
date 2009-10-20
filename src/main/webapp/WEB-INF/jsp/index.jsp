@@ -29,8 +29,8 @@
     <form action="/search">
         <table>
             <tr>
-                <td>
-                    <label for="amount">Price range: &nbsp;</label>
+                <td width="100px">
+                    <label for="amount">Price range:</label>
                 </td>
                 <td>
                     <div id="price-slider"></div>
