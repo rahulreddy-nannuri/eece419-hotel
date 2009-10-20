@@ -6,7 +6,7 @@ a:link, a:visited{
 }
 
 a:hover{
-    color:#ffff00;
+    color:#ff66ff;
 }
 
 a:active{
@@ -93,4 +93,8 @@ body, html{
     width:7em;
     margin-right:1em;
     text-align:right;
+}
+
+.std-form .error{
+	margin-left:1em;
 }
