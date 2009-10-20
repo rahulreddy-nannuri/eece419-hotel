@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" x="48" y="48" locked="true">
+    <screen href="Layout.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="64" y="192" text="Reserve a Room">
+    <font size="16"/>
+  </widgets>
+  <widgets xsi:type="model:Text" x="72" y="232" text="*1. Login*&#xA;2. Enter Payment Details&#xA;3. Confirm Reservation&#xA;4. Finish">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="320" y="192" text="Login">
+    <font size="20"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="320" y="240" text="Email:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="320" y="272" text="Password:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="392" y="240" width="209"/>
+  <widgets xsi:type="model:TextField" x="392" y="272" width="209"/>
+  <widgets xsi:type="model:Checkbox" x="320" y="304" text="Remember Me" selected="true"/>
+  <widgets xsi:type="model:Button" x="320" y="336" text="Login"/>
+  <widgets xsi:type="model:Button" x="392" y="336" text="Create Account"/>
+  <hRuler/>
+  <vRuler/>
+  <font/>
+</model:Screen>

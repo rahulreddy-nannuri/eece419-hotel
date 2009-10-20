@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Master" x="48" y="48" locked="true">
+    <screen href="Layout.screen#/"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="312" y="192" text="Create Room">
+    <font size="20"/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="320" y="240" text="Room Type:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="320" y="272" text="Room #:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" x="408" y="272" width="209"/>
+  <widgets xsi:type="model:Combo" x="408" y="240" width="209" text="Executive Suite"/>
+  <widgets xsi:type="model:Button" x="320" y="416" text="Create Room"/>
+  <widgets xsi:type="model:Button" x="432" y="416" text="Cancel"/>
+  <widgets xsi:type="model:TextArea" x="408" y="304" width="314" height="97"/>
+  <widgets xsi:type="model:Label" x="320" y="304" text="Description:">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="624" y="240" text="add new">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="75" y="226" text="Create Room">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="75" y="250" text="View Room Types">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Link" x="75" y="274" text="Create Room Types">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" x="64" y="195" text="Manage">
+    <font size="16"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font/>
+</model:Screen>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Browser" x="48" y="24" width="801" height="769" text="Browser&#xA;http://..."/>
+  <widgets xsi:type="model:Panel" x="48" y="76" width="801" height="77"/>
+  <widgets xsi:type="model:Label" x="58" y="76" text="Hotel Bookings">
+    <font size="22"/>
+  </widgets>
+  <widgets xsi:type="model:LinkBar" x="58" y="128" text="Home,Rooms,Bookings,Users">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:LinkBar" x="682" y="128" text="Login,Create Account">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:VLine" x="296" y="168" height="609"/>
+  <hRuler>
+    <guides position="552"/>
+  </hRuler>
+  <vRuler/>
+  <font/>
+</model:Screen>
