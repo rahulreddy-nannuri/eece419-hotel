@@ -2,8 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<c:set var="isAdmin" value="${fn:containsIgnoreCase(currentuser.username, 'ADMIN')}"/>
-<c:set var="isStaff" value="${fn:containsIgnoreCase(currentuser.username, 'STAFF')}"/>
+
 
 <html>
     <head>
@@ -36,6 +35,7 @@
                             <c:when test="${isAdmin}">
                                 <%-- admin --%>
                                 <li><a href="/room">Manage Room</a></li>
+								<li><a href="/user">Manage User</a></li>
                             </c:when>
                             <c:otherwise>
                                 <%-- register customer --%>
@@ -49,7 +49,7 @@
                     <ul>
                         <c:choose>
                             <c:when test="${currentuser != null}">                         
-                                <li><a href="/user">Edit Profile</a></li>
+                                <li><a href="/user/edit?id=${currentuser.id}">Edit Profile</a></li>
                                 <li><a href="/j_spring_security_logout">Logout</a></li>
                             </c:when>
                             <c:otherwise>

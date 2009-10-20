@@ -14,8 +14,12 @@
 <%-- sidebar contains the second navigation bar --%>
 <c:set var="sidebar" scope="request">
     <ul>
-        <li>View Users</li>
-        <li><a href="/user/edit">New User</a></li>
+		<c:if test="${isAdmin}">
+			<li>View all users</li>
+			<li><a href="/user/edit">New User</a></li>
+		</c:if>
+
+
     </ul>
 </c:set>
 

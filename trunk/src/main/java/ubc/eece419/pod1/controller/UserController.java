@@ -28,6 +28,7 @@ public class UserController extends CRUDController<User> {
 		return super.delete(id);
 	}
 
+	@Override
 	public ModelAndView save(User bound, BindingResult errors) {
 		// TODO Auto-generated method stub
 		if (!(bound.isNewEntity() || bound.equals(SecurityUtils.getCurrentUser()))) {

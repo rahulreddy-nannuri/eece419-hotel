@@ -2,22 +2,26 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-	<h3>Edit Room Details</h3>
-	<form:form commandName="room" action="/room/save">
-		<form:hidden path="id" />
-		<table>
-			<tr>
-				<td><form:label path="number">Room Number:</form:label></td>
-				<td><form:input path="number" /></td>
-				<td><form:errors cssClass="error" path="number" /></td>
-			</tr>
-			<tr>
-				<td><form:label path="description">Description:</form:label></td>
-				<td><form:input path="description" /></td>
-				<td><form:errors cssClass="error" path="description" /></td>
-			</tr>
-		</table>
-		<input type="submit" value="Save" />
+
+	<form:form commandName="room" action="/room/save" cssClass="std-form">
+		<fieldset>
+			<legend>Edit Room Details</legend>
+			<form:hidden path="id" />
+			<ol>
+				<li>
+					<form:label path="number">Room Number:</form:label>
+					<form:input path="number" />
+					<form:errors cssClass="error" path="number" />
+				</li>
+				<li>
+					<form:label path="description">Description:</form:label>
+					<form:input path="description" />
+					<form:errors cssClass="error" path="description" />
+				</li>
+			</ol>
+
+			<input type="submit" value="Save" />
+		</fieldset>
 	</form:form>
 </c:set>
 
