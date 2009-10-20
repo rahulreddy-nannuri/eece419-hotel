@@ -3,8 +3,6 @@ package ubc.eece419.pod1.validator;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.logging.Logger;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -16,8 +14,9 @@ import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.Databasable;
 
 public class ReflectionEntityValidator<T extends Databasable<?>> implements Validator {
-	private static Logger log = Logger.getLogger(ReflectionEntityValidator.class.getName());
 
+	// because controller have their repository injected, they can't pass it to us in their constructor
+	// because InitializingBean doesn't work... we do this
 	private CRUDController<T> controller;
 	private GenericRepository<T> repository;
 
@@ -38,14 +37,11 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean supports(Class clazz) {
-		log.info("supports? " + ((clazz.getAnnotation(Entity.class) != null) ? "yes" : "no"));
 		return clazz.getAnnotation(Entity.class) != null;
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		log.info("valid?");
-
 		// get fields & getters with @Column annotations
 		Field[] fields = target.getClass().getFields();
 		for (Field f : fields) {
@@ -64,6 +60,7 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 		}
 	}
 
+	// this can't see private fields! annotate the getters instead
 	protected void validateField(Object target, Field field, Column annot, Errors errors) {
 		try {
 			Object value = field.get(target);
