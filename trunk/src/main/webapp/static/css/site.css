@@ -13,15 +13,22 @@ body, html{
 
 #header {
     background-color: #ccccff;
+    margin-bottom: 30px;
 }
 #nav, #user {
     background-color: #ccccff;
 }
 #nav{
+    position:relative;
     float:left;
+    left: 5px;
+    bottom: 5px;
 }
 #user{
-    float:right;
+    position: relative;
+    float: right;
+    bottom: 5px;
+    right: 5px;
 }
 
 #nav ul, #user ul{
