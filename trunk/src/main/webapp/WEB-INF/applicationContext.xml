@@ -48,17 +48,17 @@
 	<bean class="ubc.eece419.pod1.config.DatabasePopulator">
 		<property name="users">
 			<value>
-				user=password
+				user=password,user@gmail.com,123 User St.
 			</value>
 		</property>
 		<property name="admins">
 			<value>
-				admin=password
+				admin=password,admin@gmail.com,234 Admin St.
 			</value>
 		</property>
 		<property name="staff">
 			<value>
-				staff=password
+				staff=password,staff@gmail.com,345 Staff St.
 			</value>
 		</property>
 	</bean>

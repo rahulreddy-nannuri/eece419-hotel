@@ -37,7 +37,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 			throw new IllegalStateException("Subclassing CRUDController without specifiying Databaseable type");
 		}
 		this.entityClass = (Class<T>) dt;
-		this.basePath = "/" + entityClass.getSimpleName().toLowerCase();
+		this.basePath = "/" + getEntityName();
 	}
 
 	protected abstract T getNewEntity();
@@ -101,16 +101,13 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		validators.add(validator);
 	}
 
+
+
 	@RequestMapping("/**/save")
 	public ModelAndView save(T bound, BindingResult errors) {
 		log.info("save " + getEntityName());
 
-		for (Validator v : getValidators())
-			ValidationUtils.invokeValidator(v, bound, errors);
-
-		if (errors.hasErrors()) {
-			return editView(bound);
-		}
+		if (validate(bound, errors)) return editView(bound);
 		getRepository().save(bound);
 		return redirectToListView();
 	}
@@ -120,5 +117,15 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		log.info("delete " + getEntityName());
 		getRepository().delete(getRepository().findById(id));
 		return redirectToListView();
+	}
+
+	protected boolean validate(T bound, BindingResult errors) {
+		for (Validator v : getValidators()) {
+			ValidationUtils.invokeValidator(v, bound, errors);
+		}
+		if (errors.hasErrors()) {
+			return true;
+		}
+		return false;
 	}
 }
