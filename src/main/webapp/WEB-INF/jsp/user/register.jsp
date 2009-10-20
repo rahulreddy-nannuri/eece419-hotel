@@ -8,6 +8,7 @@
         <form:hidden path="id"/>
         <fieldset>
             <legend>User details</legend>
+			<input type="hidden" name="view" value="${view}"/>
             <ol>
                 <li>
                     <form:label path="username">Username:</form:label>

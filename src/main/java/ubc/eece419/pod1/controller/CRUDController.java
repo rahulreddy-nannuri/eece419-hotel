@@ -24,9 +24,7 @@ import ubc.eece419.pod1.security.SecurityUtils;
 public abstract class CRUDController<T extends Databasable<?>> {
 
 	protected final Logger log = Logger.getLogger(CRUDController.class.getName());
-
 	private List<Validator> validators = new ArrayList<Validator>();
-
 	protected final Class<T> entityClass;
 	protected final String basePath;
 
@@ -101,14 +99,21 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		validators.add(validator);
 	}
 
-
-
 	@RequestMapping("/**/save")
-	public ModelAndView save(T bound, BindingResult errors) {
+	public ModelAndView save(T bound, BindingResult errors, 
+			@RequestParam(value = "view", required = false) String view) {
 		log.info("save " + getEntityName());
 
-		if (validate(bound, errors)) return editView(bound);
+		if (hasError(bound, errors)) {
+			return editView(bound);
+		}
 		getRepository().save(bound);
+
+		// provide custom view support
+		if(view!=null && view.length()>0){
+			return new ModelAndView("redirect:"+view);
+		}
+		
 		return redirectToListView();
 	}
 
@@ -119,7 +124,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		return redirectToListView();
 	}
 
-	protected boolean validate(T bound, BindingResult errors) {
+	protected boolean hasError(T bound, BindingResult errors) {
 		for (Validator v : getValidators()) {
 			ValidationUtils.invokeValidator(v, bound, errors);
 		}
