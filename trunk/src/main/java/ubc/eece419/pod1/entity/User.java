@@ -11,6 +11,8 @@ import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.providers.encoding.ShaPasswordEncoder;
 import org.springframework.security.userdetails.UserDetails;
 
+import ubc.eece419.pod1.security.Roles;
+
 @Entity
 public class User extends AbstractEntity<User> implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -18,8 +20,8 @@ public class User extends AbstractEntity<User> implements UserDetails {
 	private String username;
 	private String password;
 	private String roles;
-        private String email;
-        private String address;
+	private String email;
+	private String address;
 
 	public User() {
 	}
@@ -47,23 +49,22 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.password = password;
 	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	// did we want to use email as username?
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-        
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	// this must match the encoder & salt set an applicationContext.xml
 	// using the username as salt means we can't allow users to change their username
@@ -88,6 +89,16 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		}
 		Arrays.sort(authorities);
 		return authorities;
+	}
+
+	@Transient
+	public boolean isAdmin() {
+		return roles.contains(Roles.ADMIN);
+	}
+
+	@Transient
+	public boolean isStaff() {
+		return roles.contains(Roles.STAFF);
 	}
 
 	public boolean isAccountNonExpired() {
