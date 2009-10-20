@@ -1,5 +1,6 @@
 package ubc.eece419.pod1.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.annotation.Secured;
@@ -14,11 +15,15 @@ import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.security.SecurityUtils;
+import ubc.eece419.pod1.validator.ReflectionEntityValidator;
 
 @Transactional
 @Controller
 public class UserController extends CRUDController<User> {
 
+	public UserController() {
+		addValidator(new ReflectionEntityValidator<User>(this));
+	}
 	@Autowired
 	UserRepository userRepository;
 
@@ -30,6 +35,9 @@ public class UserController extends CRUDController<User> {
 
 	@Override
 	public ModelAndView save(User bound, BindingResult errors) {
+
+		if (validate(bound, errors)) return editView(bound);
+
 		// TODO Auto-generated method stub
 		if (!(bound.isNewEntity() || bound.equals(SecurityUtils.getCurrentUser()))) {
 			// only admins can edit /other/ users
@@ -91,7 +99,7 @@ public class UserController extends CRUDController<User> {
 	public ModelAndView login(@RequestParam(value = "login_error", required = false) Integer error) {
 		log.info("login " + getEntityName());
 		ModelAndView mav = new ModelAndView("user/login");
-		if(error!=null){
+		if (error != null) {
 			mav.addObject("login_error", error);
 		}
 		return mav;
