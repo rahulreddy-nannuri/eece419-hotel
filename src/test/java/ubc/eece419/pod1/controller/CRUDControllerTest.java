@@ -1,16 +1,20 @@
 package ubc.eece419.pod1.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import static junit.framework.Assert.*;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.Databasable;
 
 public abstract class CRUDControllerTest<T extends Databasable<?>> {
+
+	protected BindingResult bindingResult;
 
     protected CRUDController<T> controller;
     protected GenericRepository<T> repository;
@@ -61,12 +65,18 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
         T entity = getEntity();
 
         EasyMock.expect(repository.save(entity)).andReturn(entity);
+        EasyMock.expect(repository.findAll()).andReturn(Collections.EMPTY_LIST);
         EasyMock.replay(repository);
 
-        ModelAndView mav = controller.save(entity);
-        EasyMock.verify(repository);
+        bindingResult = EasyMock.createMock(BindingResult.class);
+        EasyMock.expect(bindingResult.hasErrors()).andReturn(false).anyTimes();
+        EasyMock.replay(bindingResult);
 
-        assertEquals("redirect:list", mav.getViewName());
+        ModelAndView mav = controller.save(entity, bindingResult);
+        EasyMock.verify(repository);
+        EasyMock.verify(bindingResult);
+
+        assertEquals("redirect:/room/list", mav.getViewName());
     }
 
     @Test
@@ -79,7 +89,7 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
 
         ModelAndView mav = controller.delete(entity.getId());
         EasyMock.verify(repository);
-        assertEquals("redirect:list", mav.getViewName());
+        assertEquals("redirect:/room/list", mav.getViewName());
 
     }
 }

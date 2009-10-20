@@ -1,10 +1,14 @@
 package ubc.eece419.pod1.controller;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +25,8 @@ public abstract class CRUDController<T extends Databasable<?>> {
 
 	protected final Logger log = Logger.getLogger(CRUDController.class.getName());
 
+	private List<Validator> validators = new ArrayList<Validator>();
+
 	protected final Class<T> entityClass;
 	protected final String basePath;
 
@@ -36,7 +42,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 
 	protected abstract T getNewEntity();
 
-	protected abstract GenericRepository<T> getRepository();
+	public abstract GenericRepository<T> getRepository();
 
 	protected String getEntityName() {
 		return entityClass.getSimpleName().toLowerCase();
@@ -83,9 +89,28 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		return new ModelAndView("redirect:" + basePath + "/list");
 	}
 
+	public void setValidators(List<Validator> validators) {
+		this.validators = validators;
+	}
+
+	public List<Validator> getValidators() {
+		return validators;
+	}
+
+	public void addValidator(Validator validator) {
+		validators.add(validator);
+	}
+
 	@RequestMapping("/**/save")
-	public ModelAndView save(T bound) {
+	public ModelAndView save(T bound, BindingResult errors) {
 		log.info("save " + getEntityName());
+
+		for (Validator v : getValidators())
+			ValidationUtils.invokeValidator(v, bound, errors);
+
+		if (errors.hasErrors()) {
+			return editView(bound);
+		}
 		getRepository().save(bound);
 		return redirectToListView();
 	}

@@ -8,7 +8,6 @@ public class Room extends AbstractEntity<Room> {
 	private static final long serialVersionUID = 1L;
 
 	// should this instead be a string, as for '#206A'?
-	@Column(unique=true)
 	private int number;
 	private String description;
 
@@ -23,6 +22,7 @@ public class Room extends AbstractEntity<Room> {
 		this.description = description;
 	}
 
+	@Column(unique=true)
 	public int getNumber() {
 		return number;
 	}
