@@ -51,6 +51,15 @@ public abstract class SecurityUtils {
 		return false;
 	}
 
+	public static boolean hasRole(User user, String role) {
+		for (GrantedAuthority ga : user.getAuthorities()) {
+			if (role.equals(ga.getAuthority())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static User getCurrentUserOrNull() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof User) {
