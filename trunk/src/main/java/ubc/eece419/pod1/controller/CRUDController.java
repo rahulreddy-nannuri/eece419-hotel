@@ -42,6 +42,10 @@ public abstract class CRUDController<T extends Databasable<?>> {
 
 	public abstract GenericRepository<T> getRepository();
 
+	public Class<T> getEntityClass() {
+		return entityClass;
+	}
+
 	protected String getEntityName() {
 		return entityClass.getSimpleName().toLowerCase();
 	}
@@ -100,7 +104,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 	}
 
 	@RequestMapping("/**/save")
-	public ModelAndView save(T bound, BindingResult errors, 
+	public ModelAndView save(T bound, BindingResult errors,
 			@RequestParam(value = "view", required = false) String view) {
 		log.info("save " + getEntityName());
 
@@ -113,7 +117,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		if(view!=null && view.length()>0){
 			return new ModelAndView("redirect:"+view);
 		}
-		
+
 		return redirectToListView();
 	}
 

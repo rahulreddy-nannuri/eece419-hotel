@@ -12,6 +12,7 @@ import org.springframework.security.providers.encoding.ShaPasswordEncoder;
 import org.springframework.security.userdetails.UserDetails;
 
 import ubc.eece419.pod1.security.Roles;
+import ubc.eece419.pod1.validator.SupressEntityValidation;
 
 @Entity
 public class User extends AbstractEntity<User> implements UserDetails {
@@ -42,6 +43,8 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.username = username;
 	}
 
+	@SupressEntityValidation
+	@Column(nullable = false)
 	@Override
 	public String getPassword() {
 		return password;
@@ -51,7 +54,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.password = password;
 	}
 
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -60,9 +63,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.address = address;
 	}
 
-	// did we want to use email as username?
-	// probably not!
-	@Column(unique = true)
+	// NG: did we want to use email as username?
 	public String getEmail() {
 		return email;
 	}

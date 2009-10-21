@@ -4,10 +4,10 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 
+	<h3>User details</h3>
     <form:form commandName="user" action="/user/save" cssClass="std-form">
         <form:hidden path="id"/>
         <fieldset>
-            <legend>User details</legend>
 			<input type="hidden" name="view" value="${view}"/>
             <ol>
                 <li>

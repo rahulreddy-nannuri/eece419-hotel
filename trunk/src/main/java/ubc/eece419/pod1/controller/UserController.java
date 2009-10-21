@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,11 +37,15 @@ public class UserController extends CRUDController<User> {
 	public ModelAndView save(User bound, BindingResult errors,
 			@RequestParam(value = "view", required = false) String view) {
 
+		if (bound.isNewEntity()) {
+			// don't check this later -- assuming a blank password field means no change
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "entityvalidator.nullable");
+		}
+
 		if (hasError(bound, errors)) {
 			return editView(bound);
 		}
 
-		// TODO Auto-generated method stub
 		if (!(bound.isNewEntity() || bound.equals(SecurityUtils.getCurrentUser()))) {
 			// only admins can edit /other/ users
 			SecurityUtils.assertAdmin();
@@ -51,23 +56,26 @@ public class UserController extends CRUDController<User> {
 			bound.setRoles(Roles.USER);
 		}
 
-		// TODO: remember to update the SecurityContext if editing the logged-in user
-
-		// right now, password is the only changeable field
 		if (!bound.isNewEntity()) {
 			User old = userRepository.findById(bound.getId());
+
+			// can't change username
+			bound.setUsername(old.getUsername());
+
+			// handle salting the password
 			if (StringUtils.hasText(bound.getPassword())) {
 				if (!bound.getPassword().equals(old.getPassword())) {
-					old.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
-					bound = userRepository.save(old);
+					bound.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
 				}
 			}
 		} else {
+			// handle salting the password
 			bound.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
-			bound = userRepository.save(bound);
 		}
+		bound = userRepository.save(bound);
 
 		// login the user if needed
+		// TODO: remember to update the SecurityContext if editing the logged-in user
 		if(SecurityUtils.currentUserIsAnonymous()){
 			SecurityUtils.login(bound);
 		}
@@ -91,7 +99,8 @@ public class UserController extends CRUDController<User> {
 				SecurityUtils.assertAdmin();
 			}
 		}
-		entity.setPassword("");
+		// !!! Because we're in a transaction, this will get persisted !!!
+		//entity.setPassword("");
 		return editView(entity);
 	}
 

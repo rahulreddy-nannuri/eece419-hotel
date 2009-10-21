@@ -8,13 +8,15 @@ import java.util.Collections;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.validation.Errors;
 
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.AbstractEntity;
+import ubc.eece419.pod1.entity.User;
+
+import static org.easymock.EasyMock.*;
 
 public class ReflectionEntityValidatorTest {
 
@@ -25,11 +27,14 @@ public class ReflectionEntityValidatorTest {
 		public String unique;
 
 		@Column(nullable = false)
-		public String notNull;
+		public Integer notNull = 7;
+
+		@Column(nullable = false)
+		public String notEmpty = "text";
 
 		@Column(unique = true)
 		public String getUnique() {
-			return unique;
+			return unique = "unique";
 		}
 	}
 
@@ -38,61 +43,91 @@ public class ReflectionEntityValidatorTest {
 	Errors errors;
 
 	@Before
+	@SuppressWarnings("unchecked")
 	public void setUp() {
-		repo = EasyMock.createMock(GenericRepository.class);
-		errors = EasyMock.createMock(Errors.class);
+		repo = createMock(GenericRepository.class);
+		errors = createMock(Errors.class);
+
+		expect(repo.getEntityClass()).andStubReturn(ExampleEntity.class);
+
+		replay(repo);
 
 		rev = new ReflectionEntityValidator<ExampleEntity>(repo);
+
+		reset(repo);
 	}
 
 	@Test
 	public void testSupports() {
+		replay(repo, errors);
+
 		assertTrue(rev.supports(ExampleEntity.class));
 		assertFalse(rev.supports(String.class));
+		assertFalse(rev.supports(User.class));
+
+		verify(repo, errors);
 	}
 
 	@Test
 	public void testValidateOk() {
-
 		ExampleEntity entity = new ExampleEntity();
-		entity.notNull = "NotNull";
-		entity.unique = "Unique";
 
-		EasyMock.expect(repo.findAll()).andReturn(Collections.EMPTY_LIST);
+		expect(repo.findAll()).andReturn(Collections.EMPTY_LIST);
 
-		EasyMock.replay(repo);
-		EasyMock.replay(errors);
+		replay(repo, errors);
 
 		rev.validate(entity, errors);
 
-		EasyMock.verify(repo);
-		EasyMock.verify(errors);
+		verify(repo, errors);
 	}
 
 	@Test
-	public void testValidateFail() {
-
+	public void testValidateNullFail() {
 		ExampleEntity entity = new ExampleEntity();
 		entity.notNull = null;
-		entity.unique = "Unique";
 
-		ExampleEntity duplicate = new ExampleEntity();
-		duplicate.notNull = "7";
-		duplicate.unique = "Unique";
-
-		EasyMock.expect(repo.findAll()).andReturn(Arrays.asList(duplicate));
+		expect(repo.findAll()).andReturn(Collections.EMPTY_LIST);
 		errors.rejectValue("notNull", "entityvalidator.nullable");
-		EasyMock.expectLastCall();
-		errors.rejectValue("unique", "entityvalidator.unique");
-		EasyMock.expectLastCall();
 
-		EasyMock.replay(repo);
-		EasyMock.replay(errors);
+		replay(repo, errors);
 
 		rev.validate(entity, errors);
 
-		EasyMock.verify(repo);
-		EasyMock.verify(errors);
+		verify(repo, errors);
+	}
+
+	@Test
+	public void testValidateUniqueFail() {
+		ExampleEntity entity = new ExampleEntity();
+		entity.unique = "duplicate";
+
+		ExampleEntity duplicate = new ExampleEntity();
+		duplicate.unique = "duplicate";
+
+		expect(repo.findAll()).andReturn(Arrays.asList(duplicate));
+		errors.rejectValue("unique", "entityvalidator.unique");
+
+		replay(repo, errors);
+
+		rev.validate(entity, errors);
+
+		verify(repo, errors);
+	}
+
+	@Test
+	public void testValidateEmptyFail() {
+		ExampleEntity entity = new ExampleEntity();
+		entity.notEmpty = "";
+
+
+		expect(repo.findAll()).andReturn(Collections.EMPTY_LIST);
+		errors.rejectValue("notEmpty", "entityvalidator.nullable");
+
+		replay(repo, errors);
+
+		rev.validate(entity, errors);
+
+		verify(repo, errors);
 	}
 
 }
