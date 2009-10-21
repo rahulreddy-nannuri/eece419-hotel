@@ -25,7 +25,7 @@
 				<li>
 					<label for="password">Password:</label>
 					<!-- don't bind password; we don't show it to the user -->
-					<input id="password" name="password" />
+					<input type="password" id="password" name="password" />
 					<form:errors cssClass="error" path="password" />
 				</li>
 				<li>

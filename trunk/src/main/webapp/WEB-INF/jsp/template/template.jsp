@@ -48,7 +48,7 @@
                             </c:when>
                             <c:otherwise>
                                 <li><a href="/user/login">Login</a></li>
-                                <li><a href="/user/register">Register</a></li>
+                                <li><a href="/user/registerform">Register</a></li>
                             </c:otherwise>
                         </c:choose>
                     </ul>

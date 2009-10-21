@@ -44,7 +44,10 @@ public abstract class GenericDao<T extends Databasable<?>> implements GenericRep
 	}
 
 	public T save(T entity) {
-		return em.merge(entity);
+		T refreshedEntity=em.merge(entity);
+		em.refresh(refreshedEntity);
+		return refreshedEntity;
+
 	}
 
 	public void delete(T entity) {
