@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -76,7 +77,7 @@ public class UserController extends CRUDController<User> {
 
 		// login the user if needed
 		// TODO: remember to update the SecurityContext if editing the logged-in user
-		if(SecurityUtils.currentUserIsAnonymous()){
+		if (SecurityUtils.currentUserIsAnonymous()) {
 			SecurityUtils.login(bound);
 		}
 
@@ -127,11 +128,31 @@ public class UserController extends CRUDController<User> {
 	}
 
 	@RequestMapping("/**/register")
-	public ModelAndView register() {
+	public ModelAndView register(User user, BindingResult errors) {
 		log.info("register new user");
-		ModelAndView mav = new ModelAndView("/user/register");
-		mav.addObject(getEntityName(), getNewEntity());
-		mav.addObject("view", "/");
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "entityvalidator.nullable");
+		for (Validator v : getValidators()) {
+			ValidationUtils.invokeValidator(v, user, errors);
+		}
+
+		if (errors.hasErrors()) {
+			return new ModelAndView("user/register", getEntityName(), user);
+		}
+
+		user.setPassword(User.encryptPassword(user.getPassword(), user.getUsername()));
+		user.setRoles("ROLE_USER");
+		user=userRepository.save(user);
+
+		SecurityUtils.login(user);
+		ModelAndView mav = new ModelAndView("redirect:/");
+		return mav;
+
+	}
+
+	@RequestMapping("/**/registerform")
+	public ModelAndView registerForm(User user) {
+		ModelAndView mav = new ModelAndView("user/register",getEntityName(),user);
 		return mav;
 
 	}

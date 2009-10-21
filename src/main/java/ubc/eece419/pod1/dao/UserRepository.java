@@ -6,4 +6,5 @@ import ubc.eece419.pod1.entity.User;
 
 public interface UserRepository extends GenericRepository<User>, UserDetailsService {
 
+	User loadUserByUsername(String username);
 }
