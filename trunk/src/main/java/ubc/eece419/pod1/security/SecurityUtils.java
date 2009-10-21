@@ -3,6 +3,7 @@ package ubc.eece419.pod1.security;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
+import org.springframework.security.adapters.PrincipalSpringSecurityUserToken;
 import org.springframework.security.context.SecurityContextHolder;
 
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
@@ -86,7 +87,7 @@ public abstract class SecurityUtils {
 		if (currentUserIsAnonymous()) {
 			SecurityContextHolder.getContext().setAuthentication(
 					new UsernamePasswordAuthenticationToken(
-					user.getUsername(), user.getPassword(),user.getAuthorities()));
+					user, user.getPassword(),user.getAuthorities()));
 		}
 	}
 }
