@@ -43,7 +43,7 @@ body, html{
 }
 
 #main > h2 {
-	margin-top: 0;
+	margin: 0 0 5px 0;
 }
 #sidebar {
 		margin: 15px 0;
@@ -157,4 +157,42 @@ a:hover {
 
 .std-form li.checkbox label {
 	width: auto;
+}
+
+ul.room-list {
+	list-style: none;
+	margin: 0 10px;
+	padding: 0;
+}
+
+ul.room-list li {
+	margin: 0;
+	padding: 4px 5px;
+}
+
+ul.room-list li.even {
+	background-color: rgb(205, 215, 255);
+}
+
+ul.room-list li h3 {
+	margin: 0;
+}
+
+ul.room-list li > p {
+	margin: 0;
+}
+
+ul.room-list li ul.nav {
+	display: none;
+	list-style: none;
+	float: right;
+	margin-top: -20px;
+}
+
+ul.room-list li:hover ul.nav {
+	display: block;
+}
+
+ul.room-list ul.nav li {
+	display: inline;
 }

@@ -4,9 +4,22 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
     <h2>View Users</h2>
-    <ul>
-        <c:forEach items="${users}" var="user">
-            <li><c:out value="${user.username}" /> <a href="/user/edit?id=<c:out value="${user.id}" />">Edit</a> <a href="/user/delete?id=<c:out value="${user.id}" />">Delete</a></li>
+    <ul class="room-list">
+        <c:forEach items="${users}" var="user" varStatus="idx">
+        	<c:choose>
+	        	<c:when test="${idx.index % 2 == 0}"><%-- check to see if this is an odd item --%>
+	            	<li class="odd">
+	           	</c:when>
+	           	<c:otherwise>
+	           		<li class="even">
+	           	</c:otherwise>
+	       	</c:choose>
+            	<h3><c:out value="${user.username}" /></h3>
+            	<ul class="nav">
+            		<li><a href="/user/edit?id=<c:out value="${user.id}" />">Edit</a></li>
+            		<li><a href="/user/delete?id=<c:out value="${user.id}" />">Delete</a></li>
+            	</ul>
+            </li>
         </c:forEach>
     </ul>
 </c:set>
