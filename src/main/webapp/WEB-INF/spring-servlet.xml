@@ -27,6 +27,8 @@
 				/user/**=userController
 				/room=roomController
 				/room/**=roomController
+				/room=roomTypeController
+				/room/**=roomTypeController
 			</value>
 		</property>
 	</bean>
@@ -36,5 +38,7 @@
 	<bean id="userController" class="ubc.eece419.pod1.controller.UserController" />
 	
 	<bean id="roomController" class="ubc.eece419.pod1.controller.RoomController" />
+	
+	<bean id="roomTypeController" class="ubc.eece419.pod1.controller.RoomTypeController" />
 
 </beans>
