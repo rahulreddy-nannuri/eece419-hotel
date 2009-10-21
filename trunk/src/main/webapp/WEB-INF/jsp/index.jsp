@@ -19,7 +19,7 @@
 </c:set>
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-    <h3>Welcome</h3>
+    <h2>Welcome</h2>
     <p>Thank you for choosing X-Reserve and we hope you will enjoy your staying.</p>
 </c:set>
 

@@ -28,12 +28,12 @@
                             </c:when>
                             <c:when test="${isAdmin}">
                                 <%-- admin --%>
-                                <li><a href="/room">Manage Room</a></li>
-								<li><a href="/user">Manage User</a></li>
+                                <li><a href="/room">Rooms</a></li>
+								<li><a href="/user">Users</a></li>
                             </c:when>
                             <c:otherwise>
                                 <%-- register customer --%>
-                                <li><a href="#">My Bookings</a></li>
+                                <li><a href="#">Bookings</a></li>
                             </c:otherwise>
                         </c:choose>
                     </ul>

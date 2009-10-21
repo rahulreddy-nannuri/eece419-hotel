@@ -3,8 +3,7 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-
-	<h3>User details</h3>
+	<h2>User details</h2>
     <form:form commandName="user" action="/user/save" cssClass="std-form">
         <form:hidden path="id"/>
         <fieldset>
@@ -31,17 +30,11 @@
         </fieldset>
 
     </form:form>
-
-
 </c:set>
 
 <%-- sidebar contains the second navigation bar --%>
 <c:set var="sidebar" scope="request">
-    <ul>
-        <li><a href="/user/login">Login</a></li>
-        <li>Register</li>
-    </ul>
-
+    <jsp:include page="/WEB-INF/jsp/user/sidebar.jsp"/>
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp"/>

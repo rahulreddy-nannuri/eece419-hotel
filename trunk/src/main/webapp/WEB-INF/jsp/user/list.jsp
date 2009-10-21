@@ -3,7 +3,7 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-    <h3>View Users</h3>
+    <h2>View Users</h2>
     <ul>
         <c:forEach items="${users}" var="user">
             <li><c:out value="${user.username}" /> <a href="/user/edit?id=<c:out value="${user.id}" />">Edit</a> <a href="/user/delete?id=<c:out value="${user.id}" />">Delete</a></li>
@@ -13,14 +13,7 @@
 
 <%-- sidebar contains the second navigation bar --%>
 <c:set var="sidebar" scope="request">
-    <ul>
-		<c:if test="${isAdmin}">
-			<li>View all users</li>
-			<li><a href="/user/edit">New User</a></li>
-		</c:if>
-
-
-    </ul>
+    <jsp:include page="/WEB-INF/jsp/user/sidebar.jsp"/>
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp"/>

@@ -2,11 +2,10 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-
-	<h3>Login</h3>
+	<h2>Login</h2>
     <form action="j_spring_security_check" class="std-form">
         <fieldset>
-        <ol>
+        <ul>
             <c:if test="${login_error == 1}">
                 <li><p class="error">login failed</p></li>
             </c:if>
@@ -18,11 +17,11 @@
 	            <label for="j_password">Password:</label>
 	            <input type="password" name="j_password" id="j_password"/>
 	        </li>
-            <li>
-            	<label><!-- for padding -->&nbsp;</label>
-            	<input type='checkbox' name='_spring_security_remember_me'/> Remember me
+            <li class="checkbox">
+            	<input type='checkbox' name='_spring_security_remember_me'/>
+            	<label for="_spring_security_remember_me">Remember me</label>
             </li>
-        </ol>
+        </ul>
         <input type="submit" value="Login"/>
         </fieldset>
     </form>
@@ -30,10 +29,7 @@
 
 <%-- sidebar contains the second navigation bar --%>
 <c:set var="sidebar" scope="request">
-    <ul>
-        <li>Login</li>
-        <li><a href="/user/edit">Register</a></li>
-    </ul>
+    <jsp:include page="/WEB-INF/jsp/user/sidebar.jsp"/>
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp"/>
