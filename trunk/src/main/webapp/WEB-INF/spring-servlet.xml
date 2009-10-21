@@ -27,8 +27,8 @@
 				/user/**=userController
 				/room=roomController
 				/room/**=roomController
-				/room=roomTypeController
-				/room/**=roomTypeController
+				/roomType=roomTypeController
+				/roomType/**=roomTypeController
 			</value>
 		</property>
 	</bean>
