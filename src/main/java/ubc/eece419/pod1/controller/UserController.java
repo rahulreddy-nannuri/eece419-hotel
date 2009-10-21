@@ -122,7 +122,7 @@ public class UserController extends CRUDController<User> {
 		log.info("register new user");
 		ModelAndView mav = new ModelAndView("user/register");
 		mav.addObject(getEntityName(), getNewEntity());
-		mav.addObject("view", "/user/login");
+		mav.addObject("view", "/");
 		return mav;
 
 	}
