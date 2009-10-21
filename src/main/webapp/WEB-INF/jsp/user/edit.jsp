@@ -2,7 +2,7 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-	<h3>Edit Profile</h3>
+	<h2>Edit Profile</h2>
     <form:form commandName="user" action="/user/save" cssClass="std-form">
 		<fieldset>
 			<form:hidden path="id"/>
@@ -56,13 +56,7 @@
 
 <%-- sidebar contains the second navigation bar --%>
 <c:set var="sidebar" scope="request">
-    <ul>
-		<c:if test="${isAdmin}">
-			<li><a href="/user/list">View all users</a></li>
-		</c:if>
-		<li>Edit profile</li>
-
-    </ul>
+    <jsp:include page="/WEB-INF/jsp/user/sidebar.jsp"/>
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp"/>

@@ -1,7 +1,7 @@
 /* overall site css */
 
-a:link,a:visited {
-	color: #3333ff;
+a:link, a:visited{
+    color: #3333ff;
 }
 
 a:hover {
@@ -12,40 +12,58 @@ a:active {
 	color: #33ff00;
 }
 
-body,html {
-	background-color: #ccccff;
+body, html{
+    padding: 0;
+		margin: 0;
+		font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
 }
 
 #wrap {
-	width: 80%;
-	margin: 0px auto;
-	border: 1px solid #99c;
-	background-color: #fff;
+    width: 900px;
+    margin: 0px auto;
 }
 
 #header {
 	border-bottom: 1px solid #99c;
 	padding: 0 1em 0.2em;
+    background-color: rgb(26, 63, 204);
+    padding: 0 5px;
 }
 
-#header h1 {
-	margin: 0.2em 0;
-	padding: 0;
+#header > h1 {
+		padding: 0;
+		margin: 0 0 15px 0;
 }
 
 #main {
-	border-left: 1px solid #99c;
-	margin-left: -1px;
-	padding: 0.5%;
-	width: 68%;
-	float: left;
+    margin: 15px 0 15px 280px;
+    padding: 0 15px;
+    border-left: 1px solid black;
+    min-height: 300px;
 }
 
+#main > h2 {
+	margin-top: 0;
+}
 #sidebar {
-	padding: 0.5%;
-	float: left;
-	width: 28%;
-	border-right: 1px solid #99c;
+		margin: 15px 0;
+    padding: 0 5px;
+    float:left;
+    width:270px;
+}
+#sidebar > h3 {
+	margin: 0 0 5px 0;
+}
+
+#sidebar > ul {
+	margin: 0 0 15px 0;
+	padding: 0 0 0 5px;
+	list-style: none;
+}
+
+#sidebar > ul li {
+	margin: 0;
+	padding: 0;
 }
 
 #footer {
@@ -87,28 +105,56 @@ body,html {
 	border-style: none;
 }
 
-.std-form legend {
-	margin-left: 1em;
-	color: #000000;
-	font-weight: bold;
+#nav li, #user li{
+    display:inline;
+    padding:0;
+    margin:0;
 }
 
-.std-form fieldset ol {
-	padding: 0 1em;
+#header a {
+	padding: 2px 5px;
+	color: white;
+	text-decoration: none;
+}
+
+#header a:hover {
+	background-color: white;
+	color: black;
+}
+
+a {
+	color: rgb(26, 63, 204);
+}
+
+a:hover {
+	color: rgb(113, 142, 255);
+}
+
+.std-form ul,
+.std-form ol {
+	padding: 0;
+	margin: 0 0 10px 0;
 	list-style: none;
-}
-
-.std-form fieldset li {
-	padding-bottom: 1em;
-}
-
-.std-form label {
 	float: left;
-	width: 7em;
-	margin-right: 1em;
-	text-align: right;
+	width: 100%;
 }
 
-.std-form .error {
-	margin-left: 1em;
+.std-form input {
+	float: left;
+}
+
+.std-form li {
+	padding: 0;
+	margin: 0;
+	float: left;
+	clear: both;
+}
+
+.std-form li label {
+	width: 100px;
+	float: left;
+}
+
+.std-form li.checkbox label {
+	width: auto;
 }
