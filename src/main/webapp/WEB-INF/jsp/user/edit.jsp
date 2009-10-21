@@ -11,19 +11,21 @@
 					<li>
 						<form:label path="username">Username:</form:label>
 						<c:choose>
-							<c:when test="${isAdmin}">
-								<form:input path="username"/>
+							<%-- once you have a username, you can't change it --%>
+							<c:when test="${user.id > 0}">
+								<form:input path="username" disabled="true"/>
 							</c:when>
 							<c:otherwise>
-								<form:input path="username" disabled="true"/>
+								<form:input path="username"/>
 							</c:otherwise>
 						</c:choose>
 						<form:errors cssClass="error" path="username" />
 					</li>
 				
 				<li>
-					<form:label path="password">Password:</form:label>
-					<form:input path="password"/>
+					<label for="password">Password:</label>
+					<!-- don't bind password; we don't show it to the user -->
+					<input id="password" name="password" />
 					<form:errors cssClass="error" path="password" />
 				</li>
 				<li>

@@ -58,7 +58,7 @@ public abstract class AbstractEntity<T> implements Databasable<T> {
 		if (abstractEntityType(this) != abstractEntityType(other)) return false;
 
 		// TODO: handle pre-persisted equals()
-		return id == other.id;
+		return !isNewEntity() && (id == other.id);
 	}
 
 	// this is hilarious, and probably pointless

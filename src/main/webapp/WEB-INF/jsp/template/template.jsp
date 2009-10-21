@@ -44,6 +44,7 @@
                             <c:when test="${currentuser != null}">                         
                                 <li><a href="/user/edit?id=${currentuser.id}">Edit Profile</a></li>
                                 <li><a href="/j_spring_security_logout">Logout</a></li>
+                                <li>(${currentuser.username})</li>
                             </c:when>
                             <c:otherwise>
                                 <li><a href="/user/login">Login</a></li>

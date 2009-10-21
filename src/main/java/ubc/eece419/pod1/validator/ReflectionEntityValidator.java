@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -19,15 +18,18 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 	// because InitializingBean doesn't work... we do this
 	private CRUDController<T> controller;
 	private GenericRepository<T> repository;
+	private final Class<T> targetClass;
 
 	public ReflectionEntityValidator(GenericRepository<T> repository) {
 		this.repository = repository;
 		this.controller = null;
+		this.targetClass = repository.getEntityClass();
 	}
 
 	public ReflectionEntityValidator(CRUDController<T> controller) {
 		this.repository = null;
 		this.controller = controller;
+		this.targetClass = controller.getEntityClass();
 	}
 
 	public GenericRepository<T> getRepository() {
@@ -37,7 +39,7 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean supports(Class clazz) {
-		return clazz.getAnnotation(Entity.class) != null;
+		return targetClass.isAssignableFrom(clazz);
 	}
 
 	@Override
@@ -46,7 +48,9 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 		Field[] fields = target.getClass().getFields();
 		for (Field f : fields) {
 			Column annot = f.getAnnotation(Column.class);
-			if (annot != null) {
+			SupressEntityValidation suppress = f.getAnnotation(SupressEntityValidation.class);
+
+			if (suppress == null && annot != null) {
 				validateField(target, f, annot, errors);
 			}
 		}
@@ -54,8 +58,20 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 		Method[] methods = target.getClass().getMethods();
 		for (Method m : methods) {
 			Column annot = m.getAnnotation(Column.class);
-			if (annot != null) {
+			SupressEntityValidation suppress = m.getAnnotation(SupressEntityValidation.class);
+
+			if (suppress == null && annot != null) {
 				validateMethod(target, m, annot, errors);
+			}
+		}
+	}
+
+	private void nullCheck(Object value, String field, Errors errors) {
+		if (value == null) {
+			errors.rejectValue(field, "entityvalidator.nullable");
+		} else if (value instanceof String) {
+			if (((String) value).isEmpty()) {
+				errors.rejectValue(field, "entityvalidator.nullable");
 			}
 		}
 	}
@@ -65,15 +81,18 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 		try {
 			Object value = field.get(target);
 
-			if (!annot.nullable() && value == null) {
-				errors.rejectValue(field.getName(), "entityvalidator.nullable");
+			if (!annot.nullable()) {
+				nullCheck(value, field.getName(), errors);
 			}
 
 			if (annot.unique()) {
 				for (T existing : getRepository().findAll()) {
-					if (field.get(existing).equals(value)) {
-						errors.rejectValue(field.getName(), "entityvalidator.unique");
-						break;
+					if (!existing.equals(target)) {
+						Object o = field.get(existing);
+						if (o != null && o.equals(value)) {
+							errors.rejectValue(field.getName(), "entityvalidator.unique");
+							break;
+						}
 					}
 				}
 			}
@@ -91,15 +110,18 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 				fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
 			}
 
-			if (!annot.nullable() && value == null) {
-				errors.rejectValue(fieldName, "entityvalidator.nullable");
+			if (!annot.nullable()) {
+				nullCheck(value, fieldName, errors);
 			}
 
 			if (annot.unique()) {
 				for (T existing : getRepository().findAll()) {
-					if (method.invoke(existing).equals(value)) {
-						errors.rejectValue(fieldName, "entityvalidator.unique");
-						break;
+					if (!existing.equals(target)) {
+						Object o = method.invoke(existing);
+						if (o != null && o.equals(value)) {
+							errors.rejectValue(fieldName, "entityvalidator.unique");
+							break;
+						}
 					}
 				}
 			}
