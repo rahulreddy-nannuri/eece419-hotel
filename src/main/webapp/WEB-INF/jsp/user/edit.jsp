@@ -27,7 +27,7 @@
 					<form:errors cssClass="error" path="password" />
 				</li>
 				<li>
-					<form:label path="email">Eamil:</form:label>
+					<form:label path="email">Email:</form:label>
 					<form:input path="email"/>
 					<form:errors cssClass="error" path="email" />
 				</li>

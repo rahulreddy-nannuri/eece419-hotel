@@ -53,7 +53,7 @@ public class UserController extends CRUDController<User> {
 
 		// TODO: remember to update the SecurityContext if editing the logged-in user
 
-		// right now, password is the only changable field
+		// right now, password is the only changeable field
 		if (!bound.isNewEntity()) {
 			User old = userRepository.findById(bound.getId());
 			if (StringUtils.hasText(bound.getPassword())) {
