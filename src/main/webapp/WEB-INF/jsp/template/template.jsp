@@ -18,7 +18,7 @@
     <body>
         <div id="wrap">
             <div id="header">
-                <h1>X-Reserver</h1>
+                <h1>X-Reserve</h1>
                 <div id="nav">
                     <ul>
                         <li><a href="/">Home</a></li>
