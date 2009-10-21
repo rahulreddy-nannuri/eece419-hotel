@@ -59,15 +59,15 @@ public class UserController extends CRUDController<User> {
 			if (StringUtils.hasText(bound.getPassword())) {
 				if (!bound.getPassword().equals(old.getPassword())) {
 					old.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
-					userRepository.save(old);
+					bound = userRepository.save(old);
 				}
 			}
 		} else {
 			bound.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
-			userRepository.save(bound);
+			bound = userRepository.save(bound);
 		}
 
-		// login the user if neede
+		// login the user if needed
 		if(SecurityUtils.currentUserIsAnonymous()){
 			SecurityUtils.login(bound);
 		}
@@ -110,7 +110,7 @@ public class UserController extends CRUDController<User> {
 	@RequestMapping("/**/login")
 	public ModelAndView login(@RequestParam(value = "login_error", required = false) Integer error) {
 		log.info("login " + getEntityName());
-		ModelAndView mav = new ModelAndView("user/login");
+		ModelAndView mav = new ModelAndView("/user/login");
 		if (error != null) {
 			mav.addObject("login_error", error);
 		}
@@ -120,7 +120,7 @@ public class UserController extends CRUDController<User> {
 	@RequestMapping("/**/register")
 	public ModelAndView register() {
 		log.info("register new user");
-		ModelAndView mav = new ModelAndView("user/register");
+		ModelAndView mav = new ModelAndView("/user/register");
 		mav.addObject(getEntityName(), getNewEntity());
 		mav.addObject("view", "/");
 		return mav;
