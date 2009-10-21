@@ -2,7 +2,7 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-    <h3>All Rooms</h3>
+    <h2>All Rooms</h2>
     <p><c:out value="${fn:length(rooms)}" /> rooms in database. </p>
     <ul>
         <c:forEach items="${rooms}" varStatus="idx"><%-- TODO: use spring:bind in the loop? --%>
@@ -11,12 +11,9 @@
     </ul>
 </c:set>
 
-<%-- sidebar contains the second navigation bar --%>
+<%-- use the default room sidebar --%>
 <c:set var="sidebar" scope="request">
-    <ul>
-        <li>View Rooms</li>
-        <li><a href="/room/edit">New Room</a></li>
-    </ul>
+	<jsp:include page="/WEB-INF/jsp/room/sidebar.jsp"/>
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp"/>

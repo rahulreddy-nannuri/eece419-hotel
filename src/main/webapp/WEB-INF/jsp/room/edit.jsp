@@ -25,12 +25,9 @@
 	</form:form>
 </c:set>
 
-<%-- sidebar contains the second navigation bar --%>
-<c:set var="sidebar" scope="request">
-	<ul>
-		<li><a href="/room/list">View Rooms</a></li>
-		<li>New Room</li>
-	</ul>
+<%-- use the default room sidebar --%>
+<c:set var="sidebar" scope="request"> 
+	<jsp:include page="/WEB-INF/jsp/room/sidebar.jsp"/>
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp" />
