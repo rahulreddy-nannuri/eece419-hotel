@@ -7,5 +7,5 @@ public interface Databasable<T> extends Serializable {
 
 	void setId(long id);
 
-	String getName();
+	String getEntityName();
 }

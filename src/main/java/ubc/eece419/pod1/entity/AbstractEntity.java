@@ -28,7 +28,7 @@ public abstract class AbstractEntity<T> implements Databasable<T> {
 	}
 
 	@Override
-	public String getName() {
+	public String getEntityName() {
 		return this.getClass().getSimpleName().toLowerCase();
 	}
 
