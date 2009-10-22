@@ -37,7 +37,7 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
         ModelAndView mav = controller.list();
         EasyMock.verify(repository);
 
-        List<T> model = (List<T>) mav.getModel().get(getEntity().getName() + "s");
+        List<T> model = (List<T>) mav.getModel().get(getEntity().getEntityName() + "s");
         assertEquals(entities.size(), model.size());
     }
 
@@ -50,13 +50,13 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
         EasyMock.replay(repository);
 
         ModelAndView mav = controller.edit(null);
-        T model = (T) mav.getModel().get(getEntity().getName());
+        T model = (T) mav.getModel().get(getEntity().getEntityName());
         assertNotNull(model);
 
         mav = controller.edit(1L);
         EasyMock.verify(repository);
 
-        model = (T) mav.getModel().get(getEntity().getName());
+        model = (T) mav.getModel().get(getEntity().getEntityName());
         assertEquals(entity, model);
     }
 

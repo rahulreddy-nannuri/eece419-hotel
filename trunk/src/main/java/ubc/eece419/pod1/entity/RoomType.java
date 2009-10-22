@@ -1,4 +1,5 @@
 package ubc.eece419.pod1.entity;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 
@@ -15,6 +16,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		
 	}
 
+	@Column(nullable=false)
 	public Integer getMaxOccupancy() {
 		return maxOccupancy;
 	}
@@ -23,6 +25,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.maxOccupancy = maxOccupancy;
 	}
 
+	@Column(nullable=false)
 	public String getDescription() {
 		return description;
 	}
@@ -31,6 +34,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.description = description;
 	}
 
+	@Column(nullable=false)
 	public Double getDailyRate() {
 		return dailyRate;
 	}
@@ -39,6 +43,8 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.dailyRate = dailyRate;
 	}
 
+
+	@Column(unique=true,nullable=false)
 	public String getName() {
 		return name;
 	}
