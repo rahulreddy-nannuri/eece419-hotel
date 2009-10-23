@@ -2,7 +2,16 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-	<h2>Edit Profile</h2>
+<c:choose>
+	<c:when test="${user.id > 0}">
+		<h2>Edit Profile</h2>
+	</c:when>
+	<c:otherwise>
+		<h2>Create User</h2>
+	</c:otherwise>
+</c:choose>
+	
+	
     <form:form commandName="user" action="/user/save" cssClass="std-form">
 		<fieldset>
 			<form:hidden path="id"/>
