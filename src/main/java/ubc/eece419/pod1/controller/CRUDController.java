@@ -35,7 +35,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 			throw new IllegalStateException("Subclassing CRUDController without specifiying Databaseable type");
 		}
 		this.entityClass = (Class<T>) dt;
-		this.basePath = "/" + getEntityName();
+		this.basePath = "/" + getEntityName().toLowerCase();
 	}
 
 	protected abstract T getNewEntity();
@@ -46,8 +46,9 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		return entityClass;
 	}
 
+	// spring will bind errors to the className, not classname
 	protected String getEntityName() {
-		return entityClass.getSimpleName().toLowerCase();
+		return entityClass.getSimpleName(); //.toLowerCase();
 	}
 
 	@ModelAttribute("currentuser")
@@ -109,6 +110,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		log.info("save " + getEntityName());
 
 		if (hasError(bound, errors)) {
+			log.info(errors.toString());
 			return editView(bound);
 		}
 		getRepository().save(bound);

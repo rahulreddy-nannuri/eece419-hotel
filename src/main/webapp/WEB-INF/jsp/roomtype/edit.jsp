@@ -4,7 +4,7 @@
 <c:set var="main" scope="request">
 
 	<h3>Edit Room Type Details</h3>
-	<form:form commandName="roomtype" action="/roomtype/save" cssClass="std-form">
+	<form:form commandName="roomType" action="/roomtype/save" cssClass="std-form">
 		<fieldset>
 			<form:hidden path="id" />
 			<ol>

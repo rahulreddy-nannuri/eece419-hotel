@@ -25,6 +25,7 @@ public class UserController extends CRUDController<User> {
 	public UserController() {
 		addValidator(new ReflectionEntityValidator<User>(this));
 	}
+
 	@Autowired
 	UserRepository userRepository;
 
@@ -137,12 +138,13 @@ public class UserController extends CRUDController<User> {
 		}
 
 		if (errors.hasErrors()) {
-			return new ModelAndView("user/register", getEntityName(), user);
+			log.info(errors.toString());
+			return registerForm(user);
 		}
 
 		user.setPassword(User.encryptPassword(user.getPassword(), user.getUsername()));
 		user.setRoles("ROLE_USER");
-		user=userRepository.save(user);
+		user = userRepository.save(user);
 
 		SecurityUtils.login(user);
 		ModelAndView mav = new ModelAndView("redirect:/");
@@ -152,7 +154,7 @@ public class UserController extends CRUDController<User> {
 
 	@RequestMapping("/**/registerform")
 	public ModelAndView registerForm(User user) {
-		ModelAndView mav = new ModelAndView("user/register",getEntityName(),user);
+		ModelAndView mav = new ModelAndView("/user/register", getEntityName(), user);
 		return mav;
 
 	}

@@ -33,7 +33,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		this.roles = roles;
 	}
 
-	@Column(unique = true)
+	@Column(unique=true, nullable=false)
 	@Override
 	public String getUsername() {
 		return username;
