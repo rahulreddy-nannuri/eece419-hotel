@@ -27,9 +27,15 @@ public abstract class AbstractEntity<T> implements Databasable<T> {
 		this.id = id;
 	}
 
+	public static String entityName(Class<?> clazz) {
+		String name = clazz.getSimpleName();
+		name = name.substring(0, 1).toLowerCase() + name.substring(1);
+		return name;
+	}
+
 	@Override
 	public String getEntityName() {
-		return this.getClass().getSimpleName().toLowerCase();
+		return entityName(getClass());
 	}
 
 	@Transient

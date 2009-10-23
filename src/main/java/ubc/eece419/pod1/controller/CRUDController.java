@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import ubc.eece419.pod1.dao.GenericRepository;
+import ubc.eece419.pod1.entity.AbstractEntity;
 import ubc.eece419.pod1.entity.Databasable;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.reflection.ReflectionUtils;
@@ -48,7 +49,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 
 	// spring will bind errors to the className, not classname
 	protected String getEntityName() {
-		return entityClass.getSimpleName(); //.toLowerCase();
+		return AbstractEntity.entityName(entityClass);
 	}
 
 	@ModelAttribute("currentuser")
