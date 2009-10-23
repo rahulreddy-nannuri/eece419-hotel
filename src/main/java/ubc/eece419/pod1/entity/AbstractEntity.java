@@ -72,4 +72,9 @@ public abstract class AbstractEntity<T> implements Databasable<T> {
 		return ReflectionUtils.getGenericParameter(entity.getClass(), AbstractEntity.class);
 	}
 
+	@Override
+	public String toString() {
+		return ((Class<?>)abstractEntityType(this)).getSimpleName() + "[" + id + "]";
+	}
+
 }
