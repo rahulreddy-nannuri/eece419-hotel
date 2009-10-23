@@ -2,7 +2,7 @@
 <c:choose>
 	<c:when test="${currentuser == null}">
 		<ul>
-	        <li><a href="/user/login">Login</li>
+	        <li><a href="/user/login">Login</a></li>
 	        <li><a href="/user/edit">Register</a></li>
 	    </ul>
 	</c:when>
@@ -16,6 +16,7 @@
 <c:if test="${isAdmin}">
 	<h3>Manage Users</h3>
 	<ul>
+		<li><a href="/user/list">View Users</a></li>
 		<li><a href="/user/edit">Create User</a></li>
 	</ul>
 </c:if>
