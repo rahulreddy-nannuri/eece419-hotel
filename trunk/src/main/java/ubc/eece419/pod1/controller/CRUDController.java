@@ -39,7 +39,15 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		this.basePath = "/" + getEntityName().toLowerCase();
 	}
 
-	protected abstract T getNewEntity();
+	protected T getNewEntity() {
+		try {
+			return entityClass.newInstance();
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public abstract GenericRepository<T> getRepository();
 

@@ -20,7 +20,7 @@ public class User extends AbstractEntity<User> implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-	private String roles;
+	private String roles = Roles.USER; // default to least privilege
 	private String email;
 	private String address;
 
@@ -108,21 +108,25 @@ public class User extends AbstractEntity<User> implements UserDetails {
 		return roles.contains(Roles.STAFF);
 	}
 
+	@Transient
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
+	@Transient
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
+	@Transient
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
+	@Transient
 	@Override
 	public boolean isEnabled() {
 		return true;

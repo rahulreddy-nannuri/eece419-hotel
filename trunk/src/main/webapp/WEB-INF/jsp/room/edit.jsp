@@ -18,6 +18,11 @@
 					<form:input path="description" />
 					<form:errors cssClass="error" path="description" />
 				</li>
+				<li>
+					<form:label path="roomType">Room Type:</form:label>
+					<form:input path="roomType" />
+					<form:errors cssClass="error" path="roomType" />
+				</li>
 			</ol>
 
 			<input type="submit" value="Save" />

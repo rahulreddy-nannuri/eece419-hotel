@@ -1,19 +1,23 @@
 package ubc.eece419.pod1.entity;
+
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.OneToMany;
 
 @Entity
 public class RoomType extends AbstractEntity<RoomType> {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer maxOccupancy;
 	private String description;
 	private Double dailyRate;
 	private String name;
-	
+	private Set<Room> rooms;
+
 	public RoomType() {
-		
+
 	}
 
 	@Column(nullable=false)
@@ -43,8 +47,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.dailyRate = dailyRate;
 	}
 
-
-	@Column(unique=true,nullable=false)
+	@Column(unique=true, nullable=false)
 	public String getName() {
 		return name;
 	}
@@ -52,5 +55,14 @@ public class RoomType extends AbstractEntity<RoomType> {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	@OneToMany(mappedBy="roomType")
+	public Set<Room> getRooms() {
+		return rooms;
+	}
+
+	public void setRooms(Set<Room> rooms) {
+		this.rooms = rooms;
+	}
+
 }

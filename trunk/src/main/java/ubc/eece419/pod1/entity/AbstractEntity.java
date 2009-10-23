@@ -13,11 +13,11 @@ import ubc.eece419.pod1.reflection.ReflectionUtils;
 public abstract class AbstractEntity<T> implements Databasable<T> {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
 	private long id;
 
 	@Override
+	@Id
+	@GeneratedValue
 	public long getId() {
 		return id;
 	}
@@ -33,6 +33,7 @@ public abstract class AbstractEntity<T> implements Databasable<T> {
 		return name;
 	}
 
+	@Transient
 	@Override
 	public String getEntityName() {
 		return entityName(getClass());

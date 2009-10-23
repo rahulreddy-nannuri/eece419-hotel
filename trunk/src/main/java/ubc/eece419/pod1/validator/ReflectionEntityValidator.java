@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -48,20 +49,22 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 		Field[] fields = target.getClass().getFields();
 		for (Field f : fields) {
 			Column annot = f.getAnnotation(Column.class);
-			SupressEntityValidation suppress = f.getAnnotation(SupressEntityValidation.class);
+			JoinColumn jannot = f.getAnnotation(JoinColumn.class);
 
-			if (suppress == null && annot != null) {
-				validateField(target, f, annot, errors);
+			if (annot != null || jannot != null) {
+				throw new IllegalArgumentException("we don't use field annotations! annotate the getter instead");
 			}
 		}
 
 		Method[] methods = target.getClass().getMethods();
 		for (Method m : methods) {
 			Column annot = m.getAnnotation(Column.class);
+			JoinColumn jannot = m.getAnnotation(JoinColumn.class);
 			SupressEntityValidation suppress = m.getAnnotation(SupressEntityValidation.class);
 
-			if (suppress == null && annot != null) {
-				validateMethod(target, m, annot, errors);
+			if (suppress == null) {
+				if (annot != null) validateMethod(target, m, annot, errors);
+				if (jannot != null) validateMethod(target, m, jannot, errors);
 			}
 		}
 	}
@@ -76,26 +79,20 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 		}
 	}
 
-	// this can't see private fields! annotate the getters instead
-	protected void validateField(Object target, Field field, Column annot, Errors errors) {
+	protected void validateMethod(Object target, Method method, JoinColumn annot, Errors errors) {
 		try {
-			Object value = field.get(target);
+			Object value = method.invoke(target);
+			String fieldName = method.getName();
+			if (fieldName.startsWith("get")) {
+				fieldName = fieldName.substring(3);
+				fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
+			}
 
 			if (!annot.nullable()) {
-				nullCheck(value, field.getName(), errors);
+				nullCheck(value, fieldName, errors);
 			}
-
-			if (annot.unique()) {
-				for (T existing : getRepository().findAll()) {
-					if (!existing.equals(target)) {
-						Object o = field.get(existing);
-						if (o != null && o.equals(value)) {
-							errors.rejectValue(field.getName(), "entityvalidator.unique");
-							break;
-						}
-					}
-				}
-			}
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}

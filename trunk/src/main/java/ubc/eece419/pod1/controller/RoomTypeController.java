@@ -20,12 +20,6 @@ public class RoomTypeController extends CRUDController<RoomType> {
 	public RoomTypeController() {
 		addValidator(new ReflectionEntityValidator<RoomType>(this));
 	}
-	
-	@Override
-	protected RoomType getNewEntity() {
-        RoomType r = new RoomType();
-        return r;
-	}
 
 	@Override
 	public RoomTypeRepository getRepository() {
