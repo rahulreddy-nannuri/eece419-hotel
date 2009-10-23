@@ -55,7 +55,8 @@ public class RoomTypeControllerTest {
 			// we won't see a repo.save(nameless);
 		}});
 
-		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(nameless, AbstractEntity.entityName(RoomType.class));
+		// I've not seen where Spring sets the BindingResult objectName, but AbstractEntity.entityName tries to match it.
+		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(nameless, "roonType");
 
 		ModelAndView mav = controller.save(nameless, errors, null);
 
@@ -63,6 +64,12 @@ public class RoomTypeControllerTest {
 		assertTrue(arrayContains(errors.getFieldError("name").getCodes(), "entityvalidator.nullable"));
 
 		assertEquals("/roomtype/edit", mav.getViewName());
+
+		RoomType model = (RoomType) mav.getModel().get("roomType");
+		assertEquals(null, model.getName());
+		assertEquals("description", model.getDescription());
+		assertEquals(100.5, model.getDailyRate(), 1e-9);
+		assertEquals(2, model.getMaxOccupancy());
 	}
 
 	@Test
