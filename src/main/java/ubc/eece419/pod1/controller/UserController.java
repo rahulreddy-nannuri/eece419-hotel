@@ -39,9 +39,18 @@ public class UserController extends CRUDController<User> {
 	public ModelAndView save(User bound, BindingResult errors,
 			@RequestParam(value = "view", required = false) String view) {
 
+		User old = null;
+
 		if (bound.isNewEntity()) {
 			// don't check this later -- assuming a blank password field means no change
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "entityvalidator.nullable");
+		}
+
+		if (!bound.isNewEntity()) {
+			old = userRepository.findById(bound.getId());
+
+			// can't change username
+			bound.setUsername(old.getUsername());
 		}
 
 		if (hasError(bound, errors)) {
@@ -59,11 +68,6 @@ public class UserController extends CRUDController<User> {
 		}
 
 		if (!bound.isNewEntity()) {
-			User old = userRepository.findById(bound.getId());
-
-			// can't change username
-			bound.setUsername(old.getUsername());
-
 			// handle salting the password
 			if (StringUtils.hasText(bound.getPassword())) {
 				if (!bound.getPassword().equals(old.getPassword())) {
