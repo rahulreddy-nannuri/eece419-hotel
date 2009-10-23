@@ -1,12 +1,14 @@
 package ubc.eece419.pod1.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
@@ -33,6 +35,11 @@ public class RoomController extends CRUDController<Room> {
 	@InitBinder
 	public void registerRoomTypeEditor(WebDataBinder binder) {
 		binder.registerCustomEditor(RoomType.class, new EntityEditor<RoomType>(roomTypeRepository));
+	}
+
+	@ModelAttribute("roomTypes")
+	public List<RoomType> exposeRoomTypes() {
+		return roomTypeRepository.findAll();
 	}
 
     @Override

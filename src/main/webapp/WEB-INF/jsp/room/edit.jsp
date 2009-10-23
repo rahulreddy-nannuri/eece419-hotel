@@ -3,6 +3,10 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 
+	<c:if test="${fn:length(roomTypes) == 0}">
+	<h3 class="error">You need at least one Room Type before creating Rooms.</h3>
+	</c:if>
+
 	<h3>Edit Room Details</h3>
 	<form:form commandName="room" action="/room/save" cssClass="std-form">
 		<fieldset>
@@ -20,7 +24,7 @@
 				</li>
 				<li>
 					<form:label path="roomType">Room Type:</form:label>
-					<form:input path="roomType" />
+					<form:select path="roomType" items="${roomTypes}" itemValue="id" itemLabel="name"/>
 					<form:errors cssClass="error" path="roomType" />
 				</li>
 			</ol>
