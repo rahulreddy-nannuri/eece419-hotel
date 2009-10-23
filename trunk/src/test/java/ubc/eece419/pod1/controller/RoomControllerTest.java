@@ -4,12 +4,16 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.entity.Room;
+import ubc.eece419.pod1.entity.RoomType;
 
 public class RoomControllerTest extends CRUDControllerTest<Room> {
 
 	@Override
 	Room getEntity() {
-		return new Room();
+		Room room = new Room();
+		RoomType roomType = new RoomType();
+		room.setRoomType(roomType);
+		return room;
 	}
 
 	@Override
