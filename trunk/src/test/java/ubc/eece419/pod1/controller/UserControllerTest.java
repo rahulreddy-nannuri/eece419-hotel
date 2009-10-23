@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.easymock.classextension.EasyMock;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +24,7 @@ public class UserControllerTest{
 	@SuppressWarnings("unchecked")
 	private CRUDController controller;
 	private BindingResult bindingResult;
-	
+
 	User getEntity() {
 		// TODO Auto-generated method stub
 		return new User();
@@ -35,30 +36,31 @@ public class UserControllerTest{
 		UserRepository userRepository = EasyMock.createMock(UserRepository.class);
 		UserController userController = new UserController();
 		userController.userRepository = userRepository;
-		
+
 		repository = userRepository;
 		controller = userController;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testList(){
 		List<User> entities = new ArrayList<User>();
 		entities.add(getEntity());
 		entities.add(getEntity());
-		
+
 		EasyMock.expect(repository.findAll()).andReturn(entities);
 		EasyMock.replay(repository);
-		
+
 		ModelAndView mav = controller.list();
 		EasyMock.verify(repository);
-		
+
 		List<User> model = (List<User>) mav.getModel().get(getEntity().getEntityName() + "s");
-		
+
 		assertEquals(entities.size(), model.size());
 	}
+
 	//still working on it
-    @Test
+    @Test @Ignore
     public void testSave() {
         User entity = getEntity();
 
@@ -73,10 +75,10 @@ public class UserControllerTest{
         ModelAndView mav = controller.save(entity, bindingResult,null);
         EasyMock.verify(repository);
         //EasyMock.verify(bindingResult);
-        
+
         //assertEquals("redirect:/user/list", mav.getViewName());
     }
-	
 
-	
+
+
 }
