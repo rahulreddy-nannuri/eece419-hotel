@@ -24,13 +24,19 @@ public class ReflectionEntityValidatorTest {
 	static class ExampleEntity extends AbstractEntity<ExampleEntity> {
 		private static final long serialVersionUID = 1L;
 
+		public Integer notNull = 7;
+		public String notEmpty = "text";
 		public String unique;
 
 		@Column(nullable = false)
-		public Integer notNull = 7;
+		public Integer getNotNull() {
+			return notNull;
+		}
 
 		@Column(nullable = false)
-		public String notEmpty = "text";
+		public String getNotEmpty() {
+			return notEmpty;
+		}
 
 		@Column(unique = true)
 		public String getUnique() {
