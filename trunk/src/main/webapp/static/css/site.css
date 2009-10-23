@@ -170,7 +170,7 @@ ul.room-list li {
 	padding: 4px 5px;
 }
 
-ul.room-list li.even {
+ul.room-list li.row1 {
 	background-color: rgb(205, 215, 255);
 }
 
