@@ -69,7 +69,7 @@ public class RoomTypeControllerTest {
 		assertEquals(null, model.getName());
 		assertEquals("description", model.getDescription());
 		assertEquals(100.5, model.getDailyRate(), 1e-9);
-		assertEquals(2, model.getMaxOccupancy());
+		assertEquals(2, (int) model.getMaxOccupancy());
 	}
 
 	@Test

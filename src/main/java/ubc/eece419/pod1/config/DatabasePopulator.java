@@ -13,9 +13,10 @@ import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.User;
 
 public class DatabasePopulator implements InitializingBean {
+	private static final Logger log = Logger.getLogger(DatabasePopulator.class.getName());
 
-	private static Logger logger = Logger.getLogger(DatabasePopulator.class.getCanonicalName());
 	private List<User> usersToCreate = new ArrayList<User>();
+
 	@Autowired
 	UserRepository userRepository;
 
@@ -43,8 +44,12 @@ public class DatabasePopulator implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		for (User u : usersToCreate) {
-			userRepository.save(u);
+		if (userRepository.findAll().size() > 0) {
+			log.info("Database already has Users, not adding defaults");
+		} else {
+			for (User u : usersToCreate) {
+				userRepository.save(u);
+			}
 		}
 	}
 
@@ -56,7 +61,7 @@ public class DatabasePopulator implements InitializingBean {
 		user.setAddress(values[2]);
 
 
-		logger.info(String.format("username=%s, password=%s, email=%s, address=%s",
+		log.info(String.format("username=%s, password=%s, email=%s, address=%s",
 				username, values[0], values[1], values[2]));
 
 		return user;

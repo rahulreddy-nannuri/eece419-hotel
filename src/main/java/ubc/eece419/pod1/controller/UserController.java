@@ -111,13 +111,6 @@ public class UserController extends CRUDController<User> {
 	}
 
 	@Override
-	protected User getNewEntity() {
-		User u = new User();
-		u.setRoles(Roles.USER); // default to least privilege
-		return u;
-	}
-
-	@Override
 	public UserRepository getRepository() {
 		return userRepository;
 	}
