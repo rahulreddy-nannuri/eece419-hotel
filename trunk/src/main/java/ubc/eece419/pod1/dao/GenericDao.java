@@ -2,6 +2,7 @@ package ubc.eece419.pod1.dao;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +11,7 @@ import ubc.eece419.pod1.entity.Databasable;
 import ubc.eece419.pod1.reflection.ReflectionUtils;
 
 public abstract class GenericDao<T extends Databasable<?>> implements GenericRepository<T> {
+	private static final Logger log = Logger.getLogger(GenericDao.class.getName());
 
 	@PersistenceContext
 	protected EntityManager em;
@@ -45,9 +47,8 @@ public abstract class GenericDao<T extends Databasable<?>> implements GenericRep
 
 	public T save(T entity) {
 		T refreshedEntity=em.merge(entity);
-		em.refresh(refreshedEntity);
+		//em.refresh(refreshedEntity);
 		return refreshedEntity;
-
 	}
 
 	public void delete(T entity) {
