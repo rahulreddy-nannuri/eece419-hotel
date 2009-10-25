@@ -56,7 +56,7 @@ public class RoomTypeControllerTest {
 		}});
 
 		// I've not seen where Spring sets the BindingResult objectName, but AbstractEntity.entityName tries to match it.
-		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(nameless, "roonType");
+		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(nameless, "roomType");
 
 		ModelAndView mav = controller.save(nameless, errors, null);
 
