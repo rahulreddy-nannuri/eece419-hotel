@@ -13,10 +13,3 @@
 		</ul>
 	</c:otherwise>
 </c:choose>
-<c:if test="${isAdmin}">
-	<h3>Manage Users</h3>
-	<ul>
-		<li><a href="/user/list">View Users</a></li>
-		<li><a href="/user/edit">Create User</a></li>
-	</ul>
-</c:if>

@@ -22,6 +22,7 @@
                 <div id="nav">
                     <ul>
                         <li><a href="/">Home</a></li>
+                        <li><a href="/reserve">Reserve a Room</a></li>
                         <c:choose>
                             <c:when test="${currentuser == null}">
                                 <%-- anonymouse customer --%>
@@ -57,6 +58,9 @@
             </div>
             <div id="sidebar">
                 ${sidebar}
+                <c:if test="${isAdmin}">
+					<jsp:include page="/WEB-INF/jsp/adminSidebar.jsp" />
+				</c:if>
             </div>
             <div id="main">
                 ${main}

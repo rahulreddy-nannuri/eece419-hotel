@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.dao.UserRepository;
+import ubc.eece419.pod1.entity.RoomType;
 import ubc.eece419.pod1.entity.User;
 
 public class DatabasePopulator implements InitializingBean {
