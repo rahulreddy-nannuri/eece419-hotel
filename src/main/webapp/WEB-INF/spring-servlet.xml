@@ -29,6 +29,8 @@
 				/room/**=roomController
 				/roomtype=roomTypeController
 				/roomtype/**=roomTypeController
+				/reserve=roomTypeController
+				/reserve/**=roomTypeController
 			</value>
 		</property>
 	</bean>
