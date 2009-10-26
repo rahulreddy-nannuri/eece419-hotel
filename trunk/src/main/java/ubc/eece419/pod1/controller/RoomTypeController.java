@@ -89,9 +89,15 @@ public class RoomTypeController extends CRUDController<RoomType> {
 			filtered.add(type);
 		}
 
+		Map<RoomType, Integer> availablity = new HashMap<RoomType, Integer>();
+		for (RoomType type : filtered) {
+			availablity.put(type, roomTypeRepository.numberAvailable(type, search.checkIn, search.checkOut));
+		}
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("roomTypes", filtered);
 		model.put("search", search);
+		model.put("available", availablity);
 
 		return new ModelAndView(basePath + "/search", model);
 	}
