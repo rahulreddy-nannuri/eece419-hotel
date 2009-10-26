@@ -8,7 +8,7 @@
         <c:forEach items="${rooms}" var="room" varStatus="idx">
     		<li class="row${idx.index % 2}">
             	<h3>Room #<c:out value="${room.number}" /></h3>
-            	<p><c:out value="${room.description}" /></p>
+            	<p><c:out value="${room.roomType.name}" /></p>
             	<ul class="nav">
             		<li><a href="/room/edit?id=<c:out value="${room.id}" />">Edit</a></li>
             		<li><a href="/room/delete?id=<c:out value="${room.id}" />">Delete</a></li>

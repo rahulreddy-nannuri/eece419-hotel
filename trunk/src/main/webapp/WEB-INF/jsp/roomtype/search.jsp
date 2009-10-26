@@ -12,7 +12,12 @@
 				<p>Rate: $<c:out value="${rmt.dailyRate}" /></p>
 				<p><c:out value="${rmt.description}" /></p>
 				<ul class="nav">
-					<li><a href="/roomtype/reserve/type/<c:out value="${rmt.id}" />">Reserve</a></li>
+					<c:url value="/roomtype/reserve" var="reserveUrl">
+						<c:param name="type" value="${rmt.id}"/>
+						<c:param name="checkIn" value="${search.checkIn}"/>
+						<c:param name="checkOut" value="${search.checkOut}"/>
+					</c:url>
+					<li><a href="${reserveUrl}">Reserve</a></li>
 				</ul>
 			</li>
 		</c:forEach>

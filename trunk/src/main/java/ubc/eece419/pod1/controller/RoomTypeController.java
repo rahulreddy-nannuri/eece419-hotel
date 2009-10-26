@@ -7,14 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.entity.RoomType;
+import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.validator.ReflectionEntityValidator;
 
 @Transactional
@@ -72,8 +75,8 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		}
 	}
 
-	@RequestMapping("/reserve")
-	public ModelAndView reserve(Search search, Errors errors) {
+	@RequestMapping("/**/search")
+	public ModelAndView search(Search search, Errors errors) {
 		List<RoomType> roomTypes = getRepository().findAll();
 
 		// TODO: do this in SQL.
@@ -90,7 +93,25 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		model.put("roomTypes", filtered);
 		model.put("search", search);
 
-		return new ModelAndView(basePath + "/reserve", model);
+		return new ModelAndView(basePath + "/search", model);
+	}
+
+	@Override
+	@Secured(Roles.ADMIN)
+	public ModelAndView edit(Long id) {
+		return super.edit(id);
+	}
+
+	@Override
+	@Secured(Roles.ADMIN)
+	public ModelAndView delete(Long id) {
+		return super.delete(id);
+	}
+
+	@Override
+	@Secured(Roles.ADMIN)
+	public ModelAndView save(RoomType bound, BindingResult errors, String view) {
+		return super.save(bound, errors, view);
 	}
 
 }
