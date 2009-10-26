@@ -13,10 +13,10 @@ public class WelcomeController extends AbstractController {
 
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav=new ModelAndView("index");
-                mav.addObject("currentuser", SecurityUtils.getCurrentUserOrNull());
-                return mav;
+		ModelAndView mav = new ModelAndView("index");
+		mav.addObject("currentuser", SecurityUtils.getCurrentUserOrNull());
+		mav.addObject("search", new RoomTypeController.Search());
+		return mav;
 	}
 
-  
 }
