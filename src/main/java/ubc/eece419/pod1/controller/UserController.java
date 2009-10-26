@@ -146,13 +146,10 @@ public class UserController extends CRUDController<User> {
 		SecurityUtils.login(user);
 		ModelAndView mav = new ModelAndView("redirect:/");
 		return mav;
-
 	}
 
 	@RequestMapping("/**/registerform")
 	public ModelAndView registerForm(User user) {
-		ModelAndView mav = new ModelAndView("/user/register", getEntityName(), user);
-		return mav;
-
+		return new ModelAndView("/user/register", getEntityName(), user);
 	}
 }

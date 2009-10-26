@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.dao.UserRepository;
+import ubc.eece419.pod1.entity.Room;
 import ubc.eece419.pod1.entity.RoomType;
 import ubc.eece419.pod1.entity.User;
 
@@ -24,6 +26,9 @@ public class DatabasePopulator implements InitializingBean {
 
 	@Autowired
 	RoomTypeRepository roomTypeRepository;
+
+	@Autowired
+	RoomRepository roomRepository;
 
 	public void setUsers(Properties users) {
 		for (Entry<Object, Object> u : users.entrySet()) {
@@ -52,29 +57,60 @@ public class DatabasePopulator implements InitializingBean {
 		if (roomTypeRepository.findAll().size() > 0) {
 			log.info("Database already has RoomTypes, not adding defaults");
 		} else {
+			RoomType penthouse = new RoomType();
+			penthouse.setName("Penthouse Suite");
+			penthouse.setDescription("The ultimate in comfort.");
+			penthouse.setDailyRate(750.0);
+			penthouse.setMaxOccupancy(12);
+			penthouse = roomTypeRepository.save(penthouse);
+
+			RoomType bachelor = new RoomType();
+			bachelor.setName("Bachelor Dive");
+			bachelor.setDescription("Perfect for starving students.");
+			bachelor.setDailyRate(20.0);
+			bachelor.setMaxOccupancy(1);
+			bachelor = roomTypeRepository.save(bachelor);
+
+			RoomType standard = new RoomType();
+			standard.setName("Corporate Econo-box");
+			standard.setDescription("Comfort befitting Middle America.");
+			standard.setDailyRate(80.0);
+			standard.setMaxOccupancy(2);
+			standard = roomTypeRepository.save(standard);
+
+			RoomType doubleStandard = new RoomType();
+			doubleStandard.setName("Double Econo-box");
+			doubleStandard.setDescription("Twice the fun of a Corporate Econo-box.");
+			doubleStandard.setDailyRate(120.0);
+			doubleStandard.setMaxOccupancy(4);
+			doubleStandard = roomTypeRepository.save(doubleStandard);
+
 			{
-				RoomType rt = new RoomType();
-				rt.setName("Penthouse Suite");
-				rt.setDescription("The ultimate in comfort.");
-				rt.setDailyRate(750.0);
-				rt.setMaxOccupancy(12);
-				roomTypeRepository.save(rt);
+				Room room = new Room();
+				room.setNumber(1);
+				room.setRoomType(penthouse);
+				roomRepository.save(room);
 			}
-			{
-				RoomType rt = new RoomType();
-				rt.setName("Bachelor Dive");
-				rt.setDescription("Perfect for starving students.");
-				rt.setDailyRate(20.0);
-				rt.setMaxOccupancy(1);
-				roomTypeRepository.save(rt);
+
+			for (int i = 100; i <= 110; i++) {
+				Room room = new Room();
+				room.setNumber(i);
+				room.setRoomType(bachelor);
+				roomRepository.save(room);
 			}
-			{
-				RoomType rt = new RoomType();
-				rt.setName("Corporate Econo-box");
-				rt.setDescription("Comfort befitting Middle America.");
-				rt.setDailyRate(80.0);
-				rt.setMaxOccupancy(2);
-				roomTypeRepository.save(rt);
+
+			for (int i = 200; i <= 220; i++) {
+				Room room = new Room();
+				room.setNumber(i);
+				room.setRoomType(standard);
+				roomRepository.save(room);
+			}
+
+			for (int i = 300; i <= 310; i++) {
+				Room room = new Room();
+				room.setNumber(i);
+				room.setRoomType(doubleStandard);
+				roomRepository.save(room);
 			}
 		}
 

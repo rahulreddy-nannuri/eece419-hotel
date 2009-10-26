@@ -22,7 +22,6 @@
                 <div id="nav">
                     <ul>
                         <li><a href="/">Home</a></li>
-                        <li><a href="/reserve">Reserve a Room</a></li>
                         <c:choose>
                             <c:when test="${currentuser == null}">
                                 <%-- anonymouse customer --%>

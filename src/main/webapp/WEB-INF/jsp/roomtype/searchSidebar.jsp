@@ -20,7 +20,7 @@ $(function() {
 });
 /* ]]> */
 </script>
-<form:form action="/reserve" commandName="search">
+<form:form action="/roomtype/search" method="get" commandName="search">
 	<form:hidden path="minPrice"/>
 	<form:hidden path="maxPrice"/>
     <table>
