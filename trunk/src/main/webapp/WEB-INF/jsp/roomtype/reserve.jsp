@@ -1,21 +1,5 @@
 <%@include file="/WEB-INF/jsp/include.jsp"%>
-<c:set var="js" scope="request">
-    $(function() {
-	$("#checkindate").datepicker();
-        $("#checkoutdate").datepicker();
-        $("#price-slider").slider({
-            range: true,
-            min: 0,
-            max: 1000,
-            values: [0, 1000],
-            slide: function(event, ui) {
-                    $("#price-amount").val('$' + ui.values[0] + ' - $' + ui.values[1]);
-            }
-        });
-        $("#price-amount").val('$' + $("#price-slider").slider("values", 0) + ' - $' + $("#price-slider").slider("values", 1));
-    });
 
-</c:set>
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 	<h2>Select a room type</h2>

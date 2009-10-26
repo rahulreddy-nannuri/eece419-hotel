@@ -22,6 +22,9 @@ public class DatabasePopulator implements InitializingBean {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	RoomTypeRepository roomTypeRepository;
+
 	public void setUsers(Properties users) {
 		for (Entry<Object, Object> u : users.entrySet()) {
 			User user = parseUser(u, "ROLE_USER");
@@ -46,6 +49,35 @@ public class DatabasePopulator implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		if (roomTypeRepository.findAll().size() > 0) {
+			log.info("Database already has RoomTypes, not adding defaults");
+		} else {
+			{
+				RoomType rt = new RoomType();
+				rt.setName("Penthouse Suite");
+				rt.setDescription("The ultimate in comfort.");
+				rt.setDailyRate(750.0);
+				rt.setMaxOccupancy(12);
+				roomTypeRepository.save(rt);
+			}
+			{
+				RoomType rt = new RoomType();
+				rt.setName("Bachelor Dive");
+				rt.setDescription("Perfect for starving students.");
+				rt.setDailyRate(20.0);
+				rt.setMaxOccupancy(1);
+				roomTypeRepository.save(rt);
+			}
+			{
+				RoomType rt = new RoomType();
+				rt.setName("Corporate Econo-box");
+				rt.setDescription("Comfort befitting Middle America.");
+				rt.setDailyRate(80.0);
+				rt.setMaxOccupancy(2);
+				roomTypeRepository.save(rt);
+			}
+		}
+
 		if (userRepository.findAll().size() > 0) {
 			log.info("Database already has Users, not adding defaults");
 		} else {
