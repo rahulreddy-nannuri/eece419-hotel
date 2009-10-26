@@ -92,21 +92,21 @@ public class DatabasePopulator implements InitializingBean {
 				roomRepository.save(room);
 			}
 
-			for (int i = 100; i <= 110; i++) {
+			for (int i = 101; i <= 110; i++) {
 				Room room = new Room();
 				room.setNumber(i);
 				room.setRoomType(bachelor);
 				roomRepository.save(room);
 			}
 
-			for (int i = 200; i <= 220; i++) {
+			for (int i = 201; i <= 220; i++) {
 				Room room = new Room();
 				room.setNumber(i);
 				room.setRoomType(standard);
 				roomRepository.save(room);
 			}
 
-			for (int i = 300; i <= 310; i++) {
+			for (int i = 301; i <= 310; i++) {
 				Room room = new Room();
 				room.setNumber(i);
 				room.setRoomType(doubleStandard);

@@ -10,7 +10,7 @@
 				<h3><c:out value="${rmt.name}" /></h3>
 				<p>Occupancy: <c:out value="${rmt.maxOccupancy}" /></p>
 				<p>Rate: $<c:out value="${rmt.dailyRate}" /></p>
-				<p><c:out value="${rmt.description}" /></p>
+				<p><c:out value="${rmt.description}" /> (${available[rmt]} available)</p>
 				<ul class="nav">
 					<c:url value="/roomtype/reserve" var="reserveUrl">
 						<c:param name="type" value="${rmt.id}"/>
