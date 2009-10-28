@@ -31,8 +31,7 @@
 				/roomtype/**=roomTypeController
 				/reserve=roomTypeController
 				/reserve/**=roomTypeController
-				/stayrecord=stayRecordController
-				/stayrecord/**=stayRecordController
+				/checkin=checkInController
 			</value>
 		</property>
 	</bean>
@@ -45,5 +44,5 @@
 	
 	<bean id="roomTypeController" class="ubc.eece419.pod1.controller.RoomTypeController" />
 
-	<bean id="stayRecordController" class="ubc.eece419.pod1.controller.StayRecordController" />
+	<bean id="checkInController" class="ubc.eece419.pod1.controller.CheckInController" />
 </beans>
