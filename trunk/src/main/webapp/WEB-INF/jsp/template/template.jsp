@@ -31,6 +31,10 @@
                                 <li><a href="/room">Rooms</a></li>
 								<li><a href="/user">Users</a></li>
                             </c:when>
+								<c:when test="${isStaff}">
+                                <%-- admin --%>
+                                <li><a href="/stayrecord">Stay Record</a></li>
+                            </c:when>
                             <c:otherwise>
                                 <%-- register customer --%>
                                 <li><a href="#">Bookings</a></li>
