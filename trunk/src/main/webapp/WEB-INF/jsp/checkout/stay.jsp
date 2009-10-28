@@ -5,19 +5,19 @@
 
 
 	<h3>Select reservation</h3>
-	<form:form commandName="checkin" cssClass="std-form">
+	<form:form commandName="checkout" cssClass="std-form">
 		<fieldset>
 			<legend/>
 			<form:errors cssClass="error" path="*" />
 			<ol>
-				<c:forEach var="reservation" items="${checkin.reservations}" >
+				<c:forEach var="stayRecords" items="${checkout.stayRecords}">
 					<li>
-						${reservation.description}<form:radiobutton path="selectedReservation" value="${reservation.id}"/>
+						${stayRecords.description}<form:radiobutton path="selectedStayRecord" value="${reservation.id}" />
 					</li>
 				</c:forEach>
 			</ol>
 			<input type="submit" value="Back" name="_target0"/>
-			<input type="submit" value="Check In" name="_finish"/>
+			<input type="submit" value="Check Out" name="_finish"/>
 		</fieldset>
 	</form:form>
 </c:set>

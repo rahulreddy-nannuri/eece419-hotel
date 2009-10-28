@@ -59,6 +59,8 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 		this.checkOutDate = checkOutDate;
 	}
 
+
+
 	@Override
 	@Transient
 	public String getDescription() {

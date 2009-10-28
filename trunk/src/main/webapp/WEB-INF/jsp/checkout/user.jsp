@@ -5,7 +5,7 @@
 
 
 	<h3>Enter username</h3>
-	<form:form commandName="checkin" cssClass="std-form">
+	<form:form commandName="checkout" cssClass="std-form">
 		<fieldset>
 			<ol>
 				<li>
@@ -23,7 +23,7 @@
 
 <%-- use the default room sidebar --%>
 <c:set var="sidebar" scope="request">
-	<jsp:include page="/WEB-INF/jsp/checkin/sidebar.jsp" />
+		<jsp:include page="/WEB-INF/jsp/checkin/sidebar.jsp" />
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp" />

@@ -3,7 +3,7 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 
-	<h3>Checkin  successful</h3>
+	<h3>Checkout  successful</h3>
 
 </c:set>
 
