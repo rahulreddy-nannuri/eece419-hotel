@@ -28,6 +28,11 @@
 					<form:input path="maxOccupancy" />
 					<form:errors cssClass="error" path="maxOccupancy" />
 				</li>
+				<li>
+					<form:label path="attributesText">Attributes (one per line)</form:label>
+					<form:textarea path="attributesText" />
+					<form:errors cssClass="error" path="attributesText" />
+				</li>
 			</ol>
 			<input type="submit" value="Save" />
 		</fieldset>

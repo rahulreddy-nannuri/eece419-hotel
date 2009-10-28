@@ -55,6 +55,10 @@ $(function() {
             </td>
         </tr>
         <tr>
+            <td><form:label path="attributes">Attributes (one per line)</form:label></td>
+            <td><form:textarea path="attributes" /></td>
+        </tr>
+        <tr>
             <td colspan="2"  style="text-align:center"><input type="submit" value="search"/></td>
         </tr>
     </table>

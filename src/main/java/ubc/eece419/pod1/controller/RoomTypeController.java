@@ -1,11 +1,12 @@
 package ubc.eece419.pod1.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections15.FactoryUtils;
+import org.apache.commons.collections15.map.LazyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,7 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		Date checkIn;
 		Date checkOut;
 		int occupancy;
+		String attributes;
 
 		public int getMinPrice() {
 			return minPrice;
@@ -73,21 +75,29 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		public void setOccupancy(int occupancy) {
 			this.occupancy = occupancy;
 		}
+		public String getAttributes() {
+			return attributes;
+		}
+		public void setAttributes(String attributes) {
+			this.attributes = attributes;
+		}
+
+		Map<String, Integer> getAttributeMap() {
+			// TODO: this duplicates code in RoomType
+			String[] atts = getAttributes().split("\n+");
+			Map<String, Integer> map = LazyMap.decorate(new HashMap<String, Integer>(), FactoryUtils.constantFactory(0));
+			for (String att : atts) {
+				att = att.trim();
+				if (!att.isEmpty())
+					map.put(att, map.get(att) + 1);
+			}
+			return map;
+		}
 	}
 
 	@RequestMapping("/**/search")
 	public ModelAndView search(Search search, Errors errors) {
-		List<RoomType> roomTypes = getRepository().findAll();
-
-		// TODO: do this in SQL.
-		List<RoomType> filtered = new ArrayList<RoomType>();
-		for (RoomType type : roomTypes) {
-			if (type.getDailyRate() < search.getMinPrice() || type.getDailyRate() > search.getMaxPrice())
-				continue;
-			if (type.getMaxOccupancy() < search.getOccupancy())
-				continue;
-			filtered.add(type);
-		}
+		List<RoomType> filtered = roomTypeRepository.findByPriceAndOccupancyAndAttributes(search.getMinPrice(), search.getMaxPrice(), search.getOccupancy(), search.getAttributeMap());
 
 		Map<RoomType, Integer> availablity = new HashMap<RoomType, Integer>();
 		for (RoomType type : filtered) {
@@ -98,6 +108,7 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		model.put("roomTypes", filtered);
 		model.put("search", search);
 		model.put("available", availablity);
+		model.put("allAttributes", roomTypeRepository.allAttributes());
 
 		return new ModelAndView(basePath + "/search", model);
 	}
