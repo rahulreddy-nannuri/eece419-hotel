@@ -1,29 +1,27 @@
 package ubc.eece419.pod1.controller;
 
 import static junit.framework.Assert.assertEquals;
-
+import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.easymock.classextension.EasyMock;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import ubc.eece419.pod1.entity.User;
-import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 
 public class UserControllerTest{
 
-	@SuppressWarnings("unchecked")
-	private GenericRepository repository;
-	@SuppressWarnings("unchecked")
-	private CRUDController controller;
-	private BindingResult bindingResult;
+	Mockery context  = new Mockery();
+	
+	private UserRepository userRepository;
+	private UserController userController;
 
 	User getEntity() {
 		// TODO Auto-generated method stub
@@ -33,52 +31,106 @@ public class UserControllerTest{
 	@Before
 	public void setUp() {
 		// TODO Auto-generated method stub
-		UserRepository userRepository = EasyMock.createMock(UserRepository.class);
-		UserController userController = new UserController();
+		userRepository = context.mock(UserRepository.class);
+		userController = new UserController();
 		userController.userRepository = userRepository;
-
-		repository = userRepository;
-		controller = userController;
 	}
+	
+	@Test
+	public void testSaveEmptyUser(){
+		final User user = new User();
+		
+		context.checking(new Expectations(){{
+			oneOf(userRepository).findAll();
+			will(returnValue(Collections.emptyList()));
+			}
+		});
+		
+		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(user, "user");
 
+		ModelAndView mav = userController.save(user, errors, null);
+		
+		//how do i know how many errors do i have
+		//2 error means two methods fail? getPassword and getAuthority?
+		assertEquals(2, errors.getErrorCount());
+		
+		User model = (User) mav.getModel().get("user");
+		
+		assertEquals(null, model.getAddress());
+		assertEquals(null, model.getUsername());
+		assertEquals(null, model.getEmail());
+		//not sure about getAuthorities()
+		//assertEquals(null, model.getAuthorities());
+		assertEquals("user", model.getEntityName());
+		assertEquals(0, (int)model.getId());
+		assertEquals("ROLE_USER", model.getRoles());
+		
+		assertEquals(1, mav.getModel().size());
+	}
+	
+	@Test
+	public void testUserWithNoMissingValus(){
+		final User user = new User("tempName", "tempPwd", "ROLE_ADMIN");
+		
+		context.checking(new Expectations(){
+			{
+				oneOf(userRepository).findAll();
+				will(returnValue(Collections.emptyList()));
+				
+				//oneOf(userRepository).save(user);
+				//will(returnValue(user));
+			}
+		});
+		
+		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(user, "user");
+
+		ModelAndView mav = userController.save(user, errors, null);
+		
+		assertEquals(0, errors.getErrorCount());
+		
+		User model = (User) mav.getModel().get("user");
+		
+		assertEquals("tempName", model.getUsername());
+		assertEquals("tempPwd", model.getPassword());
+		assertEquals("ROLE_ADMIN", model.getRoles());
+	}
+	
+	@Test
+	public void testEditUser(){
+		final User user = new User();
+		
+		context.checking(new Expectations(){
+			{
+				oneOf(userRepository).findById(1L);
+				will(returnValue(user));
+				
+				oneOf(userRepository).findAll();
+			}
+		});
+	
+		ModelAndView mav = userController.edit(null);
+		
+		assertEquals("/user/edit", mav.getViewName());
+	}
+	
+	
+	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testList(){
+	public void testEmptyList(){
 		List<User> entities = new ArrayList<User>();
-		entities.add(getEntity());
-		entities.add(getEntity());
+		
+		context.checking(new Expectations(){
+			{
+				oneOf(userRepository).findAll();
+			}
+		});
 
-		EasyMock.expect(repository.findAll()).andReturn(entities);
-		EasyMock.replay(repository);
-
-		ModelAndView mav = controller.list();
-		EasyMock.verify(repository);
-
+		ModelAndView mav = userController.list();
 		List<User> model = (List<User>) mav.getModel().get(getEntity().getEntityName() + "s");
-
 		assertEquals(entities.size(), model.size());
+		assertEquals(model.size(), 0);
 	}
-
-	//still working on it
-    @Test @Ignore
-    public void testSave() {
-        User entity = getEntity();
-
-        EasyMock.expect(repository.save(entity)).andReturn(entity);
-        EasyMock.expect(repository.findAll()).andReturn(Collections.EMPTY_LIST);
-        EasyMock.replay(repository);
-
-        bindingResult = EasyMock.createMock(BindingResult.class);
-        EasyMock.expect(bindingResult.hasErrors()).andReturn(false).anyTimes();
-        EasyMock.replay(bindingResult);
-
-        ModelAndView mav = controller.save(entity, bindingResult,null);
-        EasyMock.verify(repository);
-        //EasyMock.verify(bindingResult);
-
-        //assertEquals("redirect:/user/list", mav.getViewName());
-    }
-
-
-
+	
+	
 }
