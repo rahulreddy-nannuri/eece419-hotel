@@ -1,10 +1,16 @@
 package ubc.eece419.pod1.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.CollectionOfElements;
 
 @Entity
 public class RoomType extends AbstractEntity<RoomType> {
@@ -15,6 +21,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 	private Double dailyRate;
 	private String name;
 	private Set<Room> rooms;
+	private List<String> attributes;
 
 	public RoomType() {
 
@@ -63,6 +70,39 @@ public class RoomType extends AbstractEntity<RoomType> {
 
 	public void setRooms(Set<Room> rooms) {
 		this.rooms = rooms;
+	}
+
+	// this is Hibernate-specific, not JPA-spec
+	// eager load, because we don't have an OpenSessionInViewFilter configured
+	@CollectionOfElements(fetch=FetchType.EAGER)
+	public List<String> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<String> attributes) {
+		this.attributes = attributes;
+	}
+
+	@Transient
+	public String getAttributesText() {
+		StringBuilder buf = new StringBuilder();
+		for (String ra : getAttributes()) {
+			if (buf.length() > 0) {
+				buf.append("\n");
+			}
+			buf.append(ra);
+		}
+		return buf.toString();
+	}
+
+	public void setAttributesText(String text) {
+		String[] parts = text.split("\n+");
+		attributes = new ArrayList<String>();
+		for (String part : parts) {
+			part = part.trim();
+			if (part.length() > 0)
+				attributes.add(part);
+		}
 	}
 
 }
