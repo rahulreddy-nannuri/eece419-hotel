@@ -18,13 +18,13 @@ import ubc.eece419.pod1.security.SecurityUtils;
 
 @Transactional
 @Controller
-public class StayRecordController extends AbstractWizardFormController {
+public class CheckInController extends AbstractWizardFormController {
 
 	@Autowired
 	StayRecordRepository stayRecordRepository;
 
-	public StayRecordController() {
-		setPages(new String[]{"stayrecord/user", "stayrecord/reservation"});
+	public CheckInController() {
+		setPages(new String[]{"checkin/user", "checkin/reservation"});
 		setCommandClass(Checkin.class);
 		setCommandName("checkin");
 	}
@@ -66,7 +66,7 @@ public class StayRecordController extends AbstractWizardFormController {
 
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-		return new ModelAndView("stayrecord/confirm");
+		return new ModelAndView("checkin/confirm");
 	}
 }
 
