@@ -41,6 +41,8 @@
 
 	<bean id="reservationRepository" class="ubc.eece419.pod1.dao.ReservationDao" />
 	
+	<bean id="itemTypeRepository" class="ubc.eece419.pod1.dao.ItemTypeDao" />
+	
 	<!-- messages for validation -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="/WEB-INF/messages" />
