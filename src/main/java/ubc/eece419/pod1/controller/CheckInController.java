@@ -1,8 +1,6 @@
 package ubc.eece419.pod1.controller;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +16,6 @@ import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Reservation;
-import ubc.eece419.pod1.entity.Room;
-import ubc.eece419.pod1.entity.RoomType;
-import ubc.eece419.pod1.entity.StayRecord;
-import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.formcommand.Checkin;
 import ubc.eece419.pod1.security.SecurityUtils;
 

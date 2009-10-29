@@ -1,6 +1,8 @@
 package ubc.eece419.pod1.config;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Map.Entry;
@@ -11,24 +13,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
+import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Room;
 import ubc.eece419.pod1.entity.RoomType;
+import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.entity.User;
 
 public class DatabasePopulator implements InitializingBean {
+
 	private static final Logger log = Logger.getLogger(DatabasePopulator.class.getName());
-
 	private List<User> usersToCreate = new ArrayList<User>();
-
 	@Autowired
 	UserRepository userRepository;
-
 	@Autowired
 	RoomTypeRepository roomTypeRepository;
-
 	@Autowired
 	RoomRepository roomRepository;
+	@Autowired
+	StayRecordRepository stayRecordRepository;
 
 	public void setUsers(Properties users) {
 		for (Entry<Object, Object> u : users.entrySet()) {
@@ -54,6 +57,7 @@ public class DatabasePopulator implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+
 		if (roomTypeRepository.findAll().size() > 0) {
 			log.info("Database already has RoomTypes, not adding defaults");
 		} else {
@@ -120,6 +124,20 @@ public class DatabasePopulator implements InitializingBean {
 			for (User u : usersToCreate) {
 				userRepository.save(u);
 			}
+		}
+
+		if (stayRecordRepository.findAll().size() > 0) {
+			log.info("Database already has StayRecords, not adding defaults");
+		} else {
+			Calendar yesterday = Calendar.getInstance();
+			yesterday.add(Calendar.DAY_OF_MONTH, -1);
+
+			StayRecord stayRecord = new StayRecord();
+			stayRecord.setUser(userRepository.loadUserByUsername("user"));
+			stayRecord.setRoom(roomRepository.findById(1));
+			stayRecord.setCheckInDate(yesterday.getTime());
+			stayRecordRepository.save(stayRecord);
+
 		}
 	}
 
