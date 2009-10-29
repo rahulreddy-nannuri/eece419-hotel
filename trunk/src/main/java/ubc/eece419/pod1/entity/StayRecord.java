@@ -2,11 +2,11 @@ package ubc.eece419.pod1.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
@@ -43,6 +43,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 		this.room = room;
 	}
 
+	@Temporal(TemporalType.DATE)
 	public Date getCheckInDate() {
 		return checkInDate;
 	}
@@ -51,6 +52,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 		this.checkInDate = checkInDate;
 	}
 
+	@Temporal(TemporalType.DATE)
 	public Date getCheckOutDate() {
 		return checkOutDate;
 	}
