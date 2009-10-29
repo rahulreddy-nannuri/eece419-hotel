@@ -49,7 +49,6 @@ public class RoomController extends CRUDController<Room> {
     @Override
     protected Room getNewEntity() {
         Room r = new Room();
-        r.setDescription("Room is created on " + new Date());
         return r;
     }
 

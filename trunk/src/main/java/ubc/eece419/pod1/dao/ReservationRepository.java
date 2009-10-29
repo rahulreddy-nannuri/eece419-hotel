@@ -14,5 +14,5 @@ import ubc.eece419.pod1.entity.User;
  * @author yang
  */
 public interface ReservationRepository extends GenericRepository<Reservation>{
-	List<Reservation> findReservationsByUser(User user);
+	List<Reservation> findUncheckedInReservationsByUser(User user);
 }

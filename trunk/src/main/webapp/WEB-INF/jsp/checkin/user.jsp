@@ -4,7 +4,7 @@
 <c:set var="main" scope="request">
 
 
-	<h3>Enter username</h3>
+	<h3>Check In</h3>
 	<form:form commandName="checkin" cssClass="std-form">
 		<fieldset>
 			<ol>
