@@ -38,6 +38,8 @@
 	<bean id="roomTypeRepository" class="ubc.eece419.pod1.dao.RoomTypeDao" />
 
 	<bean id="stayRecordRepository" class="ubc.eece419.pod1.dao.StayRecordDao" />
+
+	<bean id="reservationRepository" class="ubc.eece419.pod1.dao.ReservationDao" />
 	
 	<!-- messages for validation -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

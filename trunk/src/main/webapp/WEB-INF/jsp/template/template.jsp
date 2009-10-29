@@ -33,7 +33,7 @@
                             </c:when>
 								<c:when test="${isStaff}">
                                 <%-- admin --%>
-                                <li><a href="/stayrecord">Stay Record</a></li>
+                                <li><a href="/checkin">Stay Record</a></li>
                             </c:when>
                             <c:otherwise>
                                 <%-- register customer --%>
