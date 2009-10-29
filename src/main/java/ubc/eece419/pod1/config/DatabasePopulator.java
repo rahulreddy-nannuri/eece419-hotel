@@ -11,10 +11,12 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
+import ubc.eece419.pod1.entity.Reservation;
 import ubc.eece419.pod1.entity.Room;
 import ubc.eece419.pod1.entity.RoomType;
 import ubc.eece419.pod1.entity.StayRecord;
@@ -32,6 +34,8 @@ public class DatabasePopulator implements InitializingBean {
 	RoomRepository roomRepository;
 	@Autowired
 	StayRecordRepository stayRecordRepository;
+	@Autowired
+	ReservationRepository reservationRepository;
 
 	public void setUsers(Properties users) {
 		for (Entry<Object, Object> u : users.entrySet()) {
@@ -126,6 +130,37 @@ public class DatabasePopulator implements InitializingBean {
 			}
 		}
 
+		if(reservationRepository.findAll().size()>0){
+			log.info("Database already has StayRecords, not adding defaults");
+		}else{
+			Calendar today=Calendar.getInstance();
+			Calendar tomorrow=Calendar.getInstance();
+			tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+
+			RoomType roomType=roomTypeRepository.findById(1);
+			User user=userRepository.loadUserByUsername("user");
+			Reservation reservation=new Reservation();
+			reservation.setCheckIn(today.getTime());
+			reservation.setCheckOut(tomorrow.getTime());
+			reservation.setDescription(roomType.getName());
+			reservation.setName("Reservation 1");
+			reservation.setPrice(750.0);
+			reservation.setRoomType(roomType);
+			reservation.setUser(user);
+			reservationRepository.save(reservation);
+
+			reservation=new Reservation();
+			reservation.setCheckIn(today.getTime());
+			reservation.setCheckOut(tomorrow.getTime());
+			reservation.setDescription("One night stay at "+roomType.getName());
+			reservation.setName("Reservation 2");
+			reservation.setPrice(750.0);
+			reservation.setRoomType(roomType);
+			reservation.setUser(user);
+			reservationRepository.save(reservation);
+
+		}
+
 		if (stayRecordRepository.findAll().size() > 0) {
 			log.info("Database already has StayRecords, not adding defaults");
 		} else {
@@ -136,6 +171,7 @@ public class DatabasePopulator implements InitializingBean {
 			stayRecord.setUser(userRepository.loadUserByUsername("user"));
 			stayRecord.setRoom(roomRepository.findById(1));
 			stayRecord.setCheckInDate(yesterday.getTime());
+			stayRecord.setReservation(reservationRepository.findById(1));
 			stayRecordRepository.save(stayRecord);
 
 		}

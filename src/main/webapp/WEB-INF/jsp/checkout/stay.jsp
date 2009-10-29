@@ -4,7 +4,7 @@
 <c:set var="main" scope="request">
 
 
-	<h3>Select reservation</h3>
+	<h3>Select Stay Record</h3>
 	<form:form commandName="checkout" cssClass="std-form">
 		<fieldset>
 			<legend/>

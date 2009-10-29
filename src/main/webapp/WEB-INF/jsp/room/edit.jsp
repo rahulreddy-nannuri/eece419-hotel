@@ -18,11 +18,6 @@
 					<form:errors cssClass="error" path="number" />
 				</li>
 				<li>
-					<form:label path="description">Description:</form:label>
-					<form:input path="description" />
-					<form:errors cssClass="error" path="description" />
-				</li>
-				<li>
 					<form:label path="roomType">Room Type:</form:label>
 					<form:select path="roomType" items="${roomTypes}" itemValue="id" itemLabel="name"/>
 					<form:errors cssClass="error" path="roomType" />

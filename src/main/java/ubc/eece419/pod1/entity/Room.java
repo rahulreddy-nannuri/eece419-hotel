@@ -11,7 +11,6 @@ public class Room extends AbstractEntity<Room> {
 
 	// should this instead be a string, as for '#206A'?
 	private int number;
-	private String description;
 	private RoomType roomType;
 
 	public Room() {
@@ -31,13 +30,6 @@ public class Room extends AbstractEntity<Room> {
 		this.roomType = roomType;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	@Column(unique=true)
 	public int getNumber() {
