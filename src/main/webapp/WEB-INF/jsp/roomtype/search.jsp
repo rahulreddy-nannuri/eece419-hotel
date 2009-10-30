@@ -12,7 +12,7 @@
 				<p>Rate: $<c:out value="${rmt.dailyRate}" /></p>
 				<p><c:out value="${rmt.description}" /> (${available[rmt]} available)</p>
 				<ul class="nav">
-					<c:url value="/roomtype/reserve" var="reserveUrl">
+					<c:url value="/reserve" var="reserveUrl">
 						<c:param name="type" value="${rmt.id}"/>
 						<c:param name="checkIn" value="${search.checkIn}"/>
 						<c:param name="checkOut" value="${search.checkOut}"/>

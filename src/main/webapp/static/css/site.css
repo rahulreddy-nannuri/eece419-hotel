@@ -180,3 +180,7 @@ ul.room-list li:hover ul.nav {
 ul.room-list ul.nav li {
 	display: inline;
 }
+
+#sidebar li.current {
+	font-weight: bold;
+}
