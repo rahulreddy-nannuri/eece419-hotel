@@ -130,16 +130,16 @@ public class DatabasePopulator implements InitializingBean {
 			}
 		}
 
-		if(reservationRepository.findAll().size()>0){
+		if (reservationRepository.findAll().size() > 0) {
 			log.info("Database already has StayRecords, not adding defaults");
-		}else{
-			Calendar today=Calendar.getInstance();
-			Calendar tomorrow=Calendar.getInstance();
+		} else {
+			Calendar today = Calendar.getInstance();
+			Calendar tomorrow = Calendar.getInstance();
 			tomorrow.add(Calendar.DAY_OF_MONTH, 1);
 
-			RoomType roomType=roomTypeRepository.findById(1);
-			User user=userRepository.loadUserByUsername("user");
-			Reservation reservation=new Reservation();
+			RoomType roomType = roomTypeRepository.findById(1);
+			User user = userRepository.loadUserByUsername("user");
+			Reservation reservation = new Reservation();
 			reservation.setCheckIn(today.getTime());
 			reservation.setCheckOut(tomorrow.getTime());
 			reservation.setDescription(roomType.getName());
@@ -149,12 +149,25 @@ public class DatabasePopulator implements InitializingBean {
 			reservation.setUser(user);
 			reservationRepository.save(reservation);
 
-			reservation=new Reservation();
+
+
+			reservation = new Reservation();
 			reservation.setCheckIn(today.getTime());
 			reservation.setCheckOut(tomorrow.getTime());
-			reservation.setDescription("One night stay at "+roomType.getName());
+			reservation.setDescription(roomType.getName());
 			reservation.setName("Reservation 2");
 			reservation.setPrice(750.0);
+			reservation.setRoomType(roomType);
+			reservation.setUser(user);
+			reservationRepository.save(reservation);
+
+			reservation = new Reservation();
+			roomType = roomTypeRepository.findById(3);
+			reservation.setCheckIn(today.getTime());
+			reservation.setCheckOut(tomorrow.getTime());
+			reservation.setDescription(roomType.getName());
+			reservation.setName("Reservation 3");
+			reservation.setPrice(100.0);
 			reservation.setRoomType(roomType);
 			reservation.setUser(user);
 			reservationRepository.save(reservation);

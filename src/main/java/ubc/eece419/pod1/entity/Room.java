@@ -4,8 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Room.findAvailableRoomByRoomType",
+	query="SELECT r FROM Room r "+
+			"WHERE r.roomType = :roomType "+
+			"AND r NOT IN ( SELECT s.room FROM StayRecord s " +
+			"				WHERE s.checkOutDate = null)")
+})
 public class Room extends AbstractEntity<Room> {
 	private static final long serialVersionUID = 1L;
 
