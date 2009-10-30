@@ -6,10 +6,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 import ubc.eece419.pod1.dao.StayRecordRepository;
@@ -25,7 +27,6 @@ public class CheckOutController extends AbstractWizardFormController {
 
 	@Autowired
 	StayRecordRepository stayRecordRepository;
-
 	@Autowired
 	UserRepository userRepository;
 
@@ -45,32 +46,48 @@ public class CheckOutController extends AbstractWizardFormController {
 	@Override
 	protected void postProcessPage(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
 		Checkout checkout = (Checkout) command;
+		if (!errors.hasErrors()) {
+			switch (page) {
+				case 0:
+					User user = userRepository.loadUserByUsername(checkout.getUsername());
+					List<StayRecord> stayRecords = stayRecordRepository.findUncheckedOutStayRecordsByUser(user);
 
+					checkout.setStayRecords(stayRecords);
+					break;
+
+			}
+		}
+	}
+
+	@Override
+	protected void validatePage(Object command, Errors errors, int page) {
+		Checkout checkout = (Checkout) command;
 		switch (page) {
-			// user selection
 			case 0:
-
-			// stay selection
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "username.isnull");
+				if (!errors.hasErrors()) {
+					try {
+						userRepository.loadUserByUsername(checkout.getUsername());
+					} catch (UsernameNotFoundException e) {
+						errors.rejectValue("username","user.notexist");
+					}
+				}
+				break;
 			case 1:
-//				StayRecord s1 = new StayRecord();
-//				s1.setId(1);
-//				List<StayRecord> stayRecords = new ArrayList<StayRecord>();
-//				stayRecords.add(s1);
-
-				User user = userRepository.loadUserByUsername(checkout.getUsername());
-				List<StayRecord> stayRecords = stayRecordRepository.findUncheckedOutStayRecordsByUser(user);
-
-				checkout.setStayRecords(stayRecords);
+				StayRecord stayRecord = stayRecordRepository.findById(checkout.getSelectedStayRecord());
+				if (stayRecord == null) {
+					errors.reject("checkout.stayrecord.isnull");
+				}
 				break;
 		}
 	}
 
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-		Checkout checkout=(Checkout)command;
-		
-		StayRecord stayRecord=stayRecordRepository.findById(checkout.getSelectedStayRecord());
-		Date today=Calendar.getInstance().getTime();
+		Checkout checkout = (Checkout) command;
+
+		StayRecord stayRecord = stayRecordRepository.findById(checkout.getSelectedStayRecord());
+		Date today = Calendar.getInstance().getTime();
 		stayRecord.setCheckOutDate(today);
 		stayRecordRepository.save(stayRecord);
 

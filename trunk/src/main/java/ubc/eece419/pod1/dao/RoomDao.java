@@ -1,6 +1,5 @@
 package ubc.eece419.pod1.dao;
 
-import java.util.Date;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
@@ -11,11 +10,12 @@ import ubc.eece419.pod1.entity.RoomType;
 public class RoomDao extends GenericDao<Room> implements RoomRepository {
 
 	@Override
-	public Room findAvailableRoom(RoomType roomType, Date checkIn, Date checkOut) {
-		//TODO: make this right
-		Query q = em.createQuery("select r from Room r where r.roomType = :type");
-		q.setParameter("type", roomType);
-
-		return (Room)q.getSingleResult();
+	public Room findAvailableRoomByRoomType(RoomType roomType) {
+		Query q = em.createNamedQuery("Room.findAvailableRoomByRoomType");
+		q.setParameter("roomType", roomType);
+		if (q.getResultList().size() == 0) {
+			return null;
+		}
+		return (Room) q.getResultList().get(0);
 	}
 }

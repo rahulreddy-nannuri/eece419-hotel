@@ -6,10 +6,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 import ubc.eece419.pod1.dao.ReservationRepository;
@@ -53,45 +55,57 @@ public class CheckInController extends AbstractWizardFormController {
 	@Override
 	protected void postProcessPage(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
 		Checkin checkin = (Checkin) command;
+		if (!errors.hasErrors()) {
+			switch (page) {
+				case 0:
+					User user = userRepository.loadUserByUsername(checkin.getUsername());
+					List<Reservation> reservations = reservationRepository.findUncheckedInReservationsByUser(user);
+					checkin.setReservations(reservations);
+					break;
+			}
+		}
+	}
 
-
+	@Override
+	protected void validatePage(Object command, Errors errors, int page) {
+		Checkin checkin = (Checkin) command;
 		switch (page) {
-			// user selection
 			case 0:
-			// reservation selection
-			case 1:
-//				Reservation r1 = new Reservation();
-//				r1.setId(1);
-//				r1.setDescription("reservation 1");
-//				Reservation r2 = new Reservation();
-//				r2.setId(2);
-//				r2.setDescription("reservation 2");
-//				List<Reservation> reservations = new ArrayList<Reservation>();
-//				reservations.add(r1);
-//				reservations.add(r2);
-
-			
-				User user=userRepository.loadUserByUsername(checkin.getUsername());
-				List<Reservation> reservations=reservationRepository.findUncheckedInReservationsByUser(user);
-
-				checkin.setReservations(reservations);
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "username.isnull");
+				if (!errors.hasErrors()) {
+					try {
+						userRepository.loadUserByUsername(checkin.getUsername());
+					} catch (UsernameNotFoundException e) {
+						errors.rejectValue("username","user.notexist");
+					}
+				}
 				break;
-
+			case 1:
+				Reservation reservation = reservationRepository.findById(checkin.getSelectedReservation());
+				if (reservation == null) {
+					errors.reject("checkin.reservation.isnull");
+				} else {
+					RoomType roomType = reservation.getRoomType();
+					Room room = roomRepository.findAvailableRoomByRoomType(roomType);
+					if (room == null) {
+						errors.reject("checkin.room.unavailable");
+					}
+				}
+				break;
 		}
 	}
 
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
 
-		Checkin checkin=(Checkin)command;
-		User user=userRepository.loadUserByUsername(checkin.getUsername());
-		Reservation reservation=reservationRepository.findById(checkin.getSelectedReservation());
-		RoomType roomType=reservation.getRoomType();
-		Date checkOut=reservation.getCheckOut();
-		Date today=Calendar.getInstance().getTime();
-		Room room=roomRepository.findAvailableRoom(roomType,today,checkOut);
+		Checkin checkin = (Checkin) command;
+		User user = userRepository.loadUserByUsername(checkin.getUsername());
+		Reservation reservation = reservationRepository.findById(checkin.getSelectedReservation());
+		RoomType roomType = reservation.getRoomType();
+		Date today = Calendar.getInstance().getTime();
+		Room room = roomRepository.findAvailableRoomByRoomType(roomType);
 
-		StayRecord sr=new StayRecord();
+		StayRecord sr = new StayRecord();
 		sr.setCheckInDate(today);
 		sr.setUser(user);
 		sr.setRoom(room);
