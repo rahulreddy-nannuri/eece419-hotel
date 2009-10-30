@@ -2,6 +2,10 @@
 <!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.0//EN" "http://tuckey.org/res/dtds/urlrewrite3.0.dtd">
 <urlrewrite>
 	<rule>
+		<from>^/favicon.ico$</from>
+		<to last="true">/static/favicon.ico</to>
+	</rule>
+	<rule>
 		<from>^/static/(.*)$</from>
 		<to last="true">/static/$1</to>
 	</rule>
