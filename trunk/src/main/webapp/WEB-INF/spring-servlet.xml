@@ -29,8 +29,9 @@
 				/room/**=roomController
 				/roomtype=roomTypeController
 				/roomtype/**=roomTypeController
-				/reserve=roomTypeController
-				/reserve/**=roomTypeController
+				/reserve=reservationController
+				/reservation=reservationController
+				/reservation/**=reservationController
 				/checkin=checkInController
 				/checkout=checkOutController
 				/itemtype=itemTypeController
@@ -52,5 +53,7 @@
 	<bean id="checkOutController" class="ubc.eece419.pod1.controller.CheckOutController" />
 		
 	<bean id="itemTypeController" class="ubc.eece419.pod1.controller.ItemTypeController" />
+	
+	<bean id="reservationController" class="ubc.eece419.pod1.controller.ReservationController" />
 
 </beans>
