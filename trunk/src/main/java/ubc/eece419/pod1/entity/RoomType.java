@@ -85,6 +85,8 @@ public class RoomType extends AbstractEntity<RoomType> {
 
 	@Transient
 	public String getAttributesText() {
+		if (getAttributes() == null) return "";
+
 		StringBuilder buf = new StringBuilder();
 		for (String ra : getAttributes()) {
 			if (buf.length() > 0) {
@@ -96,12 +98,14 @@ public class RoomType extends AbstractEntity<RoomType> {
 	}
 
 	public void setAttributesText(String text) {
-		String[] parts = text.split("\n+");
 		attributes = new ArrayList<String>();
-		for (String part : parts) {
-			part = part.trim();
-			if (part.length() > 0)
-				attributes.add(part);
+		if (text != null) {
+			String[] parts = text.split("\n+");
+			for (String part : parts) {
+				part = part.trim();
+				if (part.length() > 0)
+					attributes.add(part);
+			}
 		}
 	}
 

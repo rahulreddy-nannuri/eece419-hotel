@@ -74,27 +74,33 @@ public class RoomTypeControllerTest {
 
 	@Test
 	public void saveRoomTypeWithNoMissingValuesShouldSucceed() {
-		final RoomType nameless = new RoomType();
-		nameless.setName("name");
-		nameless.setDescription("description");
-		nameless.setDailyRate(100.5);
-		nameless.setMaxOccupancy(2);
+		final RoomType roomType = new RoomType();
+		roomType.setName("name");
+		roomType.setDescription("description");
+		roomType.setDailyRate(100.5);
+		roomType.setMaxOccupancy(2);
 
 		context.checking(new Expectations() {{
 			// validator checks for duplicates
 			one(repo).findAll();
 			will(returnValue(Collections.emptyList()));
 
-			one(repo).save(nameless);
-			will(returnValue(nameless));
+			one(repo).save(roomType);
+			will(returnValue(roomType));
 		}});
 
-		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(nameless, AbstractEntity.entityName(RoomType.class));
+		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(roomType, AbstractEntity.entityName(RoomType.class));
 
-		ModelAndView mav = controller.save(nameless, errors, null);
+		ModelAndView mav = controller.save(roomType, errors, null);
 
 		assertEquals(0, errors.getErrorCount());
 		assertEquals("redirect:/roomtype/list", mav.getViewName());
+	}
+
+	@Test
+	public void getAttributesTextIsOkOnNewEntity() {
+		RoomType roomType = new RoomType();
+		assertEquals("", roomType.getAttributesText());
 	}
 
 }
