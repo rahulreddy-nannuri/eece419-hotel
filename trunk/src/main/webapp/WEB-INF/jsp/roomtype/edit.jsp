@@ -29,9 +29,9 @@
 					<form:errors cssClass="error" path="maxOccupancy" />
 				</li>
 				<li>
-					<form:label path="attributes">Attributes (one per line)</form:label>
-					<form:textarea path="attributes" />
-					<form:errors cssClass="error" path="attributes" />
+					<form:label path="attributesText">Attributes (one per line)</form:label>
+					<form:textarea path="attributesText" />
+					<form:errors cssClass="error" path="attributesText" />
 				</li>
 			</ol>
 			<input type="submit" value="Save" />
