@@ -30,8 +30,9 @@
                                 <%-- admin --%>
                                 <li><a href="/room">Rooms</a></li>
 								<li><a href="/user">Users</a></li>
+								 <li><a href="/checkin">Stay Record</a></li>
                             </c:when>
-								<c:when test="${isStaff}">
+							<c:when test="${isStaff}">
                                 <%-- admin --%>
                                 <li><a href="/checkin">Stay Record</a></li>
                             </c:when>

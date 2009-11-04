@@ -29,6 +29,7 @@ public class RoomTypeDao extends GenericDao<RoomType> implements RoomTypeReposit
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<RoomType> findByPriceAndOccupancyAndAttributes(double minPrice, double maxPrice, int occupancy, Map<String, Integer> attributes) {
+
 		Set<Long> allowedIds = null;
 		for (Entry<String, Integer> attr : attributes.entrySet()) {
 			// I couldn't figure out how to do this in EJBQL, since RoomType_attributes isn't an entity...
@@ -45,12 +46,15 @@ public class RoomTypeDao extends GenericDao<RoomType> implements RoomTypeReposit
 			} else {
 				allowedIds.retainAll(newIds);
 			}
+			if (allowedIds.size() == 0) {
+				return Collections.emptyList();
+			}
 		}
 
 		StringBuilder qstr = new StringBuilder();
 		qstr.append("select r from RoomType r where r.dailyRate between :minPrice and :maxPrice");
 		qstr.append(" and r.maxOccupancy >= :occupancy");
-		if (attributes.size() > 0)	{
+		if (allowedIds != null)	{
 			Iterator<Long> idIter = allowedIds.iterator();
 			if (!idIter.hasNext()) return Collections.emptyList();
 
