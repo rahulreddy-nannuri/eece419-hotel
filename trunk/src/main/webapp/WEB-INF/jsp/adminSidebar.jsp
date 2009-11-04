@@ -7,6 +7,7 @@
     <li><a href="/roomtype/edit">Create Room Type</a></li>
     <li><a href="/itemtype/list">View Chargeable Item</a></li>
     <li><a href="/itemtype/edit">Create Chargeable Item</a></li>
+    <li><a href="/image">Manage Images</a></li>
 </ul>
 <h3>Manage Users</h3>
 <ul>
