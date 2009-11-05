@@ -22,11 +22,17 @@ public class RoomType extends AbstractEntity<RoomType> {
 	private String name;
 	private Set<Room> rooms;
 	private List<String> attributes;
+	private Long imageId;
 
-	public RoomType() {
-
+	public Long getImageId() {
+		return imageId;
 	}
 
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
+	}
+
+	
 	@Column(nullable=false)
 	public Integer getMaxOccupancy() {
 		return maxOccupancy;

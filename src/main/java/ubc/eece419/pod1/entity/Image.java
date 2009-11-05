@@ -2,6 +2,7 @@ package ubc.eece419.pod1.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class Image extends AbstractEntity<Image> {
@@ -26,6 +27,11 @@ public class Image extends AbstractEntity<Image> {
 
 	public void setData(byte[] data) {
 		this.data = data;
+	}
+
+	@Transient
+	public String getUrl(){
+		return "/image/view?id="+getId();
 	}
 
 }
