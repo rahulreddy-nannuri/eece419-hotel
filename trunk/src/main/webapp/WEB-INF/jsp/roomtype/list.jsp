@@ -12,7 +12,7 @@
 				<p>Rate: <c:out value="${rmt.dailyRate}" /></p>
 				<p><c:out value="${rmt.description}" /></p>
 				<c:if test="${rmt.imageId > 0}">
-					<img src="/image/view?id=${rmt.imageId}" alt="image of the room type" />
+					<img class="thumbnail" src="/image/view?id=${rmt.imageId}" alt="image of the room type" />
 				</c:if>
 
 				<ul class="nav">

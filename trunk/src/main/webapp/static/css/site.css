@@ -184,3 +184,36 @@ ul.room-list ul.nav li {
 #sidebar li.current {
 	font-weight: bold;
 }
+
+img.thumbnail{
+	width:150px;
+	height:150px;
+}
+
+div.image{
+	float:left;
+	margin:25px 15px;
+	border-style:solid;
+	border-width:1px;
+	border-color:#ccf;
+}
+
+div.image:hover{
+	cursor:pointer;
+	position:relative;
+	left:-5px;
+	top:-5px;
+	border-color:#99c;
+}
+
+div.image:active{
+	position:relative;
+	left:3px;
+	top:3px;
+	background-color:#336;
+}
+
+div.image p{
+	text-align:center;
+}
+

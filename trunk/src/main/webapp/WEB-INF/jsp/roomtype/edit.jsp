@@ -41,10 +41,11 @@
 				<li>
 					<c:choose>
 						<c:when test="${roomType.imageId > 0}">
-							<img src="/image/view?id=${roomType.imageId}" alt="roomtype image"/>
+							<img id="room-type-image" class="thumbnail" src="/image/view?id=${roomType.imageId}" alt="roomtype image"/>
+							<a id="add-image" href="#">Change image</a>
 						</c:when>
 						<c:otherwise>
-							<img id="roomTypeImage" />
+							<img id="room-type-image" class="thumbnail" />
 							<a id="add-image" href="#">Add Image</a>
 						</c:otherwise>
 					</c:choose>
@@ -59,6 +60,8 @@
 
 	<div id="image-select">
 		<p>Select an image below</p>
+		<p id="error-msg" class="error" />
+		<div id="image-list"/>
 	</div>
 
 </c:set>
