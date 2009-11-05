@@ -14,3 +14,7 @@
 	<li><a href="/user/list">View Users</a></li>
 	<li><a href="/user/edit">Create User</a></li>
 </ul>
+<h3>View Statistics</h3>
+<ul>
+	<li><a href="/chart/view">Chart</a></li>
+</ul>

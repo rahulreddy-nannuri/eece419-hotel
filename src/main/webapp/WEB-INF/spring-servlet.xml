@@ -38,6 +38,8 @@
 				/itemtype/**=itemTypeController
 				/image=imageController
 				/image/**=imageController
+				/chart=chartController
+				/chart/**=chartController
 				/ajax=ajaxController
 				/ajax/**=ajaxController
 			</value>
@@ -63,6 +65,8 @@
 	<bean id="reservationController" class="ubc.eece419.pod1.controller.ReservationController" />
 	
 	<bean id="imageController" class="ubc.eece419.pod1.controller.ImageController" />
+	
+	<bean id="chartController" class="ubc.eece419.pod1.controller.ChartController" />
 
 	<bean id="ajaxController" class="ubc.eece419.pod1.controller.AJAXController" />
 
