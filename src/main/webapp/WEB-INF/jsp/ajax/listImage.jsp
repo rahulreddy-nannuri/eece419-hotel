@@ -9,14 +9,14 @@
 <%@include file="/WEB-INF/jsp/include.jsp"%>
 
 
-
-<c:forEach var="image" items="${images}">
-	<image>
-		<id>${image.id}</id>
-		<name>${image.name}</name>
-		<url>/image/view?id=${image.id}</url>
-	</image>
-</c:forEach>
-
+<image-list>
+	<c:forEach var="image" items="${images}">
+		<image>
+			<id>${image.id}</id>
+			<name>${image.name}</name>
+			<url>/image/view?id=${image.id}</url>
+		</image>
+	</c:forEach>
+</image-list>
 
 

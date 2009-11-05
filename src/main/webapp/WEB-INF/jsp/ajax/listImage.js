@@ -9,16 +9,9 @@ $(function() {
 		bgiframe: true,
 		autoOpen: false,
 		height: 500,
-		width: 500,
+		width: 640,
 		modal: true,
 		buttons: {
-			'Add': function() {
-				var imageId=$("input:radio[@name=imageId]:checked").attr("value");
-				$("#imageId").attr("value", imageId);
-				$("#roomTypeImage").attr("src", "/image/view?id="+imageId);
-				$("#add-image").hide();
-				$(this).dialog('close');
-			},
 			Cancel: function() {
 				$(this).dialog('close');
 			}
@@ -30,20 +23,33 @@ $(function() {
 	$('#add-image').click(function() {
 		$('#image-select').dialog('open');
 	});
+
+
 });
 
 function callback(data){
-	var list=$('<ol></ol>').appendTo($("#image-select"));
 	$(data).find("image").each(function(){
 		var imageId=$(this).find("id").text();
-		var name=$(this).find("name").text();
+		var name=$("<p/>").append($(this).find("name").text());
 		var url=$(this).find("url").text();
-		var radio=$("<input type='radio' name='imageId' />").attr('value', imageId);
-		var img=$("<img height='50' width='50' />").attr('src', url);
-		var listItem=$('<li></li>').append(radio).append(name).append(img);
-		list.append(listItem);
+		var img=$("<img class='thumbnail' />").attr('src', url);
+		var imgDiv=$('<div class="image"></>').append(img).append("<br/>").append(name).attr('image-id',imageId);
+		$("#image-list").append(imgDiv);
+
+		imgDiv.click(function(){
+			//alert("you clicked me!");
+			var imageId=$(this).attr("image-id");
+			if(imageId == null){
+				$("#error-msg").html("Select an image")
+				return;
+			}
+			$("#imageId").attr("value", imageId);
+			$("#room-type-image").attr("src", "/image/view?id="+imageId);
+			$("#add-image").html("Change image");
+			$('#image-select').dialog('close');
+		});
+		
 	});
-	
 }
 
 $.get("/ajax/listImage", null, callback , "xml");
