@@ -5,11 +5,16 @@
     <h2>Chart</h2>
     <p>This chart is for you to see</p>
     <img src="http://chart.apis.google.com/chart?
-		chs=250x100
-		&amp;chd=t:60,40
-		&amp;cht=p3
-		&amp;chl=Hello|World"
+		chs=500x300
+		&amp;chd=s:blabhblhz
+		&amp;cht=lc
+		&amp;chdl=reservation
+		&amp;chxt=x,y,x
+		&amp;chxl=0:|Jan|Feb|March|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec|
+		1:|0|25|50|75|100|
+		2:|2006|2007|2008"
 		alt="Sample chart" 
+		
 	/>
 </c:set>
 
