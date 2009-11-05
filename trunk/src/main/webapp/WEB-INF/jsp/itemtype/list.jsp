@@ -11,6 +11,7 @@
 				<p>SKU: <c:out value="${rmt.sku}" /></p>
 				<p>Price: <c:out value="${rmt.price}" /></p>
 				<p>Description: <c:out value="${rmt.description}" /></p>
+
 				<ul class="nav">
 					<li><a href="/itemtype/edit?id=<c:out value="${rmt.id}" />">Edit</a></li>
 					<li><a href="/itemtype/delete?id=<c:out value="${rmt.id}" />">Delete</a></li>

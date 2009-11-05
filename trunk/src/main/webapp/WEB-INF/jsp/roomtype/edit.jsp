@@ -1,5 +1,9 @@
 <%@include file="/WEB-INF/jsp/include.jsp"%>
 
+<c:set var="js" scope="request">
+	<jsp:include page="/WEB-INF/jsp/ajax/listImage.js" />
+</c:set>
+
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 
@@ -7,6 +11,7 @@
 	<form:form commandName="roomType" action="/roomtype/save" cssClass="std-form">
 		<fieldset>
 			<form:hidden path="id" />
+			<form:hidden path="imageId"/>
 			<ol>
 				<li>
 					<form:label path="name">Name:</form:label>
@@ -33,14 +38,29 @@
 					<form:textarea path="attributesText" />
 					<form:errors cssClass="error" path="attributesText" />
 				</li>
+				<li>
+					<c:choose>
+						<c:when test="${roomType.imageId > 0}">
+							<img src="/image/view?id=${roomType.imageId}" alt="roomtype image"/>
+						</c:when>
+						<c:otherwise>
+							<img id="roomTypeImage" />
+							<a id="add-image" href="#">Add Image</a>
+						</c:otherwise>
+					</c:choose>
+
+				</li>
 			</ol>
-			<input type="submit" value="Save" />
+
+			<input type="submit"  value="Save" />
 		</fieldset>
 	</form:form>
-</c:set>
 
-<%-- use the default room sidebar --%>
-<c:set var="sidebar" scope="request"> 
+
+	<div id="image-select">
+		<p>Select an image below</p>
+	</div>
+
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp" />

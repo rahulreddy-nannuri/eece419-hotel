@@ -73,6 +73,7 @@ public class DatabasePopulator implements InitializingBean {
 			penthouse.setDescription("The ultimate in comfort.");
 			penthouse.setDailyRate(750.0);
 			penthouse.setMaxOccupancy(12);
+			penthouse.setImageId(1L);
 			penthouse = roomTypeRepository.save(penthouse);
 
 			RoomType bachelor = new RoomType();
@@ -80,6 +81,7 @@ public class DatabasePopulator implements InitializingBean {
 			bachelor.setDescription("Perfect for starving students.");
 			bachelor.setDailyRate(20.0);
 			bachelor.setMaxOccupancy(1);
+			bachelor.setImageId(1L);
 			bachelor = roomTypeRepository.save(bachelor);
 
 			RoomType standard = new RoomType();
