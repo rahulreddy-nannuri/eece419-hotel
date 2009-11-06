@@ -8,6 +8,8 @@ import java.util.Collections;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.validation.Errors;
@@ -15,8 +17,6 @@ import org.springframework.validation.Errors;
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.AbstractEntity;
 import ubc.eece419.pod1.entity.User;
-
-import static org.easymock.EasyMock.*;
 
 public class ReflectionEntityValidatorTest {
 
@@ -44,6 +44,8 @@ public class ReflectionEntityValidatorTest {
 		}
 	}
 
+	Mockery context = new Mockery();
+
 	ReflectionEntityValidator<ExampleEntity> rev;
 	GenericRepository<ExampleEntity> repo;
 	Errors errors;
@@ -51,40 +53,34 @@ public class ReflectionEntityValidatorTest {
 	@Before
 	@SuppressWarnings("unchecked")
 	public void setUp() {
-		repo = createMock(GenericRepository.class);
-		errors = createMock(Errors.class);
+		repo = context.mock(GenericRepository.class);
+		errors = context.mock(Errors.class);
 
-		expect(repo.getEntityClass()).andStubReturn(ExampleEntity.class);
-
-		replay(repo);
+		context.checking(new Expectations() {{
+			allowing(repo).getEntityClass();
+			will(returnValue(ExampleEntity.class));
+		}});
 
 		rev = new ReflectionEntityValidator<ExampleEntity>(repo);
-
-		reset(repo);
 	}
 
 	@Test
 	public void testSupports() {
-		replay(repo, errors);
-
 		assertTrue(rev.supports(ExampleEntity.class));
 		assertFalse(rev.supports(String.class));
 		assertFalse(rev.supports(User.class));
-
-		verify(repo, errors);
 	}
 
 	@Test
 	public void testValidateOk() {
 		ExampleEntity entity = new ExampleEntity();
 
-		expect(repo.findAll()).andReturn(Collections.EMPTY_LIST);
-
-		replay(repo, errors);
+		context.checking(new Expectations() {{
+			one(repo).findAll();
+			will(returnValue(Collections.emptyList()));
+		}});
 
 		rev.validate(entity, errors);
-
-		verify(repo, errors);
 	}
 
 	@Test
@@ -92,14 +88,14 @@ public class ReflectionEntityValidatorTest {
 		ExampleEntity entity = new ExampleEntity();
 		entity.notNull = null;
 
-		expect(repo.findAll()).andReturn(Collections.EMPTY_LIST);
-		errors.rejectValue("notNull", "entityvalidator.nullable");
+		context.checking(new Expectations() {{
+			one(repo).findAll();
+			will(returnValue(Collections.emptyList()));
 
-		replay(repo, errors);
+			one(errors).rejectValue("notNull", "entityvalidator.nullable");
+		}});
 
 		rev.validate(entity, errors);
-
-		verify(repo, errors);
 	}
 
 	@Test
@@ -107,17 +103,17 @@ public class ReflectionEntityValidatorTest {
 		ExampleEntity entity = new ExampleEntity();
 		entity.unique = "duplicate";
 
-		ExampleEntity duplicate = new ExampleEntity();
+		final ExampleEntity duplicate = new ExampleEntity();
 		duplicate.unique = "duplicate";
 
-		expect(repo.findAll()).andReturn(Arrays.asList(duplicate));
-		errors.rejectValue("unique", "entityvalidator.unique");
+		context.checking(new Expectations() {{
+			one(repo).findAll();
+			will(returnValue(Arrays.asList(duplicate)));
 
-		replay(repo, errors);
+			one(errors).rejectValue("unique", "entityvalidator.unique");
+		}});
 
 		rev.validate(entity, errors);
-
-		verify(repo, errors);
 	}
 
 	@Test
@@ -125,15 +121,14 @@ public class ReflectionEntityValidatorTest {
 		ExampleEntity entity = new ExampleEntity();
 		entity.notEmpty = "";
 
+		context.checking(new Expectations() {{
+			one(repo).findAll();
+			will(returnValue(Collections.emptyList()));
 
-		expect(repo.findAll()).andReturn(Collections.EMPTY_LIST);
-		errors.rejectValue("notEmpty", "entityvalidator.nullable");
-
-		replay(repo, errors);
+			one(errors).rejectValue("notEmpty", "entityvalidator.nullable");
+		}});
 
 		rev.validate(entity, errors);
-
-		verify(repo, errors);
 	}
 
 }

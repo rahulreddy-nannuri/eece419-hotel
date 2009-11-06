@@ -7,7 +7,6 @@
 	<h3>Select reservation</h3>
 	<form:form commandName="checkin" cssClass="std-form">
 		<fieldset>
-			<legend/>
 			<form:errors cssClass="error" path="*" />
 			<ol>
 				<c:forEach var="reservation" items="${checkin.reservations}" >

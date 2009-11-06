@@ -7,7 +7,6 @@
 	<h3>Select Stay Record</h3>
 	<form:form commandName="checkout" cssClass="std-form">
 		<fieldset>
-			<legend/>
 			<form:errors cssClass="error" path="*" />
 			<ol>
 				<c:forEach var="stayRecords" items="${checkout.stayRecords}">

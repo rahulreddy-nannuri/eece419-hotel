@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/jsp/include.jsp" %>
+<%@ include file="/WEB-INF/jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
@@ -21,27 +21,30 @@
                 <h1>X-Reserve</h1>
                 <div id="nav">
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <c:choose>
-                            <c:when test="${currentuser == null}">
-                                <%-- anonymouse customer --%>
-                            </c:when>
-                            <c:when test="${isAdmin}">
-                                <%-- admin --%>
-                                <li><a href="/room">Rooms</a></li>
+						<li><a href="/">Home</a></li>
+						<c:choose>
+							<c:when test="${currentuser == null}">
+								<%-- anonymous customer --%>
+							</c:when>
+							<c:when test="${isAdmin}">
+								<%-- admin --%>
+								<li><a href="/room">Rooms</a></li>
 								<li><a href="/user">Users</a></li>
-								 <li><a href="/checkin">Stay Record</a></li>
-                            </c:when>
+								<li><a href="/chart/view">Reports</a></li>
+								<li><a href="/checkin">Check In</a></li>
+								<li><a href="/checkout">Check Out</a></li>
+							</c:when>
 							<c:when test="${isStaff}">
-                                <%-- admin --%>
-                                <li><a href="/checkin">Stay Record</a></li>
-                            </c:when>
-                            <c:otherwise>
-                                <%-- register customer --%>
-                                <li><a href="#">Bookings</a></li>
-                            </c:otherwise>
-                        </c:choose>
-                    </ul>
+								<%-- staff --%>
+								<li><a href="/checkin">Check In</a></li>
+								<li><a href="/checkout">Check Out</a></li>
+							</c:when>
+							<c:otherwise>
+								<%-- register customer --%>
+								<li><a href="#">TODO: Bookings</a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
                 </div>
                 <div id="nav2">
                     <ul>

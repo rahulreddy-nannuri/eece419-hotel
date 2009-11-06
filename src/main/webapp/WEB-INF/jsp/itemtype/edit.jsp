@@ -35,7 +35,8 @@
 </c:set>
 
 <%-- use the default room sidebar --%>
-<c:set var="sidebar" scope="request"> 
+<c:set var="sidebar" scope="request">
+	<jsp:include page="/WEB-INF/jsp/room/sidebar.jsp" />
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp" />

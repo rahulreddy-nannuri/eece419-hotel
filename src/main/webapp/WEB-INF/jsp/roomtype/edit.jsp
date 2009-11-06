@@ -61,9 +61,13 @@
 	<div id="image-select">
 		<p>Select an image below</p>
 		<p id="error-msg" class="error" />
-		<div id="image-list"/>
+		<div id="image-list"></div>
 	</div>
+</c:set>
 
+<%-- use the default room sidebar --%>
+<c:set var="sidebar" scope="request">
+	<jsp:include page="/WEB-INF/jsp/room/sidebar.jsp" />
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp" />
