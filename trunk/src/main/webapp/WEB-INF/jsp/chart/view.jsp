@@ -23,7 +23,7 @@
 
 <%-- sidebar contains the second navigation bar --%>
 <c:set var="sidebar" scope="request">
-    <jsp:include page="/WEB-INF/jsp/roomtype/searchSidebar.jsp"/>
+    No Report Sidebar... yet
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp"/>

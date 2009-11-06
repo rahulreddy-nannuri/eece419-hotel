@@ -103,14 +103,12 @@ public class UserControllerTest {
 	public void testEditUser(){
 		final User user = new User();
 
-		context.checking(new Expectations(){
-			{
-				oneOf(userRepository).findById(1L);
-				will(returnValue(user));
+		context.checking(new Expectations(){{
+			oneOf(userRepository).findById(1L);
+			will(returnValue(user));
 
-				oneOf(userRepository).findAll();
-			}
-		});
+			oneOf(userRepository).findAll();
+		}});
 
 		ModelAndView mav = userController.edit(null);
 
@@ -122,19 +120,16 @@ public class UserControllerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testEmptyList(){
-		List<User> entities = new ArrayList<User>();
+		final List<User> entities = new ArrayList<User>();
 
-		context.checking(new Expectations(){
-			{
-				oneOf(userRepository).findAll();
-			}
-		});
+		context.checking(new Expectations() {{
+			one(userRepository).findAll();
+			will(returnValue(entities));
+		}});
 
 		ModelAndView mav = userController.list();
-		List<User> model = (List<User>) mav.getModel().get(new User().getEntityName() + "s");
-		assertEquals(entities.size(), model.size());
-		assertEquals(model.size(), 0);
+		List<User> model = (List<User>) mav.getModel().get("users");
+
+		assertEquals(0, model.size());
 	}
-
-
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ubc.eece419.pod1.entity;
 
 import java.util.Date;
@@ -13,10 +9,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- *
- * @author yang
- */
 @Entity
 @NamedQueries({
 @NamedQuery(name="Reservation.findUncheckedInReservationsByUser",
@@ -28,6 +20,7 @@ import javax.persistence.TemporalType;
 				  "					WHERE s.user = :user )")
 })
 public class Reservation extends AbstractEntity<Reservation> implements Billable {
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 	private Double price;
@@ -37,7 +30,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 	private Date checkOut;
 	private User user;
 
-	@JoinColumn(nullable=false)
+	@JoinColumn(nullable = false)
 	@ManyToOne
 	public User getUser() {
 		return user;
@@ -46,8 +39,6 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-
 
 	@Temporal(TemporalType.DATE)
 	public Date getCheckIn() {
@@ -67,7 +58,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.checkOut = checkOut;
 	}
 
-	@JoinColumn(nullable=false)
+	@JoinColumn(nullable = false)
 	@ManyToOne
 	public RoomType getRoomType() {
 		return roomType;
