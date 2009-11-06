@@ -65,9 +65,6 @@
             </div>
             <div id="sidebar">
                 ${sidebar}
-                <c:if test="${isAdmin}">
-					<jsp:include page="/WEB-INF/jsp/adminSidebar.jsp" />
-				</c:if>
             </div>
             <div id="main">
                 ${main}
