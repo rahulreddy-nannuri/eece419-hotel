@@ -3,7 +3,6 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 
-
 	<h3>Select reservation</h3>
 	<form:form commandName="checkin" cssClass="std-form">
 		<fieldset>

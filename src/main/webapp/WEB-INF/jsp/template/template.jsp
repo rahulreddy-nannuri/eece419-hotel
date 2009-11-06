@@ -31,13 +31,11 @@
 								<li><a href="/room">Rooms</a></li>
 								<li><a href="/user">Users</a></li>
 								<li><a href="/chart/view">Reports</a></li>
-								<li><a href="/checkin">Check In</a></li>
-								<li><a href="/checkout">Check Out</a></li>
+								<li><a href="/reservation">Reservations</a></li>
 							</c:when>
 							<c:when test="${isStaff}">
 								<%-- staff --%>
-								<li><a href="/checkin">Check In</a></li>
-								<li><a href="/checkout">Check Out</a></li>
+								<li><a href="/reservation">Reservations</a></li>
 							</c:when>
 							<c:otherwise>
 								<%-- register customer --%>

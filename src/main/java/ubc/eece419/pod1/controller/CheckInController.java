@@ -114,22 +114,6 @@ public class CheckInController extends AbstractWizardFormController {
 
 		return new ModelAndView("checkin/confirm");
 	}
-
-	public void setStayRecordRepository(StayRecordRepository stayRecordRepository) {
-		this.stayRecordRepository = stayRecordRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
-	public void setRoomRepository(RoomRepository roomRepository) {
-		this.roomRepository = roomRepository;
-	}
-
-	public void setReservationRepository(ReservationRepository reservationRepository) {
-		this.reservationRepository = reservationRepository;
-	}
 }
 
 
