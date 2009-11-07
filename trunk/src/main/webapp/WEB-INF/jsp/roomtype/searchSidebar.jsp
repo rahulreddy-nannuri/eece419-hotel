@@ -17,6 +17,30 @@ $(function() {
 	    }
 	});
 	$("#price-amount").val('$' + $("#price-slider").slider("values", 0) + ' - $' + $("#price-slider").slider("values", 1));
+
+	function dateStr(date) {
+		var ret = "";
+		var m = date.getMonth() + 1;
+		if (m < 10) ret += "0";
+		ret += m + "/";
+		var d = date.getDate();
+		if (d < 10) ret += "0";
+		ret += d + "/" + date.getFullYear();
+		return ret;
+	}
+
+	function unDateStr(str) {
+		parts = str.split('/');
+		return new Date(parts[2], parts[0] - 1, parts[1]);
+	}
+	
+	if ($("#checkIn").val() == "") {
+		$("#checkIn").val(dateStr(new Date()));
+	}
+	if ($("#checkOut").val() == "") {
+		var nd = unDateStr($("#checkIn").val());
+		$("#checkOut").val(dateStr(new Date(nd.getTime() + 1000*60*60*24*5)));
+	}
 });
 /* ]]> */
 </script>

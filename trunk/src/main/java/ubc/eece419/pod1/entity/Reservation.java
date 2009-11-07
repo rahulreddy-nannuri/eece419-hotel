@@ -1,6 +1,8 @@
 package ubc.eece419.pod1.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -8,6 +10,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @NamedQueries({
@@ -24,7 +27,6 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 
 	private String name;
 	private Double price;
-	private String description;
 	private RoomType roomType;
 	private Date checkIn;
 	private Date checkOut;
@@ -72,10 +74,6 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.price = Price;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -90,8 +88,9 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		return price;
 	}
 
-	@Override
+	@Transient
 	public String getDescription() {
-		return description;
+		SimpleDateFormat fmt = new SimpleDateFormat("MMM d, yyyy"); // matches the default <fmt:formatDate>
+		return roomType.getName() + " (" + fmt.format(checkIn) + " - " + fmt.format(checkOut) + ")";
 	}
 }
