@@ -1,5 +1,6 @@
 package ubc.eece419.pod1.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,11 +9,14 @@ import java.util.Map;
 import org.apache.commons.collections15.FactoryUtils;
 import org.apache.commons.collections15.map.LazyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -93,6 +97,11 @@ public class RoomTypeController extends CRUDController<RoomType> {
 			}
 			return map;
 		}
+	}
+
+	@InitBinder
+	public void addCustomDateEditor(WebDataBinder binder) {
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("MM/dd/yyyy"), true));
 	}
 
 	@RequestMapping("/**/search")

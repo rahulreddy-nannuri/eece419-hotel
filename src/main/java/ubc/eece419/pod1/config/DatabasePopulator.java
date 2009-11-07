@@ -8,13 +8,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.Map.Entry;
-
 import java.util.logging.Logger;
 
-import javax.servlet.ServletContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+
 import ubc.eece419.pod1.dao.ImageRepository;
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomRepository;
@@ -29,15 +28,18 @@ import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.entity.User;
 
 public class DatabasePopulator implements InitializingBean {
+	private static final Logger log = Logger.getLogger(DatabasePopulator.class.getName());
 
 	public static final String IMAGE_ROOT = "src/main/resources/image";
-	private static final Logger log = Logger.getLogger(DatabasePopulator.class.getName());
+
 	private List<User> usersToCreate = new ArrayList<User>();
+
 	private Resource pentHouseImage;
 	private Resource doubleBedImage;
 	private Resource singleBedImage;
 	private Resource studentBedImage;
 	private Resource welcomeImage;
+
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -82,7 +84,6 @@ public class DatabasePopulator implements InitializingBean {
 		for (Entry<Object, Object> u : admins.entrySet()) {
 			User user = parseUser(u, "ROLE_USER,ROLE_STAFF,ROLE_ADMIN");
 			usersToCreate.add(user);
-
 		}
 	}
 
@@ -180,19 +181,15 @@ public class DatabasePopulator implements InitializingBean {
 			Reservation reservation = new Reservation();
 			reservation.setCheckIn(today.getTime());
 			reservation.setCheckOut(tomorrow.getTime());
-			reservation.setDescription(roomType.getName());
 			reservation.setName("Reservation 1");
 			reservation.setPrice(750.0);
 			reservation.setRoomType(roomType);
 			reservation.setUser(user);
 			reservationRepository.save(reservation);
 
-
-
 			reservation = new Reservation();
 			reservation.setCheckIn(today.getTime());
 			reservation.setCheckOut(tomorrow.getTime());
-			reservation.setDescription(roomType.getName());
 			reservation.setName("Reservation 2");
 			reservation.setPrice(750.0);
 			reservation.setRoomType(roomType);
@@ -203,13 +200,11 @@ public class DatabasePopulator implements InitializingBean {
 			roomType = roomTypeRepository.findById(3);
 			reservation.setCheckIn(today.getTime());
 			reservation.setCheckOut(tomorrow.getTime());
-			reservation.setDescription(roomType.getName());
 			reservation.setName("Reservation 3");
 			reservation.setPrice(100.0);
 			reservation.setRoomType(roomType);
 			reservation.setUser(user);
 			reservationRepository.save(reservation);
-
 		}
 
 		if (stayRecordRepository.findAll().size() > 0) {
@@ -234,7 +229,6 @@ public class DatabasePopulator implements InitializingBean {
 			welcome.setData(getResourceAsByte(welcomeImage));
 			imageRepository.save(welcome);
 
-
 			Image pendHouse = new Image();
 			pendHouse.setName("Pent House");
 			pendHouse.setData(getResourceAsByte(pentHouseImage));
@@ -254,8 +248,6 @@ public class DatabasePopulator implements InitializingBean {
 			doubleBed.setName("Double");
 			doubleBed.setData(getResourceAsByte(doubleBedImage));
 			imageRepository.save(doubleBed);
-
-
 		}
 	}
 
@@ -270,10 +262,7 @@ public class DatabasePopulator implements InitializingBean {
 		}
 
 		in.close();
-		out.close();
-		byte[] bytes = out.toByteArray();
-
-		return bytes;
+		return out.toByteArray();
 	}
 
 	private User parseUser(Entry<Object, Object> u, String roles) {
