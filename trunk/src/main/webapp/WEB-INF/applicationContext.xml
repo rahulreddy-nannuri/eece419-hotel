@@ -56,6 +56,21 @@
 		add more at runtime
 	-->
 	<bean class="ubc.eece419.pod1.config.DatabasePopulator">
+		<property name="pentHouseImage">
+			<value>/WEB-INF/image/penthouse.jpg</value>
+		</property>
+		<property name="doubleBedImage">
+			<value>/WEB-INF/image/double.jpg</value>
+		</property>
+		<property name="singleBedImage">
+			<value>/WEB-INF/image/single.jpg</value>
+		</property>
+		<property name="studentBedImage">
+			<value>/WEB-INF/image/student.jpg</value>
+		</property>
+		<property name="welcomeImage">
+			<value>/WEB-INF/image/welcome.jpg</value>
+		</property>
 		<property name="users">
 			<value>
 				user=password,user@gmail.com,123 User St.
