@@ -1,5 +1,8 @@
 package ubc.eece419.pod1.config;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -8,10 +11,10 @@ import java.util.Map.Entry;
 
 import java.util.logging.Logger;
 
-import org.apache.commons.codec.binary.Base64;
+import javax.servlet.ServletContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.core.io.Resource;
 import ubc.eece419.pod1.dao.ImageRepository;
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomRepository;
@@ -26,10 +29,15 @@ import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.entity.User;
 
 public class DatabasePopulator implements InitializingBean {
+
+	public static final String IMAGE_ROOT = "src/main/resources/image";
 	private static final Logger log = Logger.getLogger(DatabasePopulator.class.getName());
-
 	private List<User> usersToCreate = new ArrayList<User>();
-
+	private Resource pentHouseImage;
+	private Resource doubleBedImage;
+	private Resource singleBedImage;
+	private Resource studentBedImage;
+	private Resource welcomeImage;
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -42,6 +50,26 @@ public class DatabasePopulator implements InitializingBean {
 	ReservationRepository reservationRepository;
 	@Autowired
 	ImageRepository imageRepository;
+
+	public void setPentHouseImage(Resource pentHouseImage) {
+		this.pentHouseImage = pentHouseImage;
+	}
+
+	public void setDoubleBedImage(Resource doubleBedImage) {
+		this.doubleBedImage = doubleBedImage;
+	}
+
+	public void setSingleBedImage(Resource singleBedImage) {
+		this.singleBedImage = singleBedImage;
+	}
+
+	public void setStudentBedImage(Resource studentBedImage) {
+		this.studentBedImage = studentBedImage;
+	}
+
+	public void setWelcomeImage(Resource welcomeImage) {
+		this.welcomeImage = welcomeImage;
+	}
 
 	public void setUsers(Properties users) {
 		for (Entry<Object, Object> u : users.entrySet()) {
@@ -76,7 +104,7 @@ public class DatabasePopulator implements InitializingBean {
 			penthouse.setDescription("The ultimate in comfort.");
 			penthouse.setDailyRate(750.0);
 			penthouse.setMaxOccupancy(12);
-			penthouse.setImageId(1L);
+			penthouse.setImageId(2L);
 			penthouse = roomTypeRepository.save(penthouse);
 
 			RoomType bachelor = new RoomType();
@@ -84,7 +112,7 @@ public class DatabasePopulator implements InitializingBean {
 			bachelor.setDescription("Perfect for starving students.");
 			bachelor.setDailyRate(20.0);
 			bachelor.setMaxOccupancy(1);
-			bachelor.setImageId(1L);
+			bachelor.setImageId(3L);
 			bachelor = roomTypeRepository.save(bachelor);
 
 			RoomType standard = new RoomType();
@@ -92,6 +120,7 @@ public class DatabasePopulator implements InitializingBean {
 			standard.setDescription("Comfort befitting Middle America.");
 			standard.setDailyRate(80.0);
 			standard.setMaxOccupancy(2);
+			standard.setImageId(4L);
 			standard = roomTypeRepository.save(standard);
 
 			RoomType doubleStandard = new RoomType();
@@ -99,6 +128,7 @@ public class DatabasePopulator implements InitializingBean {
 			doubleStandard.setDescription("Twice the fun of a Corporate Econo-box.");
 			doubleStandard.setDailyRate(120.0);
 			doubleStandard.setMaxOccupancy(4);
+			doubleStandard.setImageId(5L);
 			doubleStandard = roomTypeRepository.save(doubleStandard);
 
 			{
@@ -199,12 +229,51 @@ public class DatabasePopulator implements InitializingBean {
 		if (imageRepository.findAll().size() > 0) {
 			log.info("Database already has images, not adding defaults");
 		} else {
-			Image image = new Image();
-			image.setName("sample image");
-			String encodedImage = "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAAAXNSR0IArs4c6QAAAAlwSFlzAAAL\nEwAACxMBAJqcGAAAAAd0SU1FB9kLBQEwG+0Ks0wAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRo\nIEdJTVBXgQ4XAAACuUlEQVR42u3csa6iUBAGYDTb2GiiGGpDLCRgYUJ8AhqeicoXoOUd6HkHY3JI\nJEhhDBWhUEmkMYGAW2yz2eq65yDnmH/am9zM/eTCnGHGwev1khA/iyEIgAUsYAELWMACAbCABSxg\nAQtYIAAWsIAFLGABCwTAAhawgAUsYIHg5/GLhySez2eaplEUEUKOx+P5fL5cLn9+pKrqcrlcr9eb\nzcYwjMViMRqNekv01V9kWeZ5nqZpbyWsaZrneVmWfT7hHrDqug6CQNd1yo9Z1/UgCOq6/k6spml8\n32f+z+H7ftM0X4VFCFEUpaObiaIohJBvwKqqynGcD9x/HcepqkpgrDzPVVX92PNKVdU8z4XEiuO4\nl0d8HMeCYRFCeqzduriFdYWVJEnvtW6SJGz/qEEXM6W3220+n/NwNrher7Is83s2bNvWtm1OTnO2\nbbdty+9xx3Vdrk6/rutyes9K05TDbkGapjxiWZbFIZZlWdxhhWHIbSsqDEO+sPi8rBheXMywsizj\nvM9J3wJjVjp00Xth3smh/A3MitLJZFKWJc9Y4/H48Xj0X5QWRcG5lCRJZVkWRdE/1ul0EuL1DGWe\nbLD2+70QWJR5ssE6HA5CYFHmyQYriiIhsCjzZPM0HA6HQqwPDwYDmiYEmytLlEVryjyHrD4xIbAo\n82SDtVqthMCizJMNlmEYQmBR5skGyzRNIbAo82SDtd1uhcCizJNN6VAUxWw24x/rfr9Pp1N0HcTp\nOkiStNvtOL+sGGSITil68P8GXz14vN3Be0O8keZn5AizDu+NJPNz+jFNk+EgM+az+ihK/w5ZljmZ\n/GMoxbIoxUwpppUxB48NC+kLNiywu4OtsE8F9g3/swUm1iZrJxX8uyHKjjQXWKIEvqoAWMACFrCA\nhQAWsIAFLGABCwEsYAELWMACFgJYwOomfgOZqaR4sM6WWQAAAABJRU5ErkJggg==";
-			image.setData(Base64.decodeBase64(encodedImage.getBytes()));
-			imageRepository.save(image);
+			Image welcome = new Image();
+			welcome.setName("Welcome");
+			welcome.setData(getResourceAsByte(welcomeImage));
+			imageRepository.save(welcome);
+
+
+			Image pendHouse = new Image();
+			pendHouse.setName("Pent House");
+			pendHouse.setData(getResourceAsByte(pentHouseImage));
+			imageRepository.save(pendHouse);
+
+			Image studentBed = new Image();
+			studentBed.setName("Student");
+			studentBed.setData(getResourceAsByte(studentBedImage));
+			imageRepository.save(studentBed);
+
+			Image singleBed = new Image();
+			singleBed.setName("Single");
+			singleBed.setData(getResourceAsByte(singleBedImage));
+			imageRepository.save(singleBed);
+
+			Image doubleBed = new Image();
+			doubleBed.setName("Double");
+			doubleBed.setData(getResourceAsByte(doubleBedImage));
+			imageRepository.save(doubleBed);
+
+
 		}
+	}
+
+	private byte[] getResourceAsByte(Resource resource) throws IOException {
+		InputStream in = resource.getInputStream();
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+		byte[] buf = new byte[1024];
+		int i;
+		while ((i = in.read(buf)) > 0) {
+			out.write(buf, 0, i);
+		}
+
+		in.close();
+		out.close();
+		byte[] bytes = out.toByteArray();
+
+		return bytes;
 	}
 
 	private User parseUser(Entry<Object, Object> u, String roles) {
