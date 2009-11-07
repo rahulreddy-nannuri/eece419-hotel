@@ -15,4 +15,10 @@ public class StayRecordDao extends GenericDao<StayRecord> implements StayRecordR
 		q.setParameter("user", user);
 		return q.getResultList();
 	}
+	
+
+	public List<Object[]> getReserveCountByMonth() {
+		Query q=em.createQuery("select month(checkInDate) as month,count(*) from StayRecord group by month(checkInDate)");
+		return q.getResultList();
+	}
 }
