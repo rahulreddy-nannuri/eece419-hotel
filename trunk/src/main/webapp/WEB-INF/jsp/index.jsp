@@ -4,6 +4,7 @@
 <c:set var="main" scope="request">
     <h2>Welcome</h2>
     <p>Thank you for choosing X-Reserve. We hope you will enjoy your stay.</p>
+	<img src="/image/view?id=1" alt="welcome image" />
 </c:set>
 
 <%-- sidebar contains the second navigation bar --%>
