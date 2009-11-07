@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -87,13 +88,9 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		}
 
 		Map<String, Integer> getAttributeMap() {
-			// TODO: this duplicates code in RoomType
-			String[] atts = getAttributes().split("\n+");
 			Map<String, Integer> map = LazyMap.decorate(new HashMap<String, Integer>(), FactoryUtils.constantFactory(0));
-			for (String att : atts) {
-				att = att.trim();
-				if (!att.isEmpty())
-					map.put(att, map.get(att) + 1);
+			for (String att : RoomType.splitIntoAttributes(attributes)) {
+				map.put(att, map.get(att) + 1);
 			}
 			return map;
 		}
@@ -117,9 +114,13 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		model.put("roomTypes", filtered);
 		model.put("search", search);
 		model.put("available", availablity);
-		model.put("allAttributes", roomTypeRepository.allAttributes());
 
 		return new ModelAndView(basePath + "/search", model);
+	}
+
+	@ModelAttribute("allAttributes")
+	public List<String> exposeAllRoomTypeAttributes() {
+		return roomTypeRepository.allAttributes();
 	}
 
 	@Override

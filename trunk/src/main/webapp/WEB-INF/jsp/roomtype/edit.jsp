@@ -2,6 +2,15 @@
 
 <c:set var="js" scope="request">
 	<jsp:include page="/WEB-INF/jsp/ajax/listImage.js" />
+	$(function() {
+		// attribute picker
+		var allAttributes = [<c:forEach items="${allAttributes}" var="att">"${att}",</c:forEach>];
+		
+		$("#attributesText").autocomplete(allAttributes, {
+			autoFill: true,
+			multiple: true
+		});
+	});
 </c:set>
 
 <%-- main contains the main content --%>
@@ -34,7 +43,7 @@
 					<form:errors cssClass="error" path="maxOccupancy" />
 				</li>
 				<li>
-					<form:label path="attributesText">Attributes (one per line)</form:label>
+					<form:label path="attributesText">Attributes (comma-separated)</form:label>
 					<form:textarea path="attributesText" />
 					<form:errors cssClass="error" path="attributesText" />
 				</li>

@@ -30,7 +30,7 @@ $(function() {
 	}
 
 	function unDateStr(str) {
-		parts = str.split('/');
+		var parts = str.split('/');
 		return new Date(parts[2], parts[0] - 1, parts[1]);
 	}
 	
@@ -41,6 +41,14 @@ $(function() {
 		var nd = unDateStr($("#checkIn").val());
 		$("#checkOut").val(dateStr(new Date(nd.getTime() + 1000*60*60*24*5)));
 	}
+
+	// attribute picker
+	var allAttributes = [<c:forEach items="${allAttributes}" var="att">"${att}",</c:forEach>];
+	
+	$("#attributes").autocomplete(allAttributes, {
+		autoFill: true,
+		multiple: true
+	});
 });
 /* ]]> */
 </script>
@@ -69,17 +77,21 @@ $(function() {
             <td><form:input path="checkOut" /></td>
         </tr>
         <tr>
-            <td><form:label path="occupancy">Adults</form:label></td>
+            <td><form:label path="occupancy">Guests:</form:label></td>
             <td><form:select path="occupancy">
                     <form:option value="1" />
                     <form:option value="2" />
                     <form:option value="3" />
                     <form:option value="4" />
+                    <form:option value="5" />
+                    <form:option value="6" />
+                    <form:option value="7" />
+                    <form:option value="8" />
                 </form:select>
             </td>
         </tr>
         <tr>
-            <td><form:label path="attributes">Attributes (one per line)</form:label></td>
+            <td><form:label path="attributes">Attributes (comma-separated):</form:label></td>
             <td><form:textarea path="attributes" /></td>
         </tr>
         <tr>
