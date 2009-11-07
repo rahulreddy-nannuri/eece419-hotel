@@ -1,5 +1,7 @@
 package ubc.eece419.pod1.config;
 
+import static java.util.Arrays.asList;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,6 +108,7 @@ public class DatabasePopulator implements InitializingBean {
 			penthouse.setDailyRate(750.0);
 			penthouse.setMaxOccupancy(12);
 			penthouse.setImageId(2L);
+			penthouse.setAttributes(asList("Double", "Double", "Double", "Kitchen"));
 			penthouse = roomTypeRepository.save(penthouse);
 
 			RoomType bachelor = new RoomType();
@@ -114,6 +117,7 @@ public class DatabasePopulator implements InitializingBean {
 			bachelor.setDailyRate(20.0);
 			bachelor.setMaxOccupancy(1);
 			bachelor.setImageId(3L);
+			bachelor.setAttributes(asList("Single", "Shared Bathroom"));
 			bachelor = roomTypeRepository.save(bachelor);
 
 			RoomType standard = new RoomType();
@@ -122,6 +126,7 @@ public class DatabasePopulator implements InitializingBean {
 			standard.setDailyRate(80.0);
 			standard.setMaxOccupancy(2);
 			standard.setImageId(4L);
+			standard.setAttributes(asList("Double"));
 			standard = roomTypeRepository.save(standard);
 
 			RoomType doubleStandard = new RoomType();
@@ -130,6 +135,7 @@ public class DatabasePopulator implements InitializingBean {
 			doubleStandard.setDailyRate(120.0);
 			doubleStandard.setMaxOccupancy(4);
 			doubleStandard.setImageId(5L);
+			doubleStandard.setAttributes(asList("Double", "Double"));
 			doubleStandard = roomTypeRepository.save(doubleStandard);
 
 			{

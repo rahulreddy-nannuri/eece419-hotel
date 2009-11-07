@@ -3,11 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <title>X-Reserve</title>
-        <link type="text/css" href="/static/css/redmond/jquery-ui-1.7.2.custom.css" rel="Stylesheet" />
+        <link rel="stylesheet" type="text/css" href="/static/css/redmond/jquery-ui-1.7.2.custom.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.autocomplete.css" />
         <link rel="stylesheet" type="text/css" href="/static/css/site.css" />
 
         <script type="text/javascript" src="/static/js/jquery-1.3.2.js"></script>
         <script type="text/javascript" src="/static/js/jquery-ui-1.7.2.custom.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.autocomplete.js"></script>
 
         <c:if test="${js != null}">
             <script type="text/javascript">

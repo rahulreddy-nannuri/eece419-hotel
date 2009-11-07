@@ -32,7 +32,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.imageId = imageId;
 	}
 
-	
+
 	@Column(nullable=false)
 	public Integer getMaxOccupancy() {
 		return maxOccupancy;
@@ -89,6 +89,20 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.attributes = attributes;
 	}
 
+	public static List<String> splitIntoAttributes(String joined) {
+		List<String> attributes = new ArrayList<String>();
+		if (joined != null) {
+			String[] parts = joined.split("[\n,]+");
+			for (String part : parts) {
+				part = part.trim();
+				if (!part.isEmpty()) {
+					attributes.add(part);
+				}
+			}
+		}
+		return attributes;
+	}
+
 	@Transient
 	public String getAttributesText() {
 		if (getAttributes() == null) return "";
@@ -96,7 +110,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		StringBuilder buf = new StringBuilder();
 		for (String ra : getAttributes()) {
 			if (buf.length() > 0) {
-				buf.append("\n");
+				buf.append(", ");
 			}
 			buf.append(ra);
 		}
@@ -104,15 +118,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 	}
 
 	public void setAttributesText(String text) {
-		attributes = new ArrayList<String>();
-		if (text != null) {
-			String[] parts = text.split("\n+");
-			for (String part : parts) {
-				part = part.trim();
-				if (part.length() > 0)
-					attributes.add(part);
-			}
-		}
+		attributes = splitIntoAttributes(text);
 	}
 
 }

@@ -5,11 +5,14 @@ import java.io.IOException;
 import javax.servlet.ServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
+import org.springframework.web.servlet.ModelAndView;
+
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.dao.ImageRepository;
 import ubc.eece419.pod1.entity.Image;
@@ -67,6 +70,19 @@ public class ImageController extends CRUDController<Image> {
 			response.setContentType("image/jpeg");
 		}
 		response.getOutputStream().write(image.getData());
+	}
+
+	@Override
+	public ModelAndView save(Image bound, BindingResult errors, String view) {
+		if (bound.getData() == null || bound.getData().length < 1) {
+			if (bound.isNewEntity()) {
+				errors.rejectValue("data", "image.isnull");
+			} else {
+				Image old = imageRepository.findById(bound.getId());
+				bound.setData(old.getData());
+			}
+		}
+		return super.save(bound, errors, view);
 	}
 
 }
