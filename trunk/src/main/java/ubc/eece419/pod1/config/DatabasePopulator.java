@@ -217,14 +217,19 @@ public class DatabasePopulator implements InitializingBean {
 			log.info("Database already has StayRecords, not adding defaults");
 		} else {
 			Calendar yesterday = Calendar.getInstance();
-			yesterday.add(Calendar.DAY_OF_MONTH, -1);
+			
+			
+			for (int i = 0; i <= 20; i++) {
+				yesterday.add(Calendar.DAY_OF_MONTH, -31);
+				StayRecord stayRecord = new StayRecord();
+				stayRecord.setUser(userRepository.loadUserByUsername("user"));
+				stayRecord.setRoom(roomRepository.findById(1));
+				stayRecord.setCheckInDate(yesterday.getTime());
+				stayRecord.setReservation(reservationRepository.findById(1));
+				stayRecordRepository.save(stayRecord);
 
-			StayRecord stayRecord = new StayRecord();
-			stayRecord.setUser(userRepository.loadUserByUsername("user"));
-			stayRecord.setRoom(roomRepository.findById(1));
-			stayRecord.setCheckInDate(yesterday.getTime());
-			stayRecord.setReservation(reservationRepository.findById(1));
-			stayRecordRepository.save(stayRecord);
+			}
+
 		}
 
 		if (imageRepository.findAll().size() > 0) {
