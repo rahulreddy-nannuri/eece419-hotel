@@ -4,7 +4,6 @@
 <c:set var="main" scope="request">
     <h2>Chart</h2>
     <p>This chart is for you to see</p>
-    <h3>Room Type: <c:out value="${getURL}" /></h3>
     <img src="${getURL}"
 		alt="Sample chart" 
 	/>
