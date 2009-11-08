@@ -29,7 +29,7 @@
 				/room/**=roomController
 				/roomtype=roomTypeController
 				/roomtype/**=roomTypeController
-				/reserve=reservationController
+				/reserve=reservationWizard
 				/reservation=reservationController
 				/reservation/**=reservationController
 				/checkin=checkInController
@@ -44,6 +44,18 @@
 				/ajax/**=ajaxController
 			</value>
 		</property>
+	</bean>
+
+	<bean id="reservationWizard" class="ubc.eece419.pod1.controller.ReservationWizardController">
+        <property name="pages">
+            <list>
+                <value>reservation/login</value>
+                <value>reservation/payment</value>
+                <value>reservation/confirmation</value>
+            </list>
+        </property>
+        <property name="commandName" value="reservation" />
+        <property name="commandClass" value="ubc.eece419.pod1.formcommand.ReservationForm" />
 	</bean>
 	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
@@ -63,6 +75,8 @@
 	<bean id="itemTypeController" class="ubc.eece419.pod1.controller.ItemTypeController" />
 	
 	<bean id="reservationController" class="ubc.eece419.pod1.controller.ReservationController" />
+	
+	<bean id="reservationWizardController" class="ubc.eece419.pod1.controller.ReservationWizardController" />
 	
 	<bean id="imageController" class="ubc.eece419.pod1.controller.ImageController" />
 	
