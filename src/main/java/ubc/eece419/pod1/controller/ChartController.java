@@ -46,53 +46,66 @@ public class ChartController {
 			"&amp;chg=9,12.5" +
 			"&amp;cht=lc");
 		
+		// get the total count per roomtype
+	    List<Object[]> li = StayRecordRepository.getReserveCountByMonth();
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		List<StayRecord> li = StayRecordRepository.findAll();
-		for (StayRecord rec : li) {
-			Integer temp = hm.get(rec.getRoom().getRoomType().getName());
+
+		for (Object[] row : li) {
+			System.out.println(row[0] + "," + row[1] + "," + row[2]);
+			Integer temp = hm.get(row[0].toString());
 			if(temp != null){
-				temp++;
-				hm.put(rec.getRoom().getRoomType().getName(), temp);
+				temp = temp + Integer.parseInt(row[2].toString()); //keep adding the counts
+				hm.put(row[0].toString(), temp);
 			}
 			else{
-				hm.put(rec.getRoom().getRoomType().getName(), 1);
+				hm.put(row[0].toString(), Integer.parseInt(row[2].toString()));
 			}
 		}
-		
+
+	    // Set chart legend
 	    Set set = hm.entrySet();
 	    Iterator i = set.iterator();
-	    // Set chart legend
 	    sb.append("&amp;chdl=");
 	    while(i.hasNext()){
 	      Map.Entry me = (Map.Entry)i.next();
 	      sb.append(me.getKey() + "|");
 	    }
 	    sb.deleteCharAt(sb.length()-1);
-	        
-	    // Set the reservation count per month
-	    List<Object[]> li2 = StayRecordRepository.getReserveCountByMonth();
-		HashMap<Integer, Integer> hm2 = new HashMap<Integer, Integer>();
-	    for (Object[] row : li2) { 
-	    	hm2.put(Integer.parseInt(row[0].toString()),Integer.parseInt(row[1].toString()));
-	    }
+	    
+	    // Set chart data
 	    sb.append("&amp;chd=t:");
-	    for (int x=1; x <= 12; x++){
-	    	if (hm2.get(x) == null){
-	    		sb.append("0,");
-	    	}
-	    	else{
-	    		sb.append(hm2.get(x)+",");
-	    	}
-	    }
-	    sb.deleteCharAt(sb.length()-1);
-	    
-	    
+	    int counter = 1;
+	    String current = li.get(0)[0].toString();
+		for (Object[] row : li) {
+			if (current != row[0].toString()){ //start of new roomtype data
+				sb.deleteCharAt(sb.length()-1);
+				sb.append("|");
+				current = row[0].toString();
+				counter = 1;
+			}
+			
+			while (Integer.parseInt(row[1].toString()) != counter && counter < 13){
+				sb.append(0 + ",");
+				System.out.println(counter +  ",0" );
+				counter++;
+				
+			}
+			sb.append(Integer.parseInt(row[2].toString()) * 2.5 + ","); //multiply data by 2 to account for scaling
+			System.out.println(counter +  "," +row[2]);
+			counter++;
+
+		}
+		sb.deleteCharAt(sb.length()-1);
+
+
 	    // Set the rest
-	    sb.append("&amp;chco=FF0000,00FF00,0000FF" +	
+	    sb.append("&amp;chco=FF0000,00FF00,0000FF" +
 				"&amp;chxt=x,x,y" +
 				"&amp;chxl=0:|Jan|Feb|March|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec|" +
-				"1:|2009|2010");
+				"1:|2009|2010|" +
+				"2:|0|5|10|15|20|25|30|35|40");
 	    System.out.println(sb.toString());
 		return sb.toString();
 	}
+	
 }

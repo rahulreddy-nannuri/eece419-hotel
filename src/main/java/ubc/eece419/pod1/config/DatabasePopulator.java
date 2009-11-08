@@ -229,7 +229,37 @@ public class DatabasePopulator implements InitializingBean {
 				stayRecordRepository.save(stayRecord);
 
 			}
+			for (int i = 0; i <= 50; i++) {
+				yesterday.add(Calendar.DAY_OF_WEEK_IN_MONTH, -10);
+				StayRecord stayRecord = new StayRecord();
+				stayRecord.setUser(userRepository.loadUserByUsername("user"));
+				stayRecord.setRoom(roomRepository.findById(1));
+				stayRecord.setCheckInDate(yesterday.getTime());
+				stayRecord.setReservation(reservationRepository.findById(1));
+				stayRecordRepository.save(stayRecord);
 
+			}
+
+			for (int i = 0; i <= 20; i++) {
+				yesterday.add(Calendar.WEEK_OF_YEAR, -2);
+				StayRecord stayRecord = new StayRecord();
+				stayRecord.setUser(userRepository.loadUserByUsername("user"));
+				stayRecord.setRoom(roomRepository.findById(2));
+				stayRecord.setCheckInDate(yesterday.getTime());
+				stayRecord.setReservation(reservationRepository.findById(2));
+				stayRecordRepository.save(stayRecord);
+
+			}
+			for (int i = 0; i <= 50; i++) {
+				yesterday.add(Calendar.DAY_OF_MONTH, -20);
+				StayRecord stayRecord = new StayRecord();
+				stayRecord.setUser(userRepository.loadUserByUsername("user"));
+				stayRecord.setRoom(roomRepository.findById(2));
+				stayRecord.setCheckInDate(yesterday.getTime());
+				stayRecord.setReservation(reservationRepository.findById(2));
+				stayRecordRepository.save(stayRecord);
+
+			}
 		}
 
 		if (imageRepository.findAll().size() > 0) {
