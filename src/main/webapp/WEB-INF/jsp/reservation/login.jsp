@@ -3,27 +3,23 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 	<h2>Login</h2>
-    <form action="j_spring_security_check" class="std-form">
+    <form action="reserve" class="std-form" method="post">
         <fieldset>
         <ul>
             <c:if test="${login_error == 1}">
                 <li><p class="error">login failed</p></li>
             </c:if>
             <li>
-	            <label for="j_username">Username:</label>
-	            <input type="text" name="j_username" id="j_username"/>
+	            <label for="username">Username:</label>
+	            <input type="text" name="username" id="username"/>
           	</li>
           	<li>
-	            <label for="j_password">Password:</label>
-	            <input type="password" name="j_password" id="j_password"/>
+	            <label for="password">Password:</label>
+	            <input type="password" name="password" id="password"/>
 	        </li>
-            <li class="checkbox">
-            	<input type='checkbox' name='_spring_security_remember_me'/>
-            	<label for="_spring_security_remember_me">Remember me</label>
-            </li>
         </ul>
-        <input type="hidden" name="spring-security-redirect" value="/reserve" />
-        <input type="submit" value="Login"/>
+        <input type="submit" value="Login" name="_target1" />
+        <input type="submit" value="Cancel" name="_cancel" />
         </fieldset>
     </form>
 </c:set>

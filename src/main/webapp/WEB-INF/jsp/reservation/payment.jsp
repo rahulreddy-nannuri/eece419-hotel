@@ -3,7 +3,7 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 	<h2>Payment Details</h2>
-	<form action="reserve" class="std-form payment">
+	<form action="reserve" class="std-form payment" method="post">
         <fieldset>
         <ul>
             <li>
@@ -45,9 +45,8 @@
 	        	</select>
 	        </li>
         </ul>
-        <input type="hidden" name="state" value="<c:out value="${state + 1}" />" />
-        <input type="hidden" name="type" value="<c:out value="${type}" />" />
-        <input type="submit" value="Reserve"/>
+        <input type="submit" value="Reserve" name="_target2" />
+        <input type="submit" value="Cancel" name="_cancel" />
         </fieldset>
     </form>
 </c:set>
