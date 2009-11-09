@@ -7,13 +7,17 @@
 	<ul class="room-list">
 		<c:forEach items="${roomTypes}" var="rmt" varStatus="idx">
 			<li class="row${idx.index % 2}">
-				<h3>Room Type: <c:out value="${rmt.name}" /></h3>
-				<p>Occupancy: <c:out value="${rmt.maxOccupancy}" /></p>
-				<p>Rate: <c:out value="${rmt.dailyRate}" /></p>
-				<p><c:out value="${rmt.description}" /></p>
-				<c:if test="${rmt.imageId > 0}">
-					<img class="thumbnail" src="/image/view?id=${rmt.imageId}" alt="image of the room type" />
-				</c:if>
+				<div class="image">
+					<c:if test="${rmt.imageId > 0}">
+						<img class="thumbnail" src="/image/view?id=${rmt.imageId}" alt="image of the room type" />
+					</c:if>
+				</div>
+				<div class="description">
+					<h3>Room Type: <c:out value="${rmt.name}" /></h3>
+					<p>Occupancy: <c:out value="${rmt.maxOccupancy}" /></p>
+					<p>Rate: <c:out value="${rmt.dailyRate}" /></p>
+					<p><c:out value="${rmt.description}" /></p>
+				</div>
 
 				<ul class="nav">
 					<li><a href="/roomtype/edit?id=<c:out value="${rmt.id}" />">Edit</a></li>
