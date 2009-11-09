@@ -2,7 +2,17 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-	<h2>Reservation Complete</h2>
+	<c:choose>
+		<c:when test="${errors != null}">
+			<h2>Reservation Failed</h2>
+			<p>There are no available rooms matching your reservation criteria. 
+			Please perform another search to make a new reservation.</p>
+		</c:when>
+		<c:otherwise>
+			<h2>Reservation Complete</h2>
+			<p>You're reservation has been submitted for processing.</p>
+		</c:otherwise>
+	</c:choose>
 </c:set>
 
 <%-- use the default room sidebar --%>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 
@@ -77,23 +78,39 @@ public class ReservationWizardController extends AbstractWizardFormController {
 		// since this isn't a CRUDController, we have to pass the currentuser ourselves
 		model.put("currentuser", SecurityUtils.getCurrentUserOrNull());
 		
+		// add errors if they exist
+		if(errors.hasErrors()) {
+			model.put("errors", errors);
+		}
+		
 		return model;
 	}
 	
 	protected void postProcessPage(HttpServletRequest request, 
 			Object reservationData, Errors errors, int page) {
 		
-		// check to see if we have data from the login page
-		if(page == 0) {
-			ReservationForm reservationForm = (ReservationForm) reservationData;
-			
-			String username = reservationForm.getUsername();
-			String password = reservationForm.getPassword();
-			// load real user so we can get the proper role
-			User realUser = userRepository.loadUserByUsername(username);
-			// setup our dummy user for login
-			User user = new User(username, password, realUser.getRoles());
-			SecurityUtils.login(user);
+		if(!errors.hasErrors()) {
+			// check to see if we have data from the login page
+			if(page == 0) {
+				ReservationForm reservationForm = (ReservationForm) reservationData;
+				
+				String username = reservationForm.getUsername();
+				String password = reservationForm.getPassword();
+				// load real user so we can get the proper role
+				User realUser = userRepository.loadUserByUsername(username);
+				// setup our dummy user for login
+				User user = new User(username, password, realUser.getRoles());
+				SecurityUtils.login(user);
+			}
+		}
+	}
+	
+	@Override
+	protected void validatePage(Object reservationData, Errors errors, int page) {
+		switch(page) {
+		case 0: // login
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "username.isnull");
+			break;
 		}
 	}
 	
@@ -123,11 +140,20 @@ public class ReservationWizardController extends AbstractWizardFormController {
 		
 		reservation.setPrice(reservationForm.getPrice());
 		
-		// save the new reservation
-		reservationRepository.save(reservation);
-		
 		// create our model for the view
 		Map<String, Object> model = new HashMap<String, Object>();
+		
+		// double check that there are available rooms
+		int available = roomTypeRepository.numberAvailable(roomType, checkIn, checkOut);
+		
+		if(available <= 0) {
+			errors.reject("roomtype.notavailable", "There are no available rooms for the given date range.");
+			model.put("errors", errors);
+		} else {
+			// save the new reservation
+			reservationRepository.save(reservation);
+		}
+		
 		model.put("reservation", reservationData);
 		model.put("page", 3);
 		model.put("currentuser", SecurityUtils.getCurrentUserOrNull());
