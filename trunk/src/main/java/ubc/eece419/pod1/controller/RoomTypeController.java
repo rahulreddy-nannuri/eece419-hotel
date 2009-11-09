@@ -105,15 +105,16 @@ public class RoomTypeController extends CRUDController<RoomType> {
 	public ModelAndView search(Search search, Errors errors) {
 		List<RoomType> filtered = roomTypeRepository.findByPriceAndOccupancyAndAttributes(search.getMinPrice(), search.getMaxPrice(), search.getOccupancy(), search.getAttributeMap());
 
-		Map<RoomType, Integer> availablity = new HashMap<RoomType, Integer>();
+		Map<RoomType, Integer> availability = new HashMap<RoomType, Integer>();
 		for (RoomType type : filtered) {
-			availablity.put(type, roomTypeRepository.numberAvailable(type, search.checkIn, search.checkOut));
+			int numberAvailable = roomTypeRepository.numberAvailable(type, search.checkIn, search.checkOut);
+			availability.put(type, numberAvailable);
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("roomTypes", filtered);
 		model.put("search", search);
-		model.put("available", availablity);
+		model.put("available", availability);
 
 		return new ModelAndView(basePath + "/search", model);
 	}

@@ -6,7 +6,7 @@
     <form action="reserve" class="std-form" method="post">
         <fieldset>
         <ul>
-            <c:if test="${login_error == 1}">
+            <c:if test="${errors != null}">
                 <li><p class="error">login failed</p></li>
             </c:if>
             <li>
