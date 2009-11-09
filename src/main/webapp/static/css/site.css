@@ -152,6 +152,20 @@ ul.room-list {
 ul.room-list li {
 	margin: 0;
 	padding: 4px 5px;
+	float: left;
+	width: 100%;
+}
+
+ul.room-list li div.image {
+	float: left;
+	border: none;
+	margin: 5px;
+}
+
+ul.room-list li div.description {
+	float: left;
+	padding: 0 10px;
+	max-width: 65%;
 }
 
 ul.room-list li.row1 {
@@ -162,7 +176,7 @@ ul.room-list li h3 {
 	margin: 0;
 }
 
-ul.room-list li>p {
+ul.room-list li div.description>p {
 	margin: 0;
 }
 
@@ -170,7 +184,8 @@ ul.room-list li ul.nav {
 	display: none;
 	list-style: none;
 	float: right;
-	margin-top: -20px;
+	margin-top: -30px;
+	width: 100%;
 }
 
 ul.room-list li:hover ul.nav {
@@ -179,6 +194,8 @@ ul.room-list li:hover ul.nav {
 
 ul.room-list ul.nav li {
 	display: inline;
+	width: auto;
+	float: right;
 }
 
 #sidebar li.current {
