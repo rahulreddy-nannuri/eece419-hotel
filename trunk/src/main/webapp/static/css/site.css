@@ -215,7 +215,7 @@ div.image{
 	border-color:#ccf;
 }
 
-div.image:hover{
+#image-select .image:hover {
 	cursor:pointer;
 	position:relative;
 	left:-5px;
@@ -223,14 +223,14 @@ div.image:hover{
 	border-color:#99c;
 }
 
-div.image:active{
+#image-select .image:active {
 	position:relative;
 	left:3px;
 	top:3px;
 	background-color:#336;
 }
 
-div.image p{
+div.image p {
 	text-align:center;
 }
 
