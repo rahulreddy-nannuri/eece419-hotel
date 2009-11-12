@@ -231,33 +231,33 @@ public class DatabasePopulator implements InitializingBean {
 			}
 			for (int i = 0; i <= 50; i++) {
 				yesterday.add(Calendar.DAY_OF_WEEK_IN_MONTH, -10);
-				StayRecord stayRecord = new StayRecord();
-				stayRecord.setUser(userRepository.loadUserByUsername("user"));
-				stayRecord.setRoom(roomRepository.findById(1));
-				stayRecord.setCheckInDate(yesterday.getTime());
-				stayRecord.setReservation(reservationRepository.findById(1));
-				stayRecordRepository.save(stayRecord);
+				StayRecord stayRecord1 = new StayRecord();
+				stayRecord1.setUser(userRepository.loadUserByUsername("user"));
+				stayRecord1.setRoom(roomRepository.findById(1));
+				stayRecord1.setCheckInDate(yesterday.getTime());
+				stayRecord1.setReservation(reservationRepository.findById(1));
+				stayRecordRepository.save(stayRecord1);
 
 			}
 
 			for (int i = 0; i <= 20; i++) {
 				yesterday.add(Calendar.WEEK_OF_YEAR, -2);
-				StayRecord stayRecord = new StayRecord();
-				stayRecord.setUser(userRepository.loadUserByUsername("user"));
-				stayRecord.setRoom(roomRepository.findById(2));
-				stayRecord.setCheckInDate(yesterday.getTime());
-				stayRecord.setReservation(reservationRepository.findById(2));
-				stayRecordRepository.save(stayRecord);
+				StayRecord stayRecord11 = new StayRecord();
+				stayRecord11.setUser(userRepository.loadUserByUsername("user"));
+				stayRecord11.setRoom(roomRepository.findById(2));
+				stayRecord11.setCheckInDate(yesterday.getTime());
+				stayRecord11.setReservation(reservationRepository.findById(2));
+				stayRecordRepository.save(stayRecord11);
 
 			}
 			for (int i = 0; i <= 50; i++) {
 				yesterday.add(Calendar.DAY_OF_MONTH, -20);
-				StayRecord stayRecord = new StayRecord();
-				stayRecord.setUser(userRepository.loadUserByUsername("user"));
-				stayRecord.setRoom(roomRepository.findById(2));
-				stayRecord.setCheckInDate(yesterday.getTime());
-				stayRecord.setReservation(reservationRepository.findById(2));
-				stayRecordRepository.save(stayRecord);
+				StayRecord stayRecord111 = new StayRecord();
+				stayRecord111.setUser(userRepository.loadUserByUsername("user"));
+				stayRecord111.setRoom(roomRepository.findById(2));
+				stayRecord111.setCheckInDate(yesterday.getTime());
+				stayRecord111.setReservation(reservationRepository.findById(2));
+				stayRecordRepository.save(stayRecord111);
 
 			}
 		}

@@ -45,7 +45,7 @@ public class ChartController {
 
 		sb.append("http://chart.apis.google.com/chart?" +
 			"chs=500x300" +
-			"&amp;chtt=Reservation+Per+RoomTypes|For+Different+Seasons" +
+			"&amp;chtt=Reservation+Per+RoomTypes|For+Different+Months" +
 			"&amp;chg=9,12.5" +
 			"&amp;cht=lc");
 		
@@ -53,13 +53,13 @@ public class ChartController {
 		
 		StringBuffer color = new StringBuffer();
 	    sb.append("&amp;chdl=");
-	    List<Object[]> li = StayRecordRepository.getReserveCountByMonth();
+	    List<Object[]> li = StayRecordRepository.getReserveCountByMonthByType();
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		int range = 16777215;
 		Random rand;
 		
 		for (Object[] row : li) {
-			System.out.println(row[0] + "," + row[1] + "," + row[2]);
+			//System.out.println(row[0] + "," + row[1] + "," + row[2]);
 			Integer temp = hm.get(row[0].toString());
 			if(temp != null){
 				temp = temp + Integer.parseInt(row[2].toString()); //keep adding the counts
@@ -81,11 +81,14 @@ public class ChartController {
 	    sb.append("&amp;chd=t:"); 
 	    int counter = 1;
 	    String current = li.get(0)[0].toString();
+	    
 		for (Object[] row : li) {
 			if (current != row[0].toString()){ //start of new roomtype data
 				while (counter < 13){
 					sb.append(0 + ",");
+					//System.out.println(counter +  ",0" );
 					counter++;
+					
 				}
 				sb.deleteCharAt(sb.length()-1);
 				sb.append("|");
@@ -107,6 +110,12 @@ public class ChartController {
 			}
 
 		}
+		while (counter < 13){
+			sb.append(0 + ",");
+			//System.out.println(counter +  ",0" );
+			counter++;
+			
+		}
 		sb.deleteCharAt(sb.length()-1);
 
 
@@ -118,6 +127,59 @@ public class ChartController {
 				"2:|0|5|10|15|20|25|30|35|40");
 	    System.out.println(sb.toString());
 		return sb.toString();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@ModelAttribute("getURL2")
+	public String getURL2() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("http://chart.apis.google.com/chart?" +
+			"chs=500x300" +
+			"&amp;chtt=Total+Reservations+Per+Months" +
+			"&amp;chg=100,12.5" +
+			"&amp;cht=bvg");
+	
+	    List<Object[]> li = StayRecordRepository.getReserveCountByMonth();
+		HashMap<String, Integer> hm = new HashMap<String, Integer>();
+
+	    
+	    // Set chart data
+	    sb.append("&amp;chd=t:"); 
+	    int counter = 1;
+	    int current = 0;
+		for (Object[] row : li) {
+			//System.out.println(row[0] + "," + row[1] +"ffffffffffffffff");
+			current = Integer.parseInt(row[0].toString());
+			while(counter != current && counter < 13){
+				sb.append("0,");
+				//System.out.println(counter + ",0");
+				counter++;
+			}
+			if (counter < 13){
+				sb.append(Integer.parseInt(row[1].toString()) * 2.5 + ",");
+				counter++;
+			}
+			
+			
+		}
+		while(counter < 13){
+			sb.append("0,");
+			//System.out.println(counter + ",0");
+			counter++;
+		}
+		sb.deleteCharAt(sb.length()-1);
+
+
+	    // Set the rest
+	    sb.append("&amp;chxt=x,y" +
+				"&amp;chxl=0:|Jan|Feb|March|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec|" +
+				"1:|0|5|10|15|20|25|30|35|40");
+	    //System.out.println(sb.toString());
+		return sb.toString();
+		
+	
 	}
 	
 }
