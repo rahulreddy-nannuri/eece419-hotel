@@ -41,7 +41,7 @@
 							</c:when>
 							<c:otherwise>
 								<%-- register customer --%>
-								<li><a href="#">TODO: Bookings</a></li>
+								<li><a href="/reservation/view?userId=${currentuser.id}">Bookings</a></li>
 							</c:otherwise>
 						</c:choose>
 					</ul>

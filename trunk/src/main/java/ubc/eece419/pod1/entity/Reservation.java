@@ -14,17 +14,20 @@ import javax.persistence.Transient;
 
 @Entity
 @NamedQueries({
-@NamedQuery(name="Reservation.findUncheckedInReservationsByUser",
-            query="SELECT r " +
-                  "FROM Reservation r " +
-                  "WHERE r.user = :user " +
-                  "AND r NOT IN ( SELECT s.reservation "+
-				  "					FROM StayRecord s "+
-				  "					WHERE s.user = :user )")
+	@NamedQuery(name = "Reservation.findUncheckedInReservationsByUser",
+	query = "SELECT r " +
+	"FROM Reservation r " +
+	"WHERE r.user = :user " +
+	"AND r NOT IN ( SELECT s.reservation " +
+	"					FROM StayRecord s " +
+	"					WHERE s.user = :user )"),
+	@NamedQuery(name = "Reservation.findReservationsByUser",
+	query = "SELECT r FROM Reservation r "+
+			"WHERE r.user= :user")
 })
 public class Reservation extends AbstractEntity<Reservation> implements Billable {
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private Double price;
 	private RoomType roomType;
