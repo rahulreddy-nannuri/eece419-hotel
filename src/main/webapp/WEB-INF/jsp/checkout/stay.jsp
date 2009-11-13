@@ -1,24 +1,25 @@
 <%@include file="/WEB-INF/jsp/include.jsp"%>
-
+<c:set var="js" scope="request">
+	<jsp:include page="/WEB-INF/jsp/ajax/form.js" />
+</c:set>
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 
 
 	<h3>Select Stay Record</h3>
-	<form:form commandName="checkout" cssClass="std-form">
+	<form:form id="stayRecord" commandName="checkout" cssClass="std-form">
 		<fieldset>
 			<form:errors cssClass="error" path="*" />
-			<ol>
-				<c:forEach var="stayRecords" items="${checkout.stayRecords}">
-					<li>
-						${stayRecords.description}<form:radiobutton path="selectedStayRecord" value="${stayRecords.id}" />
+			<form:hidden path="selectedStayRecord" />
+			 <ul class="room-list">
+				 <c:forEach var="stayRecord" items="${checkout.stayRecords}" varStatus="idx">
+					<li class="row${idx.index % 2}">
+						<a onClick="submitForm('stayRecord','selectedStayRecord','${stayRecord.id}')">${stayRecord.description}</a>
+		
 					</li>
 				</c:forEach>
-			</ol>
+			 </ul>
 			<input type="submit" value="Back" name="_target0"/>
-			<c:if test="${fn:length(checkout.stayRecords)>0}">
-				<input type="submit" value="Check Out" name="_finish"/>
-			</c:if>
 		</fieldset>
 	</form:form>
 </c:set>
