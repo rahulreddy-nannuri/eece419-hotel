@@ -2,16 +2,21 @@ package ubc.eece419.pod1.controller;
 
 import java.text.SimpleDateFormat;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ubc.eece419.pod1.dao.ReservationRepository;
+import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Reservation;
+import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.validator.ReflectionEntityValidator;
 
@@ -19,10 +24,11 @@ import ubc.eece419.pod1.validator.ReflectionEntityValidator;
 @Controller
 public class ReservationController extends CRUDController<Reservation> {
 
-	String[] reservationStateViews = new String[] { "login", "payment", "confirmation", "complete" };
-
+	String[] reservationStateViews = new String[]{"login", "payment", "confirmation", "complete"};
 	@Autowired
 	ReservationRepository reservationRepository;
+	@Autowired
+	UserRepository userRepository;
 
 	@ModelAttribute("dateFormat")
 	public SimpleDateFormat exposeDateFormat() {
@@ -56,4 +62,15 @@ public class ReservationController extends CRUDController<Reservation> {
 		return super.save(bound, errors, view);
 	}
 
+	@RequestMapping("**/view")
+	public ModelAndView view(@RequestParam(value = "userId", required = false) Long userId) {
+		List<Reservation> reservations = null;
+		if (userId == null) {
+			reservations = reservationRepository.findAll();
+		} else {
+			User user = userRepository.findById(userId);
+			reservations = reservationRepository.findReservationsByUser(user);
+		}
+		return new ModelAndView("reservation/view", "reservations", reservations);
+	}
 }
