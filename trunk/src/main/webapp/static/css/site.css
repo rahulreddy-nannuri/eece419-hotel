@@ -1,11 +1,17 @@
 /* overall site css */
 
+a{
+	color:blue;
+}
+
 a:link,a:visited {
 	color: #3333ff;
+
 }
 
 a:hover {
 	color: rgb(113, 142, 255);
+	cursor:pointer;
 }
 
 body,html {
