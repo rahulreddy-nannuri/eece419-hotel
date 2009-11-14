@@ -2,12 +2,11 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-    <h2>Graphs</h2>
-    <p>This graph displays total reservations per month for different types of rooms</p>
+    <p>This graph displays total reservations per month for different types of rooms for the current year</p>
     <img src="${getURL}"
 	/>
-	
-    <p>This graph displays total reservations per month for the past year</p>
+	<p>&nbsp &nbsp</p>
+    <p>This graph displays total reservations per month for the current year</p>
     <img src="${getURL2}"
 	/>
 </c:set>
