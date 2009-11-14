@@ -219,8 +219,8 @@ public class DatabasePopulator implements InitializingBean {
 			Calendar yesterday = Calendar.getInstance();
 			
 			
-			for (int i = 0; i <= 20; i++) {
-				yesterday.add(Calendar.DAY_OF_MONTH, -31);
+			for (int i = 0; i <= 10; i++) {
+				yesterday.add(Calendar.DAY_OF_MONTH, -1);
 				StayRecord stayRecord = new StayRecord();
 				stayRecord.setUser(userRepository.loadUserByUsername("user"));
 				stayRecord.setRoom(roomRepository.findById(1));
@@ -229,8 +229,8 @@ public class DatabasePopulator implements InitializingBean {
 				stayRecordRepository.save(stayRecord);
 
 			}
-			for (int i = 0; i <= 50; i++) {
-				yesterday.add(Calendar.DAY_OF_WEEK_IN_MONTH, -10);
+			for (int i = 0; i <= 10; i++) {
+				yesterday.add(Calendar.DAY_OF_MONTH, -3);
 				StayRecord stayRecord1 = new StayRecord();
 				stayRecord1.setUser(userRepository.loadUserByUsername("user"));
 				stayRecord1.setRoom(roomRepository.findById(1));
@@ -241,7 +241,7 @@ public class DatabasePopulator implements InitializingBean {
 			}
 
 			for (int i = 0; i <= 20; i++) {
-				yesterday.add(Calendar.WEEK_OF_YEAR, -2);
+				yesterday.add(Calendar.DAY_OF_MONTH, -10);
 				StayRecord stayRecord11 = new StayRecord();
 				stayRecord11.setUser(userRepository.loadUserByUsername("user"));
 				stayRecord11.setRoom(roomRepository.findById(2));
@@ -250,8 +250,8 @@ public class DatabasePopulator implements InitializingBean {
 				stayRecordRepository.save(stayRecord11);
 
 			}
-			for (int i = 0; i <= 50; i++) {
-				yesterday.add(Calendar.DAY_OF_MONTH, -20);
+			for (int i = 0; i <= 10; i++) {
+				yesterday.add(Calendar.DAY_OF_MONTH, -15);
 				StayRecord stayRecord111 = new StayRecord();
 				stayRecord111.setUser(userRepository.loadUserByUsername("user"));
 				stayRecord111.setRoom(roomRepository.findById(2));

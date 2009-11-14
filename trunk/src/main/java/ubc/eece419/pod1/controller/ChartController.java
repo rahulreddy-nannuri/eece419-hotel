@@ -121,10 +121,9 @@ public class ChartController {
 
 	    // Set the rest
 	    sb.append("&amp;chco=" + color.toString() +
-				"&amp;chxt=x,x,y" +
+				"&amp;chxt=x,y" +
 				"&amp;chxl=0:|Jan|Feb|March|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec|" +
-				"1:|2009|2010|" +
-				"2:|0|5|10|15|20|25|30|35|40");
+				"1:|0|5|10|15|20|25|30|35|40");
 	    System.out.println(sb.toString());
 		return sb.toString();
 	}
