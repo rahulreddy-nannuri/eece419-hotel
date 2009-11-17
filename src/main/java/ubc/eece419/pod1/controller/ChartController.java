@@ -9,11 +9,13 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 
+import ubc.eece419.pod1.controller.RoomTypeController.Search;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.entity.RoomType;
@@ -23,19 +25,30 @@ import ubc.eece419.pod1.security.SecurityUtils;
 
 public class ChartController {
 
+	static int year;
 	@Autowired
 	RoomTypeRepository roomTypeRepository;
 	
 	@Autowired
 	StayRecordRepository StayRecordRepository;
 	
+	@RequestMapping("/**/index")
+	public ModelAndView index(){
+		ModelAndView mav = new ModelAndView("chart/index");
+		mav.addObject("currentuser", SecurityUtils.getCurrentUserOrNull());
+		mav.addObject("search", new RoomTypeController.Search());
+		return mav;
+	}
+	
 	@RequestMapping("/**/view")
-	public ModelAndView index() {
+	public ModelAndView index(String year){
+		ChartController.year = Integer.parseInt(year);
 		ModelAndView mav = new ModelAndView("chart/view");
 		mav.addObject("currentuser", SecurityUtils.getCurrentUserOrNull());
 		mav.addObject("search", new RoomTypeController.Search());
 		return mav;
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@ModelAttribute("getURL")
@@ -53,7 +66,9 @@ public class ChartController {
 		
 		StringBuffer color = new StringBuffer();
 	    sb.append("&amp;chdl=");
-	    List<Object[]> li = StayRecordRepository.getReserveCountByMonthByType();
+	    List<Object[]> li = StayRecordRepository.getReserveCountByMonthByType(ChartController.year);
+	    if (li.size() == 0){ return "";}
+	    
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		int range = 16777215;
 		Random rand;
@@ -140,7 +155,8 @@ public class ChartController {
 			"&amp;chg=100,12.5" +
 			"&amp;cht=bvg");
 	
-	    List<Object[]> li = StayRecordRepository.getReserveCountByMonth();
+	    List<Object[]> li = StayRecordRepository.getReserveCountByMonth(ChartController.year);
+	    if (li.size() == 0){ return "";}
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 
 	    
