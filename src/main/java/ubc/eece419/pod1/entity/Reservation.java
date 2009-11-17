@@ -12,6 +12,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "Reservation.findUncheckedInReservationsByUser",
@@ -28,12 +31,28 @@ import javax.persistence.Transient;
 public class Reservation extends AbstractEntity<Reservation> implements Billable {
 
 	private static final long serialVersionUID = 1L;
-	private String name;
 	private Double price;
 	private RoomType roomType;
 	private Date checkIn;
 	private Date checkOut;
 	private User user;
+
+	protected Reservation() {
+		// JPA ctor.
+	}
+
+	public Reservation(User user, RoomType roomType, Date checkIn, Date checkOut) {
+		this.user = user;
+		this.roomType = roomType;
+		this.checkIn = checkIn;
+		this.checkOut = checkOut;
+		this.price = calculatePrice(roomType, checkIn, checkOut);
+	}
+
+	public static double calculatePrice(RoomType roomType, Date checkIn, Date checkOut) {
+		Days duration = Days.daysBetween(new DateTime(checkIn), new DateTime(checkOut));
+		return roomType.getDailyRate() * duration.getDays();
+	}
 
 	@JoinColumn(nullable = false)
 	@ManyToOne
@@ -77,13 +96,11 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.price = Price;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	@Transient
 	@Override
 	public String getName() {
-		return name;
+		Days duration = Days.daysBetween(new DateTime(checkIn), new DateTime(checkOut));
+		return duration.getDays() + "-day reservation";
 	}
 
 	@Override

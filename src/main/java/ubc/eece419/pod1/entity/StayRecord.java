@@ -1,8 +1,10 @@
 package ubc.eece419.pod1.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -10,17 +12,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 @Entity
 public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
-
 	private static final long serialVersionUID = 7095043273136850580L;
-	Date checkInDate;
-	Date checkOutDate;
-	String billDescription;
-	String billName;
-	Room room;
-	User user;
-	Reservation reservation;
+
+	private Date checkInDate;
+	private Date checkOutDate;
+	private Room room;
+	private User user;
+	private Reservation reservation;
 
 	@JoinColumn(nullable = false)
 	@ManyToOne
@@ -33,7 +36,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	}
 
 	@JoinColumn(nullable = false)
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	public Room getRoom() {
 		return room;
 	}
@@ -61,7 +64,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	}
 
 	@JoinColumn(nullable = false)
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	public Reservation getReservation() {
 		return reservation;
 	}
@@ -73,21 +76,21 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	@Override
 	@Transient
 	public String getDescription() {
-		return calculateDuration() + " night(s) stay at " + room.getRoomType().getName();
+		SimpleDateFormat fmt = new SimpleDateFormat("MMM d, yyyy"); // matches the default <fmt:formatDate>
+		return "#" + room.getNumber() + " (" + fmt.format(startDate()) + " - " + fmt.format(endDate()) + ")";
 	}
 
 	@Override
 	@Transient
 	public String getName() {
-		return "stay record for reservation " + reservation.getName();
+		Days duration = Days.daysBetween(new DateTime(startDate()), new DateTime(endDate()));
+		return duration.getDays() + "-day stay";
 	}
 
 	@Override
 	@Transient
 	public Double getPrice() {
-		int nights=calculateDuration();
-		double cost=nights*reservation.getRoomType().getDailyRate();
-		return cost;
+		return getReservation().getPrice();
 	}
 
 	@Transient
@@ -95,18 +98,11 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 		return checkOutDate != null;
 	}
 
-	private int calculateDuration() {
-		int nights;
-		Date in;
-		Date out;
-		if (isCheckedOut()) {
-			in = checkInDate;
-			out = checkOutDate;
-		} else {
-			in = reservation.getCheckIn();
-			out = reservation.getCheckOut();
-		}
-		nights = (int) ((out.getTime() - in.getTime()) / 1000 / 3600 / 24);
-		return nights;
+	private Date startDate() {
+		return isCheckedOut() ? checkInDate : reservation.getCheckIn();
+	}
+
+	private Date endDate() {
+		return isCheckedOut() ? checkOutDate : reservation.getCheckOut();
 	}
 }

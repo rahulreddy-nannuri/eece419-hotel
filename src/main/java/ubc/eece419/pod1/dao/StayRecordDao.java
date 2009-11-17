@@ -15,16 +15,16 @@ public class StayRecordDao extends GenericDao<StayRecord> implements StayRecordR
 		q.setParameter("user", user);
 		return q.getResultList();
 	}
-	
 
+
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getReserveCountByMonthByType(int year) {
-		System.out.println("**********" + year);
 		Query q=em.createQuery("select sr.room.roomType.name, month(sr.checkInDate), count(*) from StayRecord sr where year(sr.checkInDate) = :year group by month(sr.checkInDate),sr.room.roomType.name order by sr.room.roomType.name, month(sr.checkInDate) asc").setParameter("year", year);
 		return q.getResultList();
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getReserveCountByMonth(int year) {
-		System.out.println("**********" + year);
 		Query q=em.createQuery("select month(sr.checkInDate), count(*) from StayRecord sr where year(sr.checkInDate) = :year group by month(sr.checkInDate) order by month(sr.checkInDate) asc").setParameter("year", year);
 		return q.getResultList();
 	}

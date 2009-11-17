@@ -65,12 +65,7 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		return SecurityUtils.getCurrentUserOrNull();
 	}
 
-	@RequestMapping("/**/")
-	public ModelAndView index() {
-		return redirectToListView();
-	}
-
-	@RequestMapping("/**/list")
+	@RequestMapping({ "/**/", "/**/list" })
 	public ModelAndView list() {
 		log.info("list " + getEntityName());
 		List<T> models = getRepository().findAll();

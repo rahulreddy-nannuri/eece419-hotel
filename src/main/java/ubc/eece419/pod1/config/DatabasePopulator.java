@@ -6,16 +6,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-
 import ubc.eece419.pod1.dao.ImageRepository;
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomRepository;
@@ -36,7 +35,7 @@ public class DatabasePopulator implements InitializingBean {
 
 	private List<User> usersToCreate = new ArrayList<User>();
 
-	private Resource pentHouseImage;
+	private Resource penthouseImage;
 	private Resource doubleBedImage;
 	private Resource singleBedImage;
 	private Resource studentBedImage;
@@ -55,8 +54,8 @@ public class DatabasePopulator implements InitializingBean {
 	@Autowired
 	ImageRepository imageRepository;
 
-	public void setPentHouseImage(Resource pentHouseImage) {
-		this.pentHouseImage = pentHouseImage;
+	public void setPenthouseImage(Resource penthouseImage) {
+		this.penthouseImage = penthouseImage;
 	}
 
 	public void setDoubleBedImage(Resource doubleBedImage) {
@@ -176,89 +175,43 @@ public class DatabasePopulator implements InitializingBean {
 		}
 
 		if (reservationRepository.findAll().size() > 0) {
-			log.info("Database already has StayRecords, not adding defaults");
+			log.info("Database already has Reservations, not adding defaults");
 		} else {
-			Calendar today = Calendar.getInstance();
-			Calendar tomorrow = Calendar.getInstance();
-			tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+			DateTime checkIn = new DateTime().minusDays(500);
+			User user = userRepository.loadUserByUsername("sampledata");
 
-			RoomType roomType = roomTypeRepository.findById(1);
-			User user = userRepository.loadUserByUsername("user");
-			Reservation reservation = new Reservation();
-			reservation.setCheckIn(today.getTime());
-			reservation.setCheckOut(tomorrow.getTime());
-			reservation.setName("Reservation 1");
-			reservation.setPrice(750.0);
-			reservation.setRoomType(roomType);
-			reservation.setUser(user);
-			reservationRepository.save(reservation);
+			RoomType roomType1 = roomTypeRepository.findById(1);
+			RoomType roomType2 = roomTypeRepository.findById(3);
 
-			reservation = new Reservation();
-			reservation.setCheckIn(today.getTime());
-			reservation.setCheckOut(tomorrow.getTime());
-			reservation.setName("Reservation 2");
-			reservation.setPrice(750.0);
-			reservation.setRoomType(roomType);
-			reservation.setUser(user);
-			reservationRepository.save(reservation);
+			while(checkIn.isBefore(new DateTime().plusWeeks(1))) {
+				DateTime checkOut = checkIn.plusDays((int) Math.ceil(Math.random() * 4));
 
-			reservation = new Reservation();
-			roomType = roomTypeRepository.findById(3);
-			reservation.setCheckIn(today.getTime());
-			reservation.setCheckOut(tomorrow.getTime());
-			reservation.setName("Reservation 3");
-			reservation.setPrice(100.0);
-			reservation.setRoomType(roomType);
-			reservation.setUser(user);
-			reservationRepository.save(reservation);
-		}
+				Reservation reservation;
 
-		if (stayRecordRepository.findAll().size() > 0) {
-			log.info("Database already has StayRecords, not adding defaults");
-		} else {
-			Calendar yesterday = Calendar.getInstance();
-			
-			
-			for (int i = 0; i <= 10; i++) {
-				yesterday.add(Calendar.DAY_OF_MONTH, -1);
-				StayRecord stayRecord = new StayRecord();
-				stayRecord.setUser(userRepository.loadUserByUsername("user"));
-				stayRecord.setRoom(roomRepository.findById(1));
-				stayRecord.setCheckInDate(yesterday.getTime());
-				stayRecord.setReservation(reservationRepository.findById(1));
-				stayRecordRepository.save(stayRecord);
+				// penthouse in the summer, econo-box in the winter. just because
+				if (Math.sin(Math.PI/365 * checkIn.getDayOfYear()) > Math.random()) {
+					reservation = new Reservation(user, roomType1, checkIn.toDate(), checkOut.toDate());
+				} else {
+					reservation = new Reservation(user, roomType2, checkIn.toDate(), checkOut.toDate());
+				}
 
-			}
-			for (int i = 0; i <= 10; i++) {
-				yesterday.add(Calendar.DAY_OF_MONTH, -3);
-				StayRecord stayRecord1 = new StayRecord();
-				stayRecord1.setUser(userRepository.loadUserByUsername("user"));
-				stayRecord1.setRoom(roomRepository.findById(1));
-				stayRecord1.setCheckInDate(yesterday.getTime());
-				stayRecord1.setReservation(reservationRepository.findById(1));
-				stayRecordRepository.save(stayRecord1);
+				if (checkIn.isBeforeNow()) {
+					StayRecord stayRecord = new StayRecord();
 
-			}
+					stayRecord.setCheckInDate(checkIn.toDate());
+					if (checkOut.isBeforeNow()) {
+						stayRecord.setCheckOutDate(checkOut.toDate());
+					}
+					stayRecord.setUser(user);
+					stayRecord.setRoom(reservation.getRoomType().getRooms().iterator().next());
 
-			for (int i = 0; i <= 20; i++) {
-				yesterday.add(Calendar.DAY_OF_MONTH, -10);
-				StayRecord stayRecord11 = new StayRecord();
-				stayRecord11.setUser(userRepository.loadUserByUsername("user"));
-				stayRecord11.setRoom(roomRepository.findById(2));
-				stayRecord11.setCheckInDate(yesterday.getTime());
-				stayRecord11.setReservation(reservationRepository.findById(2));
-				stayRecordRepository.save(stayRecord11);
+					stayRecord.setReservation(reservationRepository.save(reservation));
+					stayRecordRepository.save(stayRecord);
+				} else {
+					reservationRepository.save(reservation);
+				}
 
-			}
-			for (int i = 0; i <= 10; i++) {
-				yesterday.add(Calendar.DAY_OF_MONTH, -15);
-				StayRecord stayRecord111 = new StayRecord();
-				stayRecord111.setUser(userRepository.loadUserByUsername("user"));
-				stayRecord111.setRoom(roomRepository.findById(2));
-				stayRecord111.setCheckInDate(yesterday.getTime());
-				stayRecord111.setReservation(reservationRepository.findById(2));
-				stayRecordRepository.save(stayRecord111);
-
+				checkIn = checkOut.plusDays((int) Math.ceil(Math.random() * 4));
 			}
 		}
 
@@ -270,10 +223,10 @@ public class DatabasePopulator implements InitializingBean {
 			welcome.setData(getResourceAsByte(welcomeImage));
 			imageRepository.save(welcome);
 
-			Image pendHouse = new Image();
-			pendHouse.setName("Pent House");
-			pendHouse.setData(getResourceAsByte(pentHouseImage));
-			imageRepository.save(pendHouse);
+			Image penthouse = new Image();
+			penthouse.setName("Penthouse");
+			penthouse.setData(getResourceAsByte(penthouseImage));
+			imageRepository.save(penthouse);
 
 			Image studentBed = new Image();
 			studentBed.setName("Student");
