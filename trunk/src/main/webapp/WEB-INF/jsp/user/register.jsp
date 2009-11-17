@@ -32,7 +32,6 @@
             </ol>
             <input type="submit" class="submit" value="Register"/>
         </fieldset>
-
     </form:form>
 </c:set>
 

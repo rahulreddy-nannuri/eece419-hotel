@@ -69,7 +69,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.name = name;
 	}
 
-	@OneToMany(mappedBy="roomType")
+	@OneToMany(mappedBy="roomType", fetch=FetchType.EAGER)
 	public Set<Room> getRooms() {
 		return rooms;
 	}

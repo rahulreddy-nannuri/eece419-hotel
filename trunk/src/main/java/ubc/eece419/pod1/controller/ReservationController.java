@@ -24,7 +24,6 @@ import ubc.eece419.pod1.validator.ReflectionEntityValidator;
 @Controller
 public class ReservationController extends CRUDController<Reservation> {
 
-	String[] reservationStateViews = new String[]{"login", "payment", "confirmation", "complete"};
 	@Autowired
 	ReservationRepository reservationRepository;
 	@Autowired

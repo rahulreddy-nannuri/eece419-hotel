@@ -94,10 +94,9 @@ public class RoomTypeDaoTest {
 	}
 
 	static Reservation reservation(String start, String end) {
-		Reservation r = new Reservation();
-		r.setCheckIn(date(start));
-		r.setCheckOut(date(end));
-		return r;
+		RoomType art = new RoomType();
+		art.setDailyRate(100d);
+		return new Reservation(null, art, date(start), date(end));
 	}
 
 	@Test
