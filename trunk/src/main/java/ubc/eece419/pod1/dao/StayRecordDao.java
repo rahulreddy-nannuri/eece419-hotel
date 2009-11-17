@@ -17,13 +17,15 @@ public class StayRecordDao extends GenericDao<StayRecord> implements StayRecordR
 	}
 	
 
-	public List<Object[]> getReserveCountByMonthByType() {
-		Query q=em.createQuery("select sr.room.roomType.name, month(sr.checkInDate), count(*) from StayRecord sr where year(sr.checkInDate) = year(current_date) group by month(sr.checkInDate),sr.room.roomType.name order by sr.room.roomType.name, month(sr.checkInDate) asc");
+	public List<Object[]> getReserveCountByMonthByType(int year) {
+		System.out.println("**********" + year);
+		Query q=em.createQuery("select sr.room.roomType.name, month(sr.checkInDate), count(*) from StayRecord sr where year(sr.checkInDate) = :year group by month(sr.checkInDate),sr.room.roomType.name order by sr.room.roomType.name, month(sr.checkInDate) asc").setParameter("year", year);
 		return q.getResultList();
 	}
 	
-	public List<Object[]> getReserveCountByMonth() {
-		Query q=em.createQuery("select month(sr.checkInDate), count(*) from StayRecord sr where year(sr.checkInDate) = year(current_date) group by month(sr.checkInDate) order by month(sr.checkInDate) asc");
+	public List<Object[]> getReserveCountByMonth(int year) {
+		System.out.println("**********" + year);
+		Query q=em.createQuery("select month(sr.checkInDate), count(*) from StayRecord sr where year(sr.checkInDate) = :year group by month(sr.checkInDate) order by month(sr.checkInDate) asc").setParameter("year", year);
 		return q.getResultList();
 	}
 }

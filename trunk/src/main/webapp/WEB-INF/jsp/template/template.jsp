@@ -32,7 +32,7 @@
 								<%-- admin --%>
 								<li><a href="/room">Rooms</a></li>
 								<li><a href="/user">Users</a></li>
-								<li><a href="/chart/view">Reports</a></li>
+								<li><a href="/chart/index">Reports</a></li>
 								<li><a href="/reservation">Reservations</a></li>
 							</c:when>
 							<c:when test="${isStaff}">
