@@ -1,7 +1,10 @@
 package ubc.eece419.pod1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.commons.collections15.map.ListOrderedMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +12,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.security.Roles;
@@ -35,6 +40,15 @@ public class UserController extends CRUDController<User> {
 		return super.delete(id);
 	}
 
+	@ModelAttribute("possibleRoles")
+	public Map<String, String> exposePossibleRoles() {
+		Map<String, String> roles = ListOrderedMap.decorate(new HashMap<String, String>());
+		roles.put(Roles.USER, "User");
+		roles.put(Roles.USER + "," + Roles.STAFF, "Staff");
+		roles.put(Roles.USER + "," + Roles.STAFF + "," + Roles.ADMIN, "Admin");
+		return roles;
+	}
+
 	@Override
 	public ModelAndView save(User bound, BindingResult errors,
 			@RequestParam(value = "view", required = false) String view) {
@@ -44,13 +58,6 @@ public class UserController extends CRUDController<User> {
 		if (bound.isNewEntity()) {
 			// don't check this later -- assuming a blank password field means no change
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "entityvalidator.nullable");
-		}
-
-		if (!bound.isNewEntity()) {
-			old = userRepository.findById(bound.getId());
-
-			// can't change username
-			bound.setUsername(old.getUsername());
 		}
 
 		if (hasError(bound, errors)) {
@@ -68,6 +75,10 @@ public class UserController extends CRUDController<User> {
 		}
 
 		if (!bound.isNewEntity()) {
+			old = userRepository.findById(bound.getId());
+			// can't change username
+			bound.setUsername(old.getUsername());
+
 			// handle salting the password
 			if (StringUtils.hasText(bound.getPassword())) {
 				if (!bound.getPassword().equals(old.getPassword())) {
@@ -81,7 +92,6 @@ public class UserController extends CRUDController<User> {
 		bound = userRepository.save(bound);
 
 		// login the user if needed
-		// TODO: remember to update the SecurityContext if editing the logged-in user
 		if (SecurityUtils.currentUserIsAnonymous()) {
 			SecurityUtils.login(bound);
 		}

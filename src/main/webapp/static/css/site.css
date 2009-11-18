@@ -1,20 +1,27 @@
-/* overall site css */
+/* overall site css
 
-a{
-	color:blue;
-}
+  Let's have some consistent colours:
+  #CDD7FF -> row background
+  #3333FF -> links
+  #718EFF -> hovered links
+  
+  from JQuery UI:
+  light blue ui color: #D8E7F3
+  dark blue ui color: #6BA5D0
+  light blue border: #A6C9E2
+  dark blue border: #4297D7  
+*/
 
-a:link,a:visited {
-	color: #3333ff;
-
+a, a:visited {
+	color:#3333FF;
 }
 
 a:hover {
-	color: rgb(113, 142, 255);
-	cursor:pointer;
+	color: #718EFF;
+	cursor: pointer;
 }
 
-body,html {
+body, html {
 	padding: 0;
 	margin: 0;
 	font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
@@ -22,65 +29,85 @@ body,html {
 
 #wrap {
 	width: 900px;
-	margin: 0px auto;
+	margin: 0.5em auto 2em;
+	border-style: solid;
+}
+
+#wrap, #header, #main, #sidebar, #footer, #header a {
+	border-color: #4297D7;
+	border-width:1px;	
 }
 
 #header {
-	border-bottom: 1px solid #99c;
 	padding: 0 1em 0.2em;
-    background-color: rgb(26, 63, 204);
+    background-color: #6BA5D0;
 	padding: 5px 5px 0;
+	background-image: url(/static/css/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png);
+	background-position: center;
+	border-bottom-style: solid;
 }
 
 #header > h1 {
-	padding: 0;
+	padding: 0 0.5em;
 	margin: 0;
+	font-style: italic;
 }
 
 #main {
-	margin: 0 0 0 285px;
+	margin: 0;
 	padding: 15px;
-	border-left: 1px solid #99c;
+	border-left-style: solid;
 	min-height: 300px;
+	float: left;
+	width: 565px;
 }
 
-#main > h2 {
-	margin: 0 0 5px 0;
+#main > h2, #main > h3 {
+	margin: 0 0 0.3em;
+}
+
+#main > p {
+	margin: 0.3em 0 0.6em;
 }
 
 #sidebar {
-	margin: 0;
-	padding: 15px 5px;
+	border-right-style: solid;
+	margin: 0 -1px 0 0;
+	padding: 15px 15px 15px 10px;
 	float: left;
 	width: 270px;
 }
 
-#sidebar>h3 {
+#sidebar h3 {
 	margin: 0 0 5px 0;
 }
 
-#sidebar>ul {
+#sidebar ul {
 	margin: 0 0 15px 0;
 	padding: 0 0 0 5px;
 	list-style: none;
 }
 
-#sidebar>ul li {
+#sidebar ul li {
 	margin: 0;
 	padding: 0;
+}
+
+#sidebar li.separator {
+	height: 0.5em;	
 }
 
 #footer {
 	clear: both;
 	text-align: center;
-	border-top: 1px solid #99c;
+	border-top-style: solid;
 	font-size: smaller;
 	padding: 0;
 	margin: 0;
 }
 
 .error {
-	color: #ff0000;
+	color: #FF0000;
 }
 
 #nav {
@@ -91,33 +118,36 @@ body,html {
 	float: right;
 }
 
-#nav ul,#nav2 ul {
+#nav, #nav2 {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-#nav li,#nav2 li {
+#nav li, #nav2 li {
 	display: inline;
 	margin: 0 0.15em;
-	padding: 0;
+}
+
+#header a {
+	padding: 2px 5px 1px;
+	color: white;
+	text-decoration: none;
+}
+
+#header a:hover {
+	color: black;
+	background-color: white;
+	border-top-style: solid;
+	border-left-style: solid;
+	border-right-style: solid;
+	margin: -1px -1px 0;
 }
 
 .std-form fieldset {
 	margin: 0;
 	padding: 0;
 	border-style: none;
-}
-
-#header a {
-	padding: 2px 5px;
-	color: white;
-	text-decoration: none;
-}
-
-#header a:hover {
-	background-color: white;
-	color: black;
 }
 
 .std-form ul,
@@ -157,40 +187,35 @@ ul.room-list {
 
 ul.room-list li {
 	margin: 0;
-	padding: 4px 5px;
-	float: left;
+	padding: 5px;
 	width: 100%;
+	float: left;
 }
 
-ul.room-list li div.image {
-	float: left;
+ul.room-list img {
+	float:left;
 	border: none;
-	margin: 5px;
-}
-
-ul.room-list li div.description {
-	float: left;
-	padding: 0 10px;
-	max-width: 65%;
+	margin: 3px 6px 3px 3px;
 }
 
 ul.room-list li.row1 {
-	background-color: rgb(205, 215, 255);
+	background-color: #CDD7FF;
 }
 
-ul.room-list li h3 {
+ul.room-list h3 {
 	margin: 0;
 }
 
-ul.room-list li div.description>p {
+ul.room-list p {
 	margin: 0;
 }
 
-ul.room-list li ul.nav {
+ul.room-list ul.nav {
 	display: none;
 	list-style: none;
 	float: right;
-	margin-top: -30px;
+	margin-top: -1.6em;
+	margin-bottom: -100%;
 	width: 100%;
 }
 
@@ -199,7 +224,6 @@ ul.room-list li:hover ul.nav {
 }
 
 ul.room-list ul.nav li {
-	display: inline;
 	width: auto;
 	float: right;
 }
@@ -213,12 +237,12 @@ img.thumbnail{
 	height:150px;
 }
 
-div.image{
+#image-select .image{
 	float:left;
-	margin:25px 15px;
+	margin:10px;
 	border-style:solid;
 	border-width:1px;
-	border-color:#ccf;
+	border-color:#A6C9E2;
 }
 
 #image-select .image:hover {
@@ -226,17 +250,17 @@ div.image{
 	position:relative;
 	left:-5px;
 	top:-5px;
-	border-color:#99c;
+	border-color:#4297D7;
 }
 
 #image-select .image:active {
 	position:relative;
 	left:3px;
-	top:3px;
-	background-color:#336;
+	top:3px;	
+	background-color:#D8E7F3;
 }
 
-div.image p {
+#image-select .image p {
 	text-align:center;
 }
 

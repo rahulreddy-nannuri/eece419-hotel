@@ -51,7 +51,7 @@
 				<c:if test="${isAdmin}">
 					<li>
 						<form:label path="roles">Roles:</form:label>
-						<form:input path="roles"/>
+						<form:select path="roles" items="${possibleRoles}"></form:select>
 						<form:errors cssClass="error" path="roles" />
 					</li>
 				</c:if>
