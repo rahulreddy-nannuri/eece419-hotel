@@ -15,6 +15,7 @@ public class ReservationDao extends GenericDao<Reservation> implements Reservati
 		return q.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Reservation> findReservationsByUser(User user) {
 		Query q = em.createNamedQuery("Reservation.findReservationsByUser");

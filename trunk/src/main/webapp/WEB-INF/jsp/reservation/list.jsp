@@ -7,12 +7,10 @@
 	<ul class="room-list">
 		<c:forEach items="${reservations}" var="reservation" varStatus="idx">
 			<li class="row${idx.index % 2}">
-				<div class="description">
-					<h3>Username: <c:out value="${reservation.user.username}" /></h3>
-					<p>Room Type: <c:out value="${reservation.roomType.name}" /></p>
-					<%-- <p>Price: <c:out value="${reservation.price}" /></p> --%>
-					<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
-				</div>
+				<h3>Username: <c:out value="${reservation.user.username}" /></h3>
+				<p>Room Type: <c:out value="${reservation.roomType.name}" /></p>
+				<%-- <p>Price: <c:out value="${reservation.price}" /></p> --%>
+				<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
 				<ul class="nav">
 					<li><a href="/reservation/edit?id=<c:out value="${reservation.id}" />">Edit</a></li>
 					<li><a href="/reservation/delete?id=<c:out value="${reservation.id}" />">Delete</a></li>
