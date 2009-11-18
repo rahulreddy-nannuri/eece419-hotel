@@ -87,6 +87,8 @@ public class UserController extends CRUDController<User> {
 				if (!bound.getPassword().equals(old.getPassword())) {
 					bound.setPassword(User.encryptPassword(bound.getPassword(), bound.getUsername()));
 				}
+			} else {
+				bound.setPassword(old.getPassword());
 			}
 		} else {
 			// handle salting the password
