@@ -60,6 +60,13 @@ public class UserController extends CRUDController<User> {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "entityvalidator.nullable");
 		}
 
+		// needs to be set before validation!
+		if (!bound.isNewEntity()) {
+			old = userRepository.findById(bound.getId());
+			// can't change username
+			bound.setUsername(old.getUsername());
+		}
+
 		if (hasError(bound, errors)) {
 			return editView(bound);
 		}
@@ -75,10 +82,6 @@ public class UserController extends CRUDController<User> {
 		}
 
 		if (!bound.isNewEntity()) {
-			old = userRepository.findById(bound.getId());
-			// can't change username
-			bound.setUsername(old.getUsername());
-
 			// handle salting the password
 			if (StringUtils.hasText(bound.getPassword())) {
 				if (!bound.getPassword().equals(old.getPassword())) {
