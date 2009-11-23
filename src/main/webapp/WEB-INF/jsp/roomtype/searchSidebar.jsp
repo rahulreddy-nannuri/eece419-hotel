@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/jsp/include.jsp" %>
-<h3>Search for a room</h3>
+<h3>Search for a Room</h3>
 <script type="text/javascript">
 /* <![CDATA[ */
 $(function() {

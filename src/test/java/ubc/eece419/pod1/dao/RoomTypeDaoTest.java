@@ -20,6 +20,7 @@ import org.joda.time.DateMidnight;
 import org.junit.Test;
 
 import ubc.eece419.pod1.dao.RoomTypeDao.IntDayMap;
+import ubc.eece419.pod1.entity.PaymentInfo;
 import ubc.eece419.pod1.entity.Reservation;
 import ubc.eece419.pod1.entity.RoomType;
 
@@ -96,7 +97,7 @@ public class RoomTypeDaoTest {
 	static Reservation reservation(String start, String end) {
 		RoomType art = new RoomType();
 		art.setDailyRate(100d);
-		return new Reservation(null, art, date(start), date(end));
+		return new Reservation(null, new PaymentInfo(), art, date(start), date(end));
 	}
 
 	@Test

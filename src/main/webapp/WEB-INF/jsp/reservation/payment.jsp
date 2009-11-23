@@ -3,52 +3,55 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 	<h2>Payment Details</h2>
-	<form action="reserve" class="std-form payment" method="post">
+	<form:form action="reserve" commandName="reservation" cssClass="std-form payment" method="post">
         <fieldset>
         <ul>
             <li>
-	            <label for="cardNumber">Card Number:</label>
-	            <input type="text" name="cardNumber" id="cardNumber"/>
+            	<form:label path="paymentInfo.cardNumber">Card Number:</form:label>
+            	<form:input path="paymentInfo.cardNumber"/>
+				<form:errors cssClass="error" path="paymentInfo.cardNumber" />
           	</li>
           	<li>
-	            <label for="expiryMonth">Expiry Date:</label>
-	            <select name="expiryMonth" id="expiryMonth">
-	            	<option value="1">01 - January</option>
-	            	<option value="2">02 - February</option>
-	            	<option value="3">03 - March</option>
-	            	<option value="4">04 - April</option>
-	            	<option value="5">05 - May</option>
-	            	<option value="6">06 - June</option>
-	            	<option value="7">07 - July</option>
-	            	<option value="8">08 - August</option>
-	            	<option value="9">09 - September</option>
-	            	<option value="10">10 - October</option>
-	            	<option value="11">11 - November</option>
-	            	<option value="12">12 - December</option>
-	            </select>
-	            <select name="expiryYear" id="expiryYear">
+          		<form:label path="paymentInfo.expiryMonth">Expiry Date:</form:label>
+          		<form:select path="paymentInfo.expiryMonth">
+	            	<form:option value="1">01 - January</form:option>
+	            	<form:option value="2">02 - February</form:option>
+	            	<form:option value="3">03 - March</form:option>
+	            	<form:option value="4">04 - April</form:option>
+	            	<form:option value="5">05 - May</form:option>
+	            	<form:option value="6">06 - June</form:option>
+	            	<form:option value="7">07 - July</form:option>
+	            	<form:option value="8">08 - August</form:option>
+	            	<form:option value="9">09 - September</form:option>
+	            	<form:option value="10">10 - October</form:option>
+	            	<form:option value="11">11 - November</form:option>
+	            	<form:option value="12">12 - December</form:option>
+          		</form:select>
+	            <form:select path="paymentInfo.expiryYear">
 	            	<c:forEach begin="2009" end="2020" var="year">
-	            		<option><c:out value="${year}" /></option>
+	            		<form:option value="${year}" />
 	            	</c:forEach>
-	            </select>	            
+	            </form:select>
+	            <form:errors cssClass="error" path="paymentInfo.expiry*" />    
 	        </li>
 	        <li>
-	        	<label for="securityCode">Security Code:</label>
-	            <input type="text" name="securityCode" id="securityCode"/>
+	        	<form:label path="paymentInfo.securityCode">Security Code:</form:label>
+	            <form:input path="paymentInfo.securityCode" />
+	            <form:errors cssClass="error" path="paymentInfo.securityCode" />
 	        </li>
 	        <li>
-	        	<label for="cardType">Card Type:</label>
-	        	<select name="cardType" id="cardType">
-	        		<option value="visa">Visa</option>
-	        		<option value="mastercard">Mastercard</option>
-	        		<option value="amex">American Express</option>
-	        	</select>
+	        	<form:label path="paymentInfo.cardType">Card Type:</form:label>
+	        	<form:select path="paymentInfo.cardType">
+	        		<form:option value="Visa">Visa</form:option>
+	        		<form:option value="MasterCard">MasterCard</form:option>
+	        	</form:select>
+	        	<form:errors cssClass="error" path="paymentInfo.cardType" />
 	        </li>
         </ul>
-        <input type="submit" value="Reserve" name="_target2" />
+        <input type="submit" value="Reserve" name="_target1" />
         <input type="submit" value="Cancel" name="_cancel" />
         </fieldset>
-    </form>
+    </form:form>
 </c:set>
 
 <%-- use the default room sidebar --%>

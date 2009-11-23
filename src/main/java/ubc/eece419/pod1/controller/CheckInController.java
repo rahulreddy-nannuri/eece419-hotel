@@ -1,6 +1,5 @@
 package ubc.eece419.pod1.controller;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -99,17 +98,12 @@ public class CheckInController extends AbstractWizardFormController {
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
 
 		Checkin checkin = (Checkin) command;
-		User user = userRepository.loadUserByUsername(checkin.getUsername());
+
 		Reservation reservation = reservationRepository.findById(checkin.getSelectedReservation());
 		RoomType roomType = reservation.getRoomType();
-		Date today = Calendar.getInstance().getTime();
 		Room room = roomRepository.findAvailableRoomByRoomType(roomType);
 
-		StayRecord sr = new StayRecord();
-		sr.setCheckInDate(today);
-		sr.setUser(user);
-		sr.setRoom(room);
-		sr.setReservation(reservation);
+		StayRecord sr = new StayRecord(reservation, room, new Date());
 		stayRecordRepository.save(sr);
 
 		return new ModelAndView("checkin/confirm");

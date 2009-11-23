@@ -12,13 +12,13 @@ public class ReservationTest {
 		RoomType rt = new RoomType();
 		rt.setDailyRate(100d);
 
-		Reservation res = new Reservation(null, rt,
+		Reservation res = new Reservation(null, null, rt,
 				new DateMidnight(2009, 9, 1).toDate(),
 				new DateMidnight(2009, 9, 2).toDate());
 
 		assertEquals(100d, res.getPrice(), 1e-10);
 
-		res = new Reservation(null, rt,
+		res = new Reservation(null, null, rt,
 				new DateMidnight(2009, 9, 4).toDate(),
 				new DateMidnight(2009, 9, 7).toDate());
 

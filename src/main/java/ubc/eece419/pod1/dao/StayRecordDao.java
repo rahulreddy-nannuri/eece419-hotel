@@ -11,7 +11,7 @@ public class StayRecordDao extends GenericDao<StayRecord> implements StayRecordR
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StayRecord> findUncheckedOutStayRecordsByUser(User user) {
-		Query q=em.createQuery("select s from StayRecord s where s.user = :user and s.checkOutDate = null");
+		Query q=em.createQuery("select s from StayRecord s where s.reservation.user = :user and s.checkOutDate = null");
 		q.setParameter("user", user);
 		return q.getResultList();
 	}

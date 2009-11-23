@@ -11,15 +11,14 @@ import org.springframework.validation.Validator;
 
 import ubc.eece419.pod1.controller.CRUDController;
 import ubc.eece419.pod1.dao.GenericRepository;
-import ubc.eece419.pod1.entity.Databasable;
 
-public class ReflectionEntityValidator<T extends Databasable<?>> implements Validator {
+public class ReflectionEntityValidator<T> implements Validator {
 
 	// because controller have their repository injected, they can't pass it to us in their constructor
 	// because InitializingBean doesn't work... we do this
-	private CRUDController<T> controller;
+	private CRUDController<? extends T> controller;
 	private GenericRepository<T> repository;
-	private final Class<T> targetClass;
+	private final Class<?> targetClass;
 
 	public ReflectionEntityValidator(GenericRepository<T> repository) {
 		this.repository = repository;
@@ -27,14 +26,19 @@ public class ReflectionEntityValidator<T extends Databasable<?>> implements Vali
 		this.targetClass = repository.getEntityClass();
 	}
 
-	public ReflectionEntityValidator(CRUDController<T> controller) {
+	public ReflectionEntityValidator(CRUDController<? extends T> controller) {
 		this.repository = null;
 		this.controller = controller;
 		this.targetClass = controller.getEntityClass();
 	}
 
+	public ReflectionEntityValidator(Class<T> clazz) {
+		this.targetClass = clazz;
+	}
+
+	@SuppressWarnings("unchecked")
 	public GenericRepository<T> getRepository() {
-		return (repository == null) ? controller.getRepository() : repository;
+		return (GenericRepository<T>) ((repository == null) ? controller.getRepository() : repository);
 	}
 
 	@SuppressWarnings("unchecked")
