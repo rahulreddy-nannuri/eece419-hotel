@@ -3,9 +3,11 @@ package ubc.eece419.pod1.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections15.map.ListOrderedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
+import org.springframework.security.ui.AbstractProcessingFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -141,7 +143,9 @@ public class UserController extends CRUDController<User> {
 	}
 
 	@RequestMapping("/**/register")
-	public ModelAndView register(User user, BindingResult errors) {
+	public ModelAndView register(User user, BindingResult errors,
+			@RequestParam(value = "view", required = false) String view, HttpServletRequest request) {
+
 		log.info("register new user");
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "entityvalidator.nullable");
@@ -151,7 +155,7 @@ public class UserController extends CRUDController<User> {
 
 		if (errors.hasErrors()) {
 			log.info(errors.toString());
-			return registerForm(user);
+			return registerForm(user, errors, view, request);
 		}
 
 		user.setPassword(User.encryptPassword(user.getPassword(), user.getUsername()));
@@ -159,12 +163,29 @@ public class UserController extends CRUDController<User> {
 		user = userRepository.save(user);
 
 		SecurityUtils.login(user);
-		ModelAndView mav = new ModelAndView("redirect:/");
-		return mav;
+
+		// provide custom view support
+		if (view != null && view.length() > 0) {
+			return new ModelAndView("redirect:" + view);
+		}
+		return new ModelAndView("redirect:/");
 	}
 
 	@RequestMapping("/**/registerform")
-	public ModelAndView registerForm(User user) {
-		return new ModelAndView("/user/register", getEntityName(), user);
+	public ModelAndView registerForm(User user, BindingResult errors,
+			@RequestParam(value = "view", required = false) String view, HttpServletRequest request) {
+
+		ModelAndView mav = new ModelAndView("/user/register");
+		mav.addObject(getEntityName(), user);
+
+		if (view != null && view.length() > 0) {
+			mav.addObject("view", view);
+		} else {
+			String redirected = AbstractProcessingFilter.obtainFullSavedRequestUrl(request);
+			if (redirected != null) {
+				mav.addObject("view", redirected);
+			}
+		}
+		return mav;
 	}
 }
