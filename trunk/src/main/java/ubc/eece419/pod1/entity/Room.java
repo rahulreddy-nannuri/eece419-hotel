@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
+import ubc.eece419.pod1.validator.NonNegative;
+
 @Entity
 @NamedQueries({
 	@NamedQuery(name="Room.findAvailableRoomByRoomType",
@@ -40,6 +42,7 @@ public class Room extends AbstractEntity<Room> {
 	}
 
 
+	@NonNegative
 	@Column(unique=true)
 	public int getNumber() {
 		return number;

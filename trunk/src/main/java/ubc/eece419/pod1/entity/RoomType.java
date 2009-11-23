@@ -12,6 +12,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionOfElements;
 
+import ubc.eece419.pod1.validator.NonNegative;
+
 @Entity
 public class RoomType extends AbstractEntity<RoomType> {
 	private static final long serialVersionUID = 1L;
@@ -32,7 +34,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.imageId = imageId;
 	}
 
-
+	@NonNegative
 	@Column(nullable=false)
 	public Integer getMaxOccupancy() {
 		return maxOccupancy;
@@ -51,6 +53,7 @@ public class RoomType extends AbstractEntity<RoomType> {
 		this.description = description;
 	}
 
+	@NonNegative
 	@Column(nullable=false)
 	public Double getDailyRate() {
 		return dailyRate;
