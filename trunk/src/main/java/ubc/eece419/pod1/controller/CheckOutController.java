@@ -12,8 +12,11 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.ModelAndView;
+
+import ubc.eece419.pod1.dao.BillRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
+import ubc.eece419.pod1.entity.Bill;
 import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.formcommand.Checkout;
@@ -26,6 +29,8 @@ public class CheckOutController extends BaseWizardFormController {
 	StayRecordRepository stayRecordRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	BillRepository billRepository;
 
 	public CheckOutController() {
 		setPages(new String[]{"checkout/user", "checkout/stay"});
@@ -79,7 +84,10 @@ public class CheckOutController extends BaseWizardFormController {
 		stayRecord.setCheckOutDate(new Date());
 		stayRecordRepository.save(stayRecord);
 
-		return new ModelAndView("checkout/confirm");
+		Bill bill = new Bill(stayRecord.getReservation());
+		bill = billRepository.save(bill);
+
+		return new ModelAndView("checkout/confirm", "bill", bill);
 	}
 }
 
