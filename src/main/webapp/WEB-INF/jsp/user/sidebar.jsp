@@ -3,7 +3,7 @@
 	<c:when test="${currentuser == null}">
 		<ul>
 	        <li><a href="/user/login">Login</a></li>
-	        <li><a href="/user/edit">Register</a></li>
+	        <li><a href="/user/registerform">Register</a></li>
 	    </ul>
 	</c:when>
 	<c:otherwise>
