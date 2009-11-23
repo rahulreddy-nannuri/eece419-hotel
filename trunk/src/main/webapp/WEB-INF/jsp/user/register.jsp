@@ -3,7 +3,7 @@
 
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
-	<h2>User details</h2>
+	<h2>User Details</h2>
     <form:form commandName="user" action="/user/register" cssClass="std-form">
         <form:hidden path="id"/>
         <fieldset>
