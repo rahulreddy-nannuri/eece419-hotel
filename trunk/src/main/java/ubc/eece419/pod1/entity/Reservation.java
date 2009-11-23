@@ -2,6 +2,8 @@ package ubc.eece419.pod1.entity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,10 +33,10 @@ import org.joda.time.Days;
 	query = "SELECT r FROM Reservation r "+
 			"WHERE r.user= :user")
 })
-public class Reservation extends AbstractEntity<Reservation> implements Billable {
+public class Reservation extends AbstractEntity<Reservation> {
 
 	private static final long serialVersionUID = 1L;
-	private Double price;
+	private Double quotedPrice;
 	private RoomType roomType;
 	private Date checkIn;
 	private Date checkOut;
@@ -41,6 +44,9 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 
 	private PaymentInfo paymentInfo;
 	private StayRecord stayRecord;
+
+	private Set<Bill> bills = new HashSet<Bill>();
+	private Set<ChargeableItem> chargeableItems = new HashSet<ChargeableItem>();
 
 	protected Reservation() {
 		// JPA ctor.
@@ -52,7 +58,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.roomType = roomType;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		this.price = calculatePrice(roomType, checkIn, checkOut);
+		this.quotedPrice = calculatePrice(roomType, checkIn, checkOut);
 	}
 
 	public static double calculatePrice(RoomType roomType, Date checkIn, Date checkOut) {
@@ -98,13 +104,27 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.roomType = roomType;
 	}
 
-	@Override
-	public Double getPrice() {
-		return price;
+	public Double getQuotedPrice() {
+		return quotedPrice;
 	}
 
-	public void setPrice(Double Price) {
-		this.price = Price;
+	public void setQuotedPrice(Double quotedPrice) {
+		this.quotedPrice = quotedPrice;
+	}
+
+	@Transient
+	public Double getPrice() {
+		if (this.stayRecord != null) {
+			return 0d; // a reservation is free if you use it
+		} else {
+			return this.getCancellationFee();
+		}
+	}
+
+	// I'm just making this up
+	@Transient
+	public Double getCancellationFee() {
+		return roomType.getDailyRate() * 0.25;
 	}
 
 	@Column(nullable=false)
@@ -118,7 +138,6 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 	}
 
 	@Transient
-	@Override
 	public String getName() {
 		Days duration = Days.daysBetween(new DateTime(checkIn), new DateTime(checkOut));
 		return duration.getDays() + "-day reservation";
@@ -140,5 +159,23 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 			this.stayRecord = stayRecord;
 			this.stayRecord.setReservation(this);
 		}
+	}
+
+	@OneToMany
+	public Set<Bill> getBills() {
+		return bills;
+	}
+
+	public void setBills(Set<Bill> bills) {
+		this.bills = bills;
+	}
+
+	@OneToMany
+	public Set<ChargeableItem> getChargeableItems() {
+		return chargeableItems;
+	}
+
+	public void setChargeableItems(Set<ChargeableItem> chargeableItems) {
+		this.chargeableItems = chargeableItems;
 	}
 }

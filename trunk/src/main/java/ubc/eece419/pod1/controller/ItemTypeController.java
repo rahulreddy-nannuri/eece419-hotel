@@ -12,7 +12,7 @@ import ubc.eece419.pod1.validator.ReflectionEntityValidator;
 public class ItemTypeController extends CRUDController<ItemType> {
 
 	@Autowired
-	ItemTypeRepository ItemTypeRepository;
+	ItemTypeRepository itemTypeRepository;
 
 	public ItemTypeController() {
 		addValidator(new ReflectionEntityValidator<ItemType>(this));
@@ -20,7 +20,7 @@ public class ItemTypeController extends CRUDController<ItemType> {
 
     @Override
     public ItemTypeRepository getRepository() {
-        return ItemTypeRepository;
+        return itemTypeRepository;
     }
 
 }

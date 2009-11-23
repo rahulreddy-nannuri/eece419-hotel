@@ -6,20 +6,18 @@ import java.util.Random;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.security.SecurityUtils;
 
+@Controller
 public class ChartController {
-
-	@Autowired
-	RoomTypeRepository roomTypeRepository;
 
 	@Autowired
 	StayRecordRepository StayRecordRepository;

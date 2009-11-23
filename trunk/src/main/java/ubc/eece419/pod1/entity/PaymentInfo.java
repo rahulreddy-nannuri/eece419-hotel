@@ -1,12 +1,15 @@
 package ubc.eece419.pod1.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Embeddable
-public class PaymentInfo {
+public class PaymentInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	public static enum CreditCardType {
 		Visa, MasterCard;
