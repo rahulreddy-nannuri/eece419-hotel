@@ -45,6 +45,8 @@
 	
 	<bean id="imageRepository" class="ubc.eece419.pod1.dao.ImageDao" />
 	
+	<bean id="billRepository" class="ubc.eece419.pod1.dao.BillDao" />
+	
 	<!-- messages for validation -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="/WEB-INF/messages" />

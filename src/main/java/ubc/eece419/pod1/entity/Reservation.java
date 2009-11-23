@@ -24,16 +24,28 @@ import org.joda.time.Days;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Reservation.findUncheckedInReservationsByUser",
+@NamedQuery(name = "Reservation.findUncheckedInReservationsByUser",
 	query = "SELECT r " +
 	"FROM Reservation r " +
 	"WHERE r.user = :user " +
 	"AND r.stayRecord = null"),
-	@NamedQuery(name = "Reservation.findReservationsByUser",
-	query = "SELECT r FROM Reservation r "+
-			"WHERE r.user= :user")
+@NamedQuery(
+	name = "Reservation.findReservationsByUser",
+	query = "SELECT r FROM Reservation r WHERE r.user= :user"),
+@NamedQuery(
+	name = "Reservation.findAll",
+	query = "select r from Reservation r order by r.checkIn desc"),
+@NamedQuery(
+	name = "Reservation.findNotCheckedIn",
+	query = "select r from Reservation r where r.stayRecord is null order by r.checkIn"),
+@NamedQuery(
+	name = "Reservation.findCheckedIn",
+	query = "select r from Reservation r where r.stayRecord.checkOutDate is null order by r.checkIn"),
+@NamedQuery(
+	name = "Reservation.findCheckedOut",
+	query = "select r from Reservation r where r.stayRecord.checkOutDate is not null order by r.checkIn")
 })
-public class Reservation extends AbstractEntity<Reservation> {
+public class Reservation extends AbstractEntity<Reservation> implements Billable {
 
 	private static final long serialVersionUID = 1L;
 	private Double quotedPrice;
@@ -161,7 +173,7 @@ public class Reservation extends AbstractEntity<Reservation> {
 		}
 	}
 
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	public Set<Bill> getBills() {
 		return bills;
 	}
@@ -170,7 +182,7 @@ public class Reservation extends AbstractEntity<Reservation> {
 		this.bills = bills;
 	}
 
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	public Set<ChargeableItem> getChargeableItems() {
 		return chargeableItems;
 	}

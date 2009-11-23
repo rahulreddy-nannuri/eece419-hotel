@@ -1,6 +1,8 @@
 package ubc.eece419.pod1.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -75,6 +77,19 @@ public class Bill extends AbstractEntity<Bill> {
 
 	public void setIncludesStayRecord(boolean includesStayRecord) {
 		this.includesStayRecord = includesStayRecord;
+	}
+
+	@Transient
+	public List<Billable> getAllBillables() {
+		List<Billable> list = new ArrayList<Billable>();
+		if (includesReservation) {
+			list.add(reservation);
+		}
+		if (includesStayRecord) {
+			list.add(reservation.getStayRecord());
+		}
+		list.addAll(chargeableItems);
+		return list;
 	}
 
 	@Transient

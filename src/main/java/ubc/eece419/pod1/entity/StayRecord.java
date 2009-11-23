@@ -81,7 +81,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	@Transient
 	public String getDescription() {
 		SimpleDateFormat fmt = new SimpleDateFormat("MMM d, yyyy"); // matches the default <fmt:formatDate>
-		return "#" + room.getNumber() + " (" + fmt.format(startDate()) + " - " + fmt.format(endDate()) + ")";
+		return "Room #" + room.getNumber() + " (" + fmt.format(startDate()) + " - " + fmt.format(endDate()) + ")";
 	}
 
 	@Override
