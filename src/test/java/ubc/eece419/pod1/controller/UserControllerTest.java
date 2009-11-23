@@ -123,11 +123,11 @@ public class UserControllerTest {
 		final List<User> entities = new ArrayList<User>();
 
 		context.checking(new Expectations() {{
-			one(userRepository).findAll();
+			one(userRepository).findAll(null);
 			will(returnValue(entities));
 		}});
 
-		ModelAndView mav = userController.list();
+		ModelAndView mav = userController.list(null);
 		List<User> model = (List<User>) mav.getModel().get("users");
 
 		assertEquals(0, model.size());
