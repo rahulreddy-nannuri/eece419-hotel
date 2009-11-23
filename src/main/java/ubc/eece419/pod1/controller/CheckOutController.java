@@ -1,6 +1,5 @@
 package ubc.eece419.pod1.controller;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -13,17 +12,15 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.formcommand.Checkout;
-import ubc.eece419.pod1.security.SecurityUtils;
 
 @Transactional
 @Controller
-public class CheckOutController extends AbstractWizardFormController {
+public class CheckOutController extends BaseWizardFormController {
 
 	@Autowired
 	StayRecordRepository stayRecordRepository;
@@ -37,13 +34,6 @@ public class CheckOutController extends AbstractWizardFormController {
 	}
 
 	@Override
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = super.handleRequest(request, response);
-		mav.addObject("currentuser", SecurityUtils.getCurrentUserOrNull());
-		return mav;
-	}
-
-	@Override
 	protected void postProcessPage(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
 		Checkout checkout = (Checkout) command;
 		if (!errors.hasErrors()) {
@@ -54,7 +44,6 @@ public class CheckOutController extends AbstractWizardFormController {
 
 					checkout.setStayRecords(stayRecords);
 					break;
-
 			}
 		}
 	}
@@ -87,8 +76,7 @@ public class CheckOutController extends AbstractWizardFormController {
 		Checkout checkout = (Checkout) command;
 
 		StayRecord stayRecord = stayRecordRepository.findById(checkout.getSelectedStayRecord());
-		Date today = Calendar.getInstance().getTime();
-		stayRecord.setCheckOutDate(today);
+		stayRecord.setCheckOutDate(new Date());
 		stayRecordRepository.save(stayRecord);
 
 		return new ModelAndView("checkout/confirm");

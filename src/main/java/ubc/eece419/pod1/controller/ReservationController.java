@@ -2,7 +2,7 @@ package ubc.eece419.pod1.controller;
 
 import java.text.SimpleDateFormat;
 
-import java.util.List;
+import java.util.List; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import sun.security.util.Debug;
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Reservation;
@@ -62,7 +61,6 @@ public class ReservationController extends CRUDController<Reservation> {
 		return super.save(bound, errors, view);
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping("**/view")
 	public ModelAndView view(@RequestParam(value = "userId", required = false) Long userId) {
 		List<Reservation> reservations = null;

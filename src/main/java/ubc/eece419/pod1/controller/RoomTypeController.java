@@ -110,13 +110,13 @@ public class RoomTypeController extends CRUDController<RoomType> {
 			int numberAvailable = roomTypeRepository.numberAvailable(type, search.checkIn, search.checkOut);
 			availability.put(type, numberAvailable);
 		}
-		
+
 		// this needs to be in a separate loop to avoid threading errors
 		// remove unavailable rooms
-		for (RoomType type : availability.keySet()) {
-			int numberAvailable = availability.get(type);
+		for (Map.Entry<RoomType, Integer> type : availability.entrySet()) {
+			int numberAvailable = type.getValue();
 			if(numberAvailable <= 0) {
-				filtered.remove(type);
+				filtered.remove(type.getKey());
 			}
 		}
 

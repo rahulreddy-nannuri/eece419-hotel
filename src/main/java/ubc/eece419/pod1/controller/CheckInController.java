@@ -12,7 +12,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
@@ -23,11 +22,10 @@ import ubc.eece419.pod1.entity.RoomType;
 import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.formcommand.Checkin;
-import ubc.eece419.pod1.security.SecurityUtils;
 
 @Transactional
 @Controller
-public class CheckInController extends AbstractWizardFormController {
+public class CheckInController extends BaseWizardFormController {
 
 	@Autowired
 	StayRecordRepository stayRecordRepository;
@@ -42,13 +40,6 @@ public class CheckInController extends AbstractWizardFormController {
 		setPages(new String[]{"checkin/user", "checkin/reservation"});
 		setCommandClass(Checkin.class);
 		setCommandName("checkin");
-	}
-
-	@Override
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = super.handleRequest(request, response);
-		mav.addObject("currentuser", SecurityUtils.getCurrentUserOrNull());
-		return mav;
 	}
 
 	@Override
@@ -96,7 +87,6 @@ public class CheckInController extends AbstractWizardFormController {
 
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-
 		Checkin checkin = (Checkin) command;
 
 		Reservation reservation = reservationRepository.findById(checkin.getSelectedReservation());

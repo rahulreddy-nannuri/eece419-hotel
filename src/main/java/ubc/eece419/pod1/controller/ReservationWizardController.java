@@ -15,8 +15,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractWizardFormController;
-
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.entity.Reservation;
@@ -29,7 +27,7 @@ import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.dao.UserRepository;
 
 @Controller
-public class ReservationWizardController extends AbstractWizardFormController {
+public class ReservationWizardController extends BaseWizardFormController {
 	private static final Logger log = Logger.getLogger(ReservationWizardController.class.getName());
 
 	@Autowired
@@ -90,9 +88,6 @@ public class ReservationWizardController extends AbstractWizardFormController {
 		model.put("reservation", reservationForm);
 		model.put("page", page);
 
-		// since this isn't a CRUDController, we have to pass the currentuser ourselves
-		model.put("currentuser", SecurityUtils.getCurrentUserOrNull());
-
 		// add errors if they exist
 		if(errors.hasErrors()) {
 			model.put("errors", errors);
@@ -148,13 +143,12 @@ public class ReservationWizardController extends AbstractWizardFormController {
 			model.put("errors", errors);
 		} else {
 			// save the new reservation
-			log.info(String.format("bill %s #%s $%f", reservationForm.getPaymentInfo().getCardType(), reservationForm.getPaymentInfo().getCardNumber(), reservation.getPrice()));
+			log.info(String.format("bill %s #%s $%f", reservationForm.getPaymentInfo().getCardType(), reservationForm.getPaymentInfo().getCardNumber(), reservation.getQuotedPrice()));
 			reservationRepository.save(reservation);
 		}
 
 		model.put("reservation", reservationForm);
 		model.put("page", 2);
-		model.put("currentuser", SecurityUtils.getCurrentUserOrNull());
 
 		return new ModelAndView("reservation/complete", model);
 	}
