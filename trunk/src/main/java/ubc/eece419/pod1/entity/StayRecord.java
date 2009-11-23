@@ -22,17 +22,16 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	private Date checkInDate;
 	private Date checkOutDate;
 	private Room room;
-	private User user;
 	private Reservation reservation;
 
-	@JoinColumn(nullable = false)
-	@ManyToOne
-	public User getUser() {
-		return user;
+	protected StayRecord() {
+		// JPA ctor.
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public StayRecord(Reservation reservation, Room room, Date checkIn) {
+		setReservation(reservation);
+		this.room = room;
+		this.checkInDate = checkIn;
 	}
 
 	@JoinColumn(nullable = false)
@@ -70,7 +69,10 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	}
 
 	public void setReservation(Reservation reservation) {
-		this.reservation = reservation;
+		if (this.reservation != reservation) {
+			this.reservation = reservation;
+			this.reservation.setStayRecord(this);
+		}
 	}
 
 	@Override

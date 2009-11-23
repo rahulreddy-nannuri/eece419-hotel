@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -20,14 +20,15 @@ import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.entity.Reservation;
+import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.security.SecurityUtils;
+import ubc.eece419.pod1.validator.ReservationFormValidator;
 import ubc.eece419.pod1.entity.RoomType;
 import ubc.eece419.pod1.formcommand.ReservationForm;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.dao.UserRepository;
 
 @Controller
-@Transactional
 public class ReservationWizardController extends AbstractWizardFormController {
 	private static final Logger log = Logger.getLogger(ReservationWizardController.class.getName());
 
@@ -38,36 +39,32 @@ public class ReservationWizardController extends AbstractWizardFormController {
 	@Autowired
 	UserRepository userRepository;
 
-	@Override
-	protected int getInitialPage(HttpServletRequest request) {
-		// skip the first page if we are already logged in
-		if(SecurityUtils.currentUserIsAnonymous()) {
-			return 0;
-		} else {
-			return 1;
-		}
+	public ReservationWizardController() {
+		setPages(new String[] {"reservation/payment", "reservation/confirmation"});
+		setCommandName("reservation");
+		setCommandClass(ReservationForm.class);
+		setValidator(new ReservationFormValidator());
 	}
 
 	@Override
-	protected Map<String, Object> referenceData(HttpServletRequest request,
-			Object reservationData, Errors errors, int page) {
+	@Secured(Roles.USER)
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return super.handleRequest(request, response);
+	}
 
-		ReservationForm reservationForm = (ReservationForm)reservationData;
-
+	// this shouldn't be necessary
+	private void bindGetSearchParams(HttpServletRequest request, ReservationForm reservationForm) {
 		String type = request.getParameter("type");
-
-		// check to see if the room type was passed as a GET var (this happens when linked
-		// from the search list)
 		if (type != null) {
 			String checkIn = request.getParameter("checkIn");
 			String checkOut = request.getParameter("checkOut");
 
 			// update our model with the type, checkIn and checkOut date passed from the search page
-			reservationForm.setType(new Integer(type));
+			reservationForm.setType(Integer.parseInt(type));
 			reservationForm.setCheckIn(checkIn);
 			reservationForm.setCheckOut(checkOut);
 
-			RoomType roomType = roomTypeRepository.findById(new Integer(type));
+			RoomType roomType = roomTypeRepository.findById(Integer.parseInt(type));
 
 			// store the room type and price for the Confirmation page
 			reservationForm.setRoomType(roomType);
@@ -75,6 +72,18 @@ public class ReservationWizardController extends AbstractWizardFormController {
 										reservationForm.getCheckInDate(),
 										reservationForm.getCheckOutDate()));
 		}
+	}
+
+
+	@Override
+	protected Map<String, Object> referenceData(HttpServletRequest request,
+			Object command, Errors errors, int page) {
+
+		ReservationForm reservationForm = (ReservationForm)command;
+
+		// check to see if the room type was passed as a GET var
+		// (this happens when linked from the search list)
+		bindGetSearchParams(request, reservationForm);
 
 		// generate our model for our views
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -92,37 +101,29 @@ public class ReservationWizardController extends AbstractWizardFormController {
 	}
 
 	@Override
-	protected void postProcessPage(HttpServletRequest request,
-			Object reservationData, Errors errors, int page) {
-
-		if (!errors.hasErrors()) {
-			// check to see if we have data from the login page
-			if (page == 0) {
-				ReservationForm reservationForm = (ReservationForm) reservationData;
-
-				String username = reservationForm.getUsername();
-				String password = reservationForm.getPassword();
-				// load real user so we can get the proper role
-				User realUser = userRepository.loadUserByUsername(username);
-				SecurityUtils.login(realUser);
-			}
-		}
+	protected void validatePage(Object reservationData, Errors errors, int page) {
+		log.info("validating page " + page);
+		ValidationUtils.invokeValidator(getValidator(), reservationData, errors);
 	}
 
 	@Override
-	protected void validatePage(Object reservationData, Errors errors, int page) {
-		switch(page) {
-		case 0: // login
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "username.isnull");
-			break;
+	protected String getViewName(HttpServletRequest request, Object command, int page) {
+		ReservationForm reservationForm = (ReservationForm) command;
+		bindGetSearchParams(request, reservationForm);
+		if (reservationForm.getRoomType() == null ||
+				reservationForm.getCheckInDate() == null ||
+				reservationForm.getCheckOutDate() == null) {
+			log.info("reserve without search params. redirecting to /");
+			return "redirect:/";
 		}
+		return super.getViewName(request, command, page);
 	}
 
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request,
-			HttpServletResponse response, Object reservationData, BindException errors) {
+			HttpServletResponse response, Object command, BindException errors) {
 
-		ReservationForm reservationForm = (ReservationForm) reservationData;
+		ReservationForm reservationForm = (ReservationForm) command;
 
 		// we have to load the user from the repository for everything to save properly
 		User currentUser = SecurityUtils.getCurrentUserOrNull();
@@ -134,7 +135,7 @@ public class ReservationWizardController extends AbstractWizardFormController {
 		Date checkOut = reservationForm.getCheckOutDate();
 
 		// populate our new reservation
-		Reservation reservation = new Reservation(user, roomType, checkIn, checkOut);
+		Reservation reservation = new Reservation(user, reservationForm.getPaymentInfo(), roomType, checkIn, checkOut);
 
 		// create our model for the view
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -147,11 +148,12 @@ public class ReservationWizardController extends AbstractWizardFormController {
 			model.put("errors", errors);
 		} else {
 			// save the new reservation
+			log.info(String.format("bill %s #%s $%f", reservationForm.getPaymentInfo().getCardType(), reservationForm.getPaymentInfo().getCardNumber(), reservation.getPrice()));
 			reservationRepository.save(reservation);
 		}
 
 		model.put("reservation", reservationForm);
-		model.put("page", 3);
+		model.put("page", 2);
 		model.put("currentuser", SecurityUtils.getCurrentUserOrNull());
 
 		return new ModelAndView("reservation/complete", model);

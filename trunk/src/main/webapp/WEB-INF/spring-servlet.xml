@@ -46,19 +46,9 @@
 		</property>
 	</bean>
 
-	<bean id="reservationWizard" class="ubc.eece419.pod1.controller.ReservationWizardController">
-        <property name="pages">
-            <list>
-                <value>reservation/login</value>
-                <value>reservation/payment</value>
-                <value>reservation/confirmation</value>
-            </list>
-        </property>
-        <property name="commandName" value="reservation" />
-        <property name="commandClass" value="ubc.eece419.pod1.formcommand.ReservationForm" />
-	</bean>
-	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	<bean id="reservationWizard" class="ubc.eece419.pod1.controller.ReservationWizardController" />
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
 	<bean id="welcomeController" class="ubc.eece419.pod1.controller.WelcomeController" />
 

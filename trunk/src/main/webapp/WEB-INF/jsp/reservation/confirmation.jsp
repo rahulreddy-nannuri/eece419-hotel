@@ -4,16 +4,18 @@
 <c:set var="main" scope="request">
 	<h2>Confirm Reservation</h2>
 	<p>Thank you for reserving a room with X-Reserve.</p>
-	<h3>Room Details</h3>
+	<h3>Stay Details</h3>
 	<ul>
-		<li>Type: <c:out value="${reservation.roomType.name}" /></li>
-		<li>Price: <c:out value="${reservation.price}" /></li>
+		<li>Check In: <fmt:formatDate value="${reservation.checkInDate}" /> </li>
+		<li>Check Out: <fmt:formatDate value="${reservation.checkOutDate}" /> </li>
+		<li>Room Type: <c:out value="${reservation.roomType.name}" /></li>
 		<li>Description: <c:out value="${reservation.roomType.description}" /></li>
 	</ul>
 	<h3>Payment Details</h3>
 	<ul>
-		<li>Card Number: <c:out value="${reservation.cardNumber}" /></li>
-		<li>Card Type: <c:out value="${reservation.cardType}" /></li>
+		<li>Price: <c:out value="${reservation.price}" /></li>
+		<li>Card Type: <c:out value="${reservation.paymentInfo.cardType}" /></li>
+		<li>Card Number: <c:out value="${reservation.paymentInfo.cardNumber}" /></li>
 	</ul>
 	<form action="/reserve" class="std-form confirmation" method="post">
 		<input type="submit" name="_finish" value="Reserve Room" />

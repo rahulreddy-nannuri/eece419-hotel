@@ -22,6 +22,7 @@ import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Image;
+import ubc.eece419.pod1.entity.PaymentInfo;
 import ubc.eece419.pod1.entity.Reservation;
 import ubc.eece419.pod1.entity.Room;
 import ubc.eece419.pod1.entity.RoomType;
@@ -179,6 +180,7 @@ public class DatabasePopulator implements InitializingBean {
 		} else {
 			DateTime checkIn = new DateTime().minusDays(500);
 			User user = userRepository.loadUserByUsername("sampledata");
+			PaymentInfo paymentInfo = PaymentInfo.samplePaymentInfo();
 
 			RoomType roomType1 = roomTypeRepository.findById(1);
 			RoomType roomType2 = roomTypeRepository.findById(3);
@@ -190,22 +192,20 @@ public class DatabasePopulator implements InitializingBean {
 
 				// penthouse in the summer, econo-box in the winter. just because
 				if (Math.sin(Math.PI/365 * checkIn.getDayOfYear()) > Math.random()) {
-					reservation = new Reservation(user, roomType1, checkIn.toDate(), checkOut.toDate());
+					reservation = new Reservation(user, paymentInfo, roomType1, checkIn.toDate(), checkOut.toDate());
 				} else {
-					reservation = new Reservation(user, roomType2, checkIn.toDate(), checkOut.toDate());
+					reservation = new Reservation(user, paymentInfo, roomType2, checkIn.toDate(), checkOut.toDate());
 				}
 
 				if (checkIn.isBeforeNow()) {
-					StayRecord stayRecord = new StayRecord();
+					StayRecord stayRecord = new StayRecord(
+							reservationRepository.save(reservation),
+							reservation.getRoomType().getRooms().iterator().next(),
+							checkIn.toDate());
 
-					stayRecord.setCheckInDate(checkIn.toDate());
 					if (checkOut.isBeforeNow()) {
 						stayRecord.setCheckOutDate(checkOut.toDate());
 					}
-					stayRecord.setUser(user);
-					stayRecord.setRoom(reservation.getRoomType().getRooms().iterator().next());
-
-					stayRecord.setReservation(reservationRepository.save(reservation));
 					stayRecordRepository.save(stayRecord);
 				} else {
 					reservationRepository.save(reservation);

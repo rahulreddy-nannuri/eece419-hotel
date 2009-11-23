@@ -3,11 +3,15 @@ package ubc.eece419.pod1.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -21,9 +25,7 @@ import org.joda.time.Days;
 	query = "SELECT r " +
 	"FROM Reservation r " +
 	"WHERE r.user = :user " +
-	"AND r NOT IN ( SELECT s.reservation " +
-	"					FROM StayRecord s " +
-	"					WHERE s.user = :user )"),
+	"AND r.stayRecord = null"),
 	@NamedQuery(name = "Reservation.findReservationsByUser",
 	query = "SELECT r FROM Reservation r "+
 			"WHERE r.user= :user")
@@ -37,12 +39,16 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 	private Date checkOut;
 	private User user;
 
+	private PaymentInfo paymentInfo;
+	private StayRecord stayRecord;
+
 	protected Reservation() {
 		// JPA ctor.
 	}
 
-	public Reservation(User user, RoomType roomType, Date checkIn, Date checkOut) {
+	public Reservation(User user, PaymentInfo paymentInfo, RoomType roomType, Date checkIn, Date checkOut) {
 		this.user = user;
+		this.paymentInfo = paymentInfo;
 		this.roomType = roomType;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -92,8 +98,23 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.roomType = roomType;
 	}
 
+	@Override
+	public Double getPrice() {
+		return price;
+	}
+
 	public void setPrice(Double Price) {
 		this.price = Price;
+	}
+
+	@Column(nullable=false)
+	@Embedded
+	public PaymentInfo getPaymentInfo() {
+		return paymentInfo;
+	}
+
+	public void setPaymentInfo(PaymentInfo paymentInfo) {
+		this.paymentInfo = paymentInfo;
 	}
 
 	@Transient
@@ -103,14 +124,21 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		return duration.getDays() + "-day reservation";
 	}
 
-	@Override
-	public Double getPrice() {
-		return price;
-	}
-
 	@Transient
 	public String getDescription() {
 		SimpleDateFormat fmt = new SimpleDateFormat("MMM d, yyyy"); // matches the default <fmt:formatDate>
 		return roomType.getName() + " (" + fmt.format(checkIn) + " - " + fmt.format(checkOut) + ")";
+	}
+
+	@OneToOne(fetch = FetchType.EAGER)
+	public StayRecord getStayRecord() {
+		return stayRecord;
+	}
+
+	public void setStayRecord(StayRecord stayRecord) {
+		if (this.stayRecord != stayRecord) {
+			this.stayRecord = stayRecord;
+			this.stayRecord.setReservation(this);
+		}
 	}
 }
