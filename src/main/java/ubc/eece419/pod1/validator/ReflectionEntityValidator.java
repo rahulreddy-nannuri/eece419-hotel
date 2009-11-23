@@ -1,5 +1,6 @@
 package ubc.eece419.pod1.validator;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,6 +12,8 @@ import org.springframework.validation.Validator;
 
 import ubc.eece419.pod1.controller.CRUDController;
 import ubc.eece419.pod1.dao.GenericRepository;
+
+import static java.util.Arrays.asList;
 
 public class ReflectionEntityValidator<T> implements Validator {
 
@@ -52,23 +55,30 @@ public class ReflectionEntityValidator<T> implements Validator {
 		// get fields & getters with @Column annotations
 		Field[] fields = target.getClass().getFields();
 		for (Field f : fields) {
-			Column annot = f.getAnnotation(Column.class);
-			JoinColumn jannot = f.getAnnotation(JoinColumn.class);
-
-			if (annot != null || jannot != null) {
-				throw new IllegalArgumentException("we don't use field annotations! annotate the getter instead");
+			for (Class<? extends Annotation> clazz : asList(Column.class, JoinColumn.class, NonNegative.class)) {
+				if (f.getAnnotation(clazz) != null) {
+					throw new IllegalArgumentException("we don't use field annotations! annotate the getter instead");
+				}
 			}
 		}
 
 		Method[] methods = target.getClass().getMethods();
 		for (Method m : methods) {
-			Column annot = m.getAnnotation(Column.class);
-			JoinColumn jannot = m.getAnnotation(JoinColumn.class);
 			SupressEntityValidation suppress = m.getAnnotation(SupressEntityValidation.class);
-
 			if (suppress == null) {
+				Column annot = m.getAnnotation(Column.class);
+				JoinColumn jannot = m.getAnnotation(JoinColumn.class);
+				NonNegative nonneg = m.getAnnotation(NonNegative.class);
+
 				if (annot != null) validateMethod(target, m, annot, errors);
 				if (jannot != null) validateMethod(target, m, jannot, errors);
+				if (nonneg != null) {
+					String fieldName = getFieldName(m);
+					Number value = (Number) errors.getFieldValue(fieldName);
+					if (value != null && value.doubleValue() < 0) {
+						errors.rejectValue(fieldName, "entityvalidator.nonnegative");
+					}
+				}
 			}
 		}
 	}
@@ -86,11 +96,7 @@ public class ReflectionEntityValidator<T> implements Validator {
 	protected void validateMethod(Object target, Method method, JoinColumn annot, Errors errors) {
 		try {
 			Object value = method.invoke(target);
-			String fieldName = method.getName();
-			if (fieldName.startsWith("get")) {
-				fieldName = fieldName.substring(3);
-				fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
-			}
+			String fieldName = getFieldName(method);
 
 			if (!annot.nullable()) {
 				nullCheck(value, fieldName, errors);
@@ -105,11 +111,7 @@ public class ReflectionEntityValidator<T> implements Validator {
 	protected void validateMethod(Object target, Method method, Column annot, Errors errors) {
 		try {
 			Object value = method.invoke(target);
-			String fieldName = method.getName();
-			if (fieldName.startsWith("get")) {
-				fieldName = fieldName.substring(3);
-				fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
-			}
+			String fieldName = getFieldName(method);
 
 			if (!annot.nullable()) {
 				nullCheck(value, fieldName, errors);
@@ -131,6 +133,15 @@ public class ReflectionEntityValidator<T> implements Validator {
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static String getFieldName(Method method) {
+		String fieldName = method.getName();
+		if (fieldName.startsWith("get")) {
+			fieldName = fieldName.substring(3);
+			fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
+		}
+		return fieldName;
 	}
 
 }
