@@ -10,6 +10,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,11 +39,11 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
         entities.add(getEntity());
 
         context.checking(new Expectations() {{
-        	one(repository).findAll();
+        	one(repository).findAll(null);
         	will(returnValue(entities));
         }});
 
-        ModelAndView mav = controller.list();
+        ModelAndView mav = controller.list(null);
 
         List<T> model = (List<T>) mav.getModel().get(getEntity().getEntityName() + "s");
         assertEquals(entities.size(), model.size());
@@ -72,7 +73,7 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
     public void testSave() {
         final T entity = getEntity();
 
-        bindingResult = context.mock(BindingResult.class);
+        bindingResult = new BeanPropertyBindingResult(entity, entity.getEntityName());
 
         context.checking(new Expectations() {{
         	one(repository).save(entity);
@@ -80,9 +81,6 @@ public abstract class CRUDControllerTest<T extends Databasable<?>> {
 
         	one(repository).findAll();
         	will(returnValue(Collections.emptyList()));
-
-        	atLeast(1).of(bindingResult).hasErrors();
-        	will(returnValue(false));
         }});
 
         ModelAndView mav = controller.save(entity, bindingResult,null);
