@@ -10,6 +10,7 @@ public interface GenericRepository<T> {
 	public T findById(long id);
 
 	public List<T> findAll();
+	public List<T> findAll(String filter);
 
 	public T save(T entity);
 

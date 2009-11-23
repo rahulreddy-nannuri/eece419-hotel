@@ -1,8 +1,26 @@
 <%@include file="/WEB-INF/jsp/include.jsp"%>
-
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		$(function() {
+			$("#reservation-filter").change(function() {
+				var options = $(this).serialize();
+				var newURL = "/reservation/list?" + options;
+				$(location).attr("href", newURL);
+			});
+		});
+		/* ]]> */
+	</script>
 	<h2>All Reservations</h2>
+	<div id="reservation-filter-container">
+		<span id="reservation-filter-label">Show:</span>
+		<select name="filter" id="reservation-filter">
+			<option value="">All Reservations</option>
+			<option value="past" ${(filter == "past") ? "selected" : ""} >Past Reservations</option>
+			<option value="future" ${(filter == "future") ? "selected" : ""}>Future Reservations</option>
+		</select>
+	</div>
 	<p><c:out value="${fn:length(reservations)}" /> reservations found.</p>
 	<ul class="room-list">
 		<c:forEach items="${reservations}" var="reservation" varStatus="idx">
