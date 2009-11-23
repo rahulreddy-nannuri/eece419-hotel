@@ -2,7 +2,9 @@ package ubc.eece419.pod1.controller;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import sun.security.util.Debug;
 import ubc.eece419.pod1.dao.GenericRepository;
 import ubc.eece419.pod1.entity.AbstractEntity;
 import ubc.eece419.pod1.entity.Databasable;
+import ubc.eece419.pod1.entity.Reservation;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.reflection.ReflectionUtils;
 import ubc.eece419.pod1.security.SecurityUtils;
@@ -66,12 +71,17 @@ public abstract class CRUDController<T extends Databasable<?>> {
 	}
 
 	@RequestMapping({ "/**/", "/**/list" })
-	public ModelAndView list() {
+	public ModelAndView list(@RequestParam(value = "filter", required = false) String filter) {
 		log.info("list " + getEntityName());
-		List<T> models = getRepository().findAll();
+		// filters are ignored by default
+		List<T> models = getRepository().findAll(filter);
 		String modelName = getEntityName() + "s";
 		String viewName = basePath + "/list";
-		return new ModelAndView(viewName, modelName, models);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put(modelName, models);
+		model.put("filter", filter);
+		return new ModelAndView(viewName, model);
 	}
 
 	@RequestMapping("/**/edit")
