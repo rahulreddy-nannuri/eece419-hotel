@@ -9,6 +9,7 @@
 <script type="text/javascript" src="/static/js/jquery-1.3.2.js"></script>
 <script type="text/javascript" src="/static/js/jquery-ui-1.7.2.custom.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="/static/js/jquery.qtip-1.0.0-rc3.min.js"></script>
 <c:if test="${js != null}"><script type="text/javascript">
 ${js}
 </script></c:if>
