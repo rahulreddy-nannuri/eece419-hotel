@@ -49,6 +49,16 @@ $(function() {
 		autoFill: true,
 		multiple: true
 	});
+
+	var attributeDialog = [];
+	for (var i = 0; i < allAttributes.length; i++) {
+		attributeDialog.push(allAttributes[i]);
+	}
+	attributeDialog = "<b>Useful Attributes:</b><br/><i>" + allAttributes.join(", ") + "</i>";
+	
+	$("label[for='attributes']").css("cursor", "help").qtip({
+		content: attributeDialog
+	});
 });
 /* ]]> */
 </script>
