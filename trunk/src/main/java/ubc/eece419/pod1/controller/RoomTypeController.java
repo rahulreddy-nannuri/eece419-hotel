@@ -2,8 +2,10 @@ package ubc.eece419.pod1.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.joda.time.DateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.commons.collections15.FactoryUtils;
@@ -32,7 +34,7 @@ public class RoomTypeController extends CRUDController<RoomType> {
 
 	@Autowired
     RoomTypeRepository roomTypeRepository;
-
+	
 	public RoomTypeController() {
 		addValidator(new ReflectionEntityValidator<RoomType>(this));
 	}
@@ -103,20 +105,36 @@ public class RoomTypeController extends CRUDController<RoomType> {
 
 	@RequestMapping("/**/search")
 	public ModelAndView search(Search search, Errors errors) {
-		List<RoomType> filtered = roomTypeRepository.findByPriceAndOccupancyAndAttributes(search.getMinPrice(), search.getMaxPrice(), search.getOccupancy(), search.getAttributeMap());
-
+		
+		List<RoomType> filtered = new ArrayList<RoomType>();
 		Map<RoomType, Integer> availability = new HashMap<RoomType, Integer>();
-		for (RoomType type : filtered) {
-			int numberAvailable = roomTypeRepository.numberAvailable(type, search.checkIn, search.checkOut);
-			availability.put(type, numberAvailable);
+		
+		DateTime checkIn = new DateTime(search.getCheckIn());
+		DateTime checkOut = new DateTime(search.getCheckOut());
+		
+		if(checkIn.isBeforeNow()) {
+			errors.rejectValue("checkIn", "search.pastdate");
 		}
-
-		// this needs to be in a separate loop to avoid threading errors
-		// remove unavailable rooms
-		for (Map.Entry<RoomType, Integer> type : availability.entrySet()) {
-			int numberAvailable = type.getValue();
-			if(numberAvailable <= 0) {
-				filtered.remove(type.getKey());
+		
+		if(checkOut.isBeforeNow()) {
+			errors.rejectValue("checkOut", "search.pastdate");
+		}
+		
+		if(!errors.hasErrors()) {
+			filtered = roomTypeRepository.findByPriceAndOccupancyAndAttributes(search.getMinPrice(), search.getMaxPrice(), search.getOccupancy(), search.getAttributeMap());
+			
+			for (RoomType type : filtered) {
+				int numberAvailable = roomTypeRepository.numberAvailable(type, search.checkIn, search.checkOut);
+				availability.put(type, numberAvailable);
+			}
+	
+			// this needs to be in a separate loop to avoid threading errors
+			// remove unavailable rooms
+			for (Map.Entry<RoomType, Integer> type : availability.entrySet()) {
+				int numberAvailable = type.getValue();
+				if(numberAvailable <= 0) {
+					filtered.remove(type.getKey());
+				}
 			}
 		}
 

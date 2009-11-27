@@ -6,9 +6,11 @@ import org.springframework.validation.Validator;
 
 import ubc.eece419.pod1.entity.PaymentInfo;
 import ubc.eece419.pod1.formcommand.ReservationForm;
+import ubc.eece419.pod1.validator.PaymentInfoValidator;
 
 public class ReservationFormValidator implements Validator {
 	private Validator delegate = new ReflectionEntityValidator<PaymentInfo>(PaymentInfo.class);
+	private PaymentInfoValidator paymentInfoValidator = new PaymentInfoValidator();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -23,7 +25,7 @@ public class ReservationFormValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "checkOutDate", "entityvalidator.nullable");
 
 		errors.pushNestedPath("paymentInfo");
-		ValidationUtils.invokeValidator(delegate, ((ReservationForm) target).getPaymentInfo(), errors);
+		ValidationUtils.invokeValidator(paymentInfoValidator, ((ReservationForm) target).getPaymentInfo(), errors);
 		errors.popNestedPath();
 	}
 }
