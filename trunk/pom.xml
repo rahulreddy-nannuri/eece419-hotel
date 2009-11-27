@@ -7,7 +7,10 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>hotelapp</name>
-
+	<scm>
+		<connection>scm:svn:http://eece419-hotel.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://eece419-hotel.googlecode.com/svn/trunk/ eece419-hotel</developerConnection>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -210,4 +213,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>net.sf</groupId>
+				<artifactId>stat-scm</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
