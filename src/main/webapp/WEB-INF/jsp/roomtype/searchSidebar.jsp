@@ -78,8 +78,16 @@ $(function() {
             <td><form:input path="checkIn" /></td>
         </tr>
         <tr>
+        	<td></td>
+      		<td><form:errors cssClass="error" path="checkIn" /></td>
+        </tr>
+        <tr>
             <td><form:label path="checkOut">Check out:</form:label></td>
             <td><form:input path="checkOut" /></td>
+        </tr>
+        <tr>
+        	<td></td>
+            <td><form:errors cssClass="error" path="checkOut" /></td>
         </tr>
         <tr>
             <td><form:label path="occupancy">Guests:</form:label></td>

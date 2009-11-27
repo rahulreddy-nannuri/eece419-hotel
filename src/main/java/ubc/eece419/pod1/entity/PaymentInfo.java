@@ -19,7 +19,7 @@ public class PaymentInfo implements Serializable {
 		PaymentInfo info = new PaymentInfo();
 		info.setCardType(CreditCardType.MasterCard);
 		info.setCardNumber("1234-5678");
-		info.setSecurityCode(777);
+		info.setSecurityCode("777");
 		info.setExpiryMonth(12);
 		info.setExpiryYear(2012);
 		return info;
@@ -27,7 +27,7 @@ public class PaymentInfo implements Serializable {
 
 	private CreditCardType cardType;
 	private String cardNumber;
-	private Integer securityCode;
+	private String securityCode;
 	private Integer expiryMonth;
 	private Integer expiryYear;
 
@@ -51,11 +51,11 @@ public class PaymentInfo implements Serializable {
 	}
 
 	@Column(nullable=false)
-	public Integer getSecurityCode() {
+	public String getSecurityCode() {
 		return securityCode;
 	}
 
-	public void setSecurityCode(Integer securityCode) {
+	public void setSecurityCode(String securityCode) {
 		this.securityCode = securityCode;
 	}
 
