@@ -21,6 +21,7 @@ public class ChartController {
 
 	@Autowired
 	StayRecordRepository StayRecordRepository;
+	String colors[] ={"FF00FF","00FF00","C0C0C0","00FFFF","FFFF00","0000FF","FF0000","000000"};
 
 	@RequestMapping({ "/**/", "/**/index" })
 	public ModelAndView index() {
@@ -63,8 +64,8 @@ public class ChartController {
 		}
 
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		int range = 16777215;
-		Random rand;
+		int colIdx = 0;
+	
 
 		for (Object[] row : li) {
 			Integer temp = hm.get(row[0].toString());
@@ -74,12 +75,8 @@ public class ChartController {
 			} else {
 				hm.put(row[0].toString(), Integer.parseInt(row[2].toString()));
 				sb.append(row[0].toString() + "|");
-				rand = new Random();
-				int r = 0;
-				while (r < 1118481) {
-					r = rand.nextInt(range);
-				}
-				color.append(Integer.toHexString(r) + ",");
+				color.append(colors[colIdx] + ",");
+				colIdx++;
 			}
 		}
 		sb.deleteCharAt(sb.length() - 1);
