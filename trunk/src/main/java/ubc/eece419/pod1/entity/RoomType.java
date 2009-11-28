@@ -1,7 +1,9 @@
 package ubc.eece419.pod1.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -10,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections15.FactoryUtils;
+import org.apache.commons.collections15.map.LazyMap;
 import org.hibernate.annotations.CollectionOfElements;
 
 import ubc.eece419.pod1.validator.NonNegative;
@@ -117,6 +121,32 @@ public class RoomType extends AbstractEntity<RoomType> {
 			}
 			buf.append(ra);
 		}
+		return buf.toString();
+	}
+	
+	@Transient
+	public String getGroupedAttributesText() {
+		if(getAttributes() == null) return "";
+		
+		Map<String, Integer> map = LazyMap.decorate(new HashMap<String, Integer>(), FactoryUtils.constantFactory(0));
+		
+		for(String ra : getAttributes()) {
+			map.put(ra, map.get(ra) + 1);
+		}
+		
+		StringBuilder buf = new StringBuilder();
+		for(Map.Entry<String, Integer> attr : map.entrySet()) {
+			if (buf.length() > 0) {
+				buf.append(", ");
+			}
+			int num = attr.getValue();
+			if(num > 1) {
+				buf.append(num + "x" + attr.getKey());
+			} else {
+				buf.append(attr.getKey());
+			}
+		}
+		
 		return buf.toString();
 	}
 
