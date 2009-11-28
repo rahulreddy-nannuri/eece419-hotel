@@ -13,3 +13,4 @@
 		<li class="<c:out value="${liClass}" />"><c:out value="${item}" /></li>
 	</c:forEach>
 </ol>
+</c:if>
