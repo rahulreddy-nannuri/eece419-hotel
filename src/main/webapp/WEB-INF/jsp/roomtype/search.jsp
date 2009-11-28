@@ -14,6 +14,7 @@
 				<p>Occupancy: <c:out value="${rmt.maxOccupancy}" /></p>
 				<p>Rate: <c:out value="${rmt.dailyRate}" /></p>
 				<p><c:out value="${rmt.description}" /> (${available[rmt]} available)</p>
+				<p>Attributes: <c:out value="${rmt.attributesText}" /></p>
 				<ul class="nav">
 					<c:url value="/reserve" var="reserveUrl">
 						<c:param name="type" value="${rmt.id}"/>
