@@ -7,3 +7,4 @@
 
 <c:set var="isAdmin" value="${currentuser.admin}"/>
 <c:set var="isStaff" value="${currentuser.staff}"/>
+<c:set var="isUser" value="${currentuser != null}" />
