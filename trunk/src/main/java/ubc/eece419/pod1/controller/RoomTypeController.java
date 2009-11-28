@@ -2,7 +2,11 @@ package ubc.eece419.pod1.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -109,15 +113,19 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		List<RoomType> filtered = new ArrayList<RoomType>();
 		Map<RoomType, Integer> availability = new HashMap<RoomType, Integer>();
 		
-		DateTime checkIn = new DateTime(search.getCheckIn());
-		DateTime checkOut = new DateTime(search.getCheckOut());
+		DateMidnight checkIn = new DateMidnight(search.getCheckIn());
+		DateMidnight checkOut = new DateMidnight(search.getCheckOut());
 		
-		if(checkIn.isBeforeNow()) {
-			errors.rejectValue("checkIn", "search.pastdate");
-		}
-		
-		if(checkOut.isBeforeNow()) {
-			errors.rejectValue("checkOut", "search.pastdate");
+		if(Days.daysBetween(checkIn, checkOut).getDays() <= 0) {
+			errors.rejectValue("checkOut", "search.invaliddaterange");
+		} else {
+			if(new DateMidnight().minusDays(1).isAfter(checkIn)) {
+				errors.rejectValue("checkIn", "search.pastdate");
+			}
+			
+			if(checkOut.isBeforeNow()) {
+				errors.rejectValue("checkOut", "search.pastdate");
+			}
 		}
 		
 		if(!errors.hasErrors()) {
