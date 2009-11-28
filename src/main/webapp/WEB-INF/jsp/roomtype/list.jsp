@@ -14,7 +14,7 @@
 				<p>Occupancy: <c:out value="${rmt.maxOccupancy}" /></p>
 				<p>Rate: <c:out value="${rmt.dailyRate}" /></p>
 				<p><c:out value="${rmt.description}" /></p>
-				<p>Attributes: <c:out value"${rmt.attributesText}" /></p>
+				<p>Attributes: <c:out value"${rmt.groupedAttributesText}" /></p>
 				<ul class="nav">
 					<li><a href="/roomtype/edit?id=<c:out value="${rmt.id}" />">Edit</a></li>
 					<li><a href="/roomtype/delete?id=<c:out value="${rmt.id}" />">Delete</a></li>
