@@ -15,14 +15,12 @@
 					<c:out value="${reservation.user.username}"/>
 				</li>
 				<li>
-					<form:label path="checkIn">Check In:</form:label>
-					<form:input path="checkIn" />
-					<form:errors cssClass="error" path="checkIn" />
+					<label>Check In:</label>
+					<c:out value="${reservation.checkIn}"/>
 				</li>
 				<li>
-					<form:label path="checkOut">Daily Rate:</form:label>
-					<form:input path="checkOut" />
-					<form:errors cssClass="error" path="checkOut" />
+					<label>Check Out:</label>
+					<c:out value="${reservation.checkOut}"/>
 				</li>
 				<li>
 					<form:label path="quotedPrice">Quoted Price</form:label>

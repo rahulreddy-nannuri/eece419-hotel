@@ -37,6 +37,7 @@
 						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
 						<ul class="nav">
 							<li><a href="/reservation/edit?id=<c:out value="${reservation.id}" />">Edit</a></li>
+							<li><a href="/reservation/cancel?id=<c:out value="${reservation.id}" />">Cancel</a></li>
 							<li><a href="/reservation/delete?id=<c:out value="${reservation.id}" />">Delete</a></li>
 						</ul>
 					</c:otherwise>

@@ -39,7 +39,7 @@ public class Bill extends AbstractEntity<Bill> {
 
 		// only if no other bill does
 		includesReservation = !includesReservation;
-		includesStayRecord = !includesStayRecord;
+		includesStayRecord = (!includesStayRecord && reservation.getStayRecord() != null);
 
 		this.reservation.getBills().add(this);
 	}
