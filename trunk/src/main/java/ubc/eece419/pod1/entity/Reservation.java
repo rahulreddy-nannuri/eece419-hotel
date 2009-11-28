@@ -190,4 +190,5 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 	public void setChargeableItems(Set<ChargeableItem> chargeableItems) {
 		this.chargeableItems = chargeableItems;
 	}
+
 }

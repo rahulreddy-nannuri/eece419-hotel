@@ -30,16 +30,17 @@
 				<c:choose>
 					<c:when test="${reservation.stayRecord != null}">
 						<p>Room: #<c:out value="${reservation.stayRecord.room.number}"/></p>
+						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
 					</c:when>
 					<c:otherwise>
 						<p>Room Type: <c:out value="${reservation.roomType.name}" /></p>
+						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
+						<ul class="nav">
+							<li><a href="/reservation/edit?id=<c:out value="${reservation.id}" />">Edit</a></li>
+							<li><a href="/reservation/delete?id=<c:out value="${reservation.id}" />">Delete</a></li>
+						</ul>
 					</c:otherwise>
 				</c:choose>
-				<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
-				<ul class="nav">
-					<li><a href="/reservation/edit?id=<c:out value="${reservation.id}" />">Edit</a></li>
-					<li><a href="/reservation/delete?id=<c:out value="${reservation.id}" />">Delete</a></li>
-				</ul>
 			</li>
 		</c:forEach>
 	</ul>
