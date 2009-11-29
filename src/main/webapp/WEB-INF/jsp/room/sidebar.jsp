@@ -1,3 +1,5 @@
+<%@include file="/WEB-INF/jsp/include.jsp" %>
+<c:if test="${isAdmin}">
 <%-- sidebar contains the second navigation bar --%>
 <h3>Manage Rooms</h3>
 <ul>
@@ -13,3 +15,4 @@
     <li><a href="/image/list">View Room Images</a></li>
     <li><a href="/image/edit">Upload New Image</a></li>
 </ul>
+</c:if>
