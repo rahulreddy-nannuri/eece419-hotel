@@ -3,7 +3,7 @@
 <%-- main contains the main content --%>
 <c:set var="main" scope="request">
 	<h2>Reservation Cancelled</h2>
-	<p>Your credit card has been billed <fmt:formatNumber type="currency" value="${bill.total}" />.</p>
+	<p>${bill.reservation.paymentInfo.cardholder}'s credit card has been billed <fmt:formatNumber type="currency" value="${bill.total}" />.</p>
 	<ul class="room-list">
 		<c:forEach items="${bill.allBillables}" var="item" varStatus="idx">
 			<li class="row${idx.index % 2}">

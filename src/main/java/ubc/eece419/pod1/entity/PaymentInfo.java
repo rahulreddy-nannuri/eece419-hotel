@@ -17,19 +17,30 @@ public class PaymentInfo implements Serializable {
 
 	public static PaymentInfo samplePaymentInfo() {
 		PaymentInfo info = new PaymentInfo();
+		info.setCardholder("Count Chocula");
 		info.setCardType(CreditCardType.MasterCard);
-		info.setCardNumber("1234-5678");
+		info.setCardNumber("5100000000000000");
 		info.setSecurityCode("777");
 		info.setExpiryMonth(12);
 		info.setExpiryYear(2012);
 		return info;
 	}
 
+	private String cardholder;
 	private CreditCardType cardType;
 	private String cardNumber;
 	private String securityCode;
 	private Integer expiryMonth;
 	private Integer expiryYear;
+
+	@Column(nullable=false)
+	public String getCardholder() {
+		return cardholder;
+	}
+
+	public void setCardholder(String cardholder) {
+		this.cardholder = cardholder;
+	}
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)

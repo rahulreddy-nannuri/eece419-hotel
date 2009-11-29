@@ -6,6 +6,11 @@
 	<form:form action="reserve" commandName="reservation" cssClass="std-form payment" method="post">
         <fieldset>
         <ul>
+        	<li>
+            	<form:label path="paymentInfo.cardholder">Cardholder's Name:</form:label>
+            	<form:input path="paymentInfo.cardholder"/>
+				<form:errors cssClass="error" path="paymentInfo.cardholder" />
+          	</li>
             <li>
             	<form:label path="paymentInfo.cardNumber">Card Number:</form:label>
             	<form:input path="paymentInfo.cardNumber"/>

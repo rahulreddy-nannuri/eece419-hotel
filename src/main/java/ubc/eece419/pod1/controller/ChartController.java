@@ -2,7 +2,6 @@ package ubc.eece419.pod1.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class ChartController {
 
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		int colIdx = 0;
-	
+
 
 		for (Object[] row : li) {
 			Integer temp = hm.get(row[0].toString());
