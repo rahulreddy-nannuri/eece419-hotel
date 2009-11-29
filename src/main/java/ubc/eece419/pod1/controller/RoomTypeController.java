@@ -118,7 +118,7 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		if(Days.daysBetween(checkIn, checkOut).getDays() <= 0) {
 			errors.rejectValue("checkOut", "search.invaliddaterange");
 		} else {
-			if(new DateMidnight().minusDays(1).isAfter(checkIn)) {
+			if(new DateMidnight().isAfter(checkIn)) {
 				errors.rejectValue("checkIn", "search.pastdate");
 			}
 
