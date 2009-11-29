@@ -98,6 +98,8 @@ public class ReservationController extends CRUDController<Reservation> {
 			bound.setStayRecord(old.getStayRecord());
 			bound.setBills(old.getBills());
 			bound.setChargeableItems(old.getChargeableItems());
+			bound.setCheckIn(old.getCheckIn());
+			bound.setCheckOut(old.getCheckOut());
 		}
 		return super.save(bound, errors, view);
 	}

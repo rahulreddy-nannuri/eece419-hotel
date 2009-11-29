@@ -7,9 +7,13 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>hotelapp</name>
+	<url>http://code.google.com/p/eece419-hotel/</url>
+	<issueManagement>
+		<url>http://code.google.com/p/eece419-hotel/issues</url>
+	</issueManagement>
 	<scm>
 		<connection>scm:svn:http://eece419-hotel.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://eece419-hotel.googlecode.com/svn/trunk/ eece419-hotel</developerConnection>
+		<developerConnection>scm:svn:https://eece419-hotel.googlecode.com/svn/trunk/</developerConnection>
 	</scm>
 	<dependencies>
 		<dependency>
@@ -230,6 +234,17 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<targetJdk>1.6</targetJdk>
+				</configuration>
+			</plugin>
+        	<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+        	</plugin>
 		</plugins>
 	</reporting>
 </project>
