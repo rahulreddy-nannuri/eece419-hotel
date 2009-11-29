@@ -14,6 +14,7 @@
 	<h3>Payment Details</h3>
 	<ul>
 		<li>Price: <c:out value="${reservation.price}" /></li>
+		<li>Cardholder's Name: <c:out value="${reservation.paymentInfo.cardholder}" /></li>
 		<li>Card Type: <c:out value="${reservation.paymentInfo.cardType}" /></li>
 		<li>Card Number: <c:out value="${reservation.paymentInfo.cardNumber}" /></li>
 	</ul>
