@@ -96,7 +96,7 @@ public class UserControllerTest {
 		ModelAndView mav = userController.save(user, errors, null);
 
 		assertEquals(0, errors.getErrorCount());
-		assertEquals("redirect:/user/list", mav.getViewName());
+		assertEquals("redirect:/", mav.getViewName());
 	}
 
 	@Test
