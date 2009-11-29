@@ -123,17 +123,17 @@ public class RoomType extends AbstractEntity<RoomType> {
 		}
 		return buf.toString();
 	}
-	
+
 	@Transient
 	public String getGroupedAttributesText() {
 		if(getAttributes() == null) return "";
-		
+
 		Map<String, Integer> map = LazyMap.decorate(new HashMap<String, Integer>(), FactoryUtils.constantFactory(0));
-		
+
 		for(String ra : getAttributes()) {
 			map.put(ra, map.get(ra) + 1);
 		}
-		
+
 		StringBuilder buf = new StringBuilder();
 		for(Map.Entry<String, Integer> attr : map.entrySet()) {
 			if (buf.length() > 0) {
@@ -141,12 +141,12 @@ public class RoomType extends AbstractEntity<RoomType> {
 			}
 			int num = attr.getValue();
 			if(num > 1) {
-				buf.append(num + "x" + attr.getKey());
+				buf.append(num + "&#xd7;" + attr.getKey());
 			} else {
 				buf.append(attr.getKey());
 			}
 		}
-		
+
 		return buf.toString();
 	}
 
