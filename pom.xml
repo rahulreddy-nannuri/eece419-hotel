@@ -218,6 +218,13 @@
 			<plugin>
 				<groupId>net.sf</groupId>
 				<artifactId>stat-scm</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/static/**/jquery*</exclude>
+						<exclude>**/static/css/redmond/**</exclude>
+						<exclude>**/Base64.java</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>
