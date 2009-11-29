@@ -75,9 +75,14 @@ public class ReflectionEntityValidator<T> implements Validator {
 				if (jannot != null) validateMethod(target, m, jannot, errors);
 				if (nonneg != null) {
 					String fieldName = getFieldName(m);
-					Number value = (Number) errors.getFieldValue(fieldName);
-					if (value != null && value.doubleValue() < 0) {
-						errors.rejectValue(fieldName, "entityvalidator.nonnegative");
+					try {
+						Number value = (Number) errors.getFieldValue(fieldName);
+						if (value != null && value.doubleValue() < 0) {
+							errors.rejectValue(fieldName, "entityvalidator.nonnegative");
+						}
+					} catch (ClassCastException ex) {
+						// value wasn't a Number
+						errors.rejectValue(fieldName, "entityvalidator.nonnumeric");
 					}
 				}
 			}
