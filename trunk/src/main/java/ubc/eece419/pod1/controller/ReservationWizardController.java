@@ -152,4 +152,10 @@ public class ReservationWizardController extends BaseWizardFormController {
 
 		return new ModelAndView("reservation/complete", model);
 	}
+
+	@Override
+	protected ModelAndView processCancel(HttpServletRequest request,
+			HttpServletResponse response, Object command, BindException errors) throws Exception {
+		return new ModelAndView("redirect:/");
+	}
 }

@@ -12,7 +12,7 @@
 				</c:if>
 				<h3>Room Type: <c:out value="${rmt.name}" /></h3>
 				<p>Occupancy: <c:out value="${rmt.maxOccupancy}" /></p>
-				<p>Rate: <c:out value="${rmt.dailyRate}" /></p>
+				<p>Rate: <fmt:formatNumber type="currency" value="${rmt.dailyRate}" /></p>
 				<p><c:out value="${rmt.description}" /> (${available[rmt]} available)</p>
 				<p>Attributes: ${rmt.groupedAttributesText}</p>
 				<ul class="nav">

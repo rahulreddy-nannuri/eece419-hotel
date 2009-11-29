@@ -9,7 +9,7 @@
 			<li class="row${idx.index % 2}">
 				<h3>Item Type: <c:out value="${rmt.name}" /></h3>
 				<p>SKU: <c:out value="${rmt.sku}" /></p>
-				<p>Price: <c:out value="${rmt.price}" /></p>
+				<p>Price: <fmt:formatNumber type="currency" value="${rmt.price}" /></p>
 				<p>Description: <c:out value="${rmt.description}" /></p>
 
 				<ul class="nav">
