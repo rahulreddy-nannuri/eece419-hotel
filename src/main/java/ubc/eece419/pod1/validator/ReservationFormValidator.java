@@ -6,7 +6,6 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import ubc.eece419.pod1.formcommand.ReservationForm;
-import ubc.eece419.pod1.validator.PaymentInfoValidator;
 
 public class ReservationFormValidator implements Validator {
 	private PaymentInfoValidator paymentInfoValidator = new PaymentInfoValidator();

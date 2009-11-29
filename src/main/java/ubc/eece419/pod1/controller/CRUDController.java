@@ -104,6 +104,10 @@ public abstract class CRUDController<T extends Databasable<?>> {
 		return new ModelAndView("redirect:" + basePath + "/list");
 	}
 
+	protected ModelAndView redirectToMainPage() {
+		return new ModelAndView("redirect:/");
+	}
+
 	public void setValidators(List<Validator> validators) {
 		this.validators = validators;
 	}
