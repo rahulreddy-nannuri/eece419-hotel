@@ -87,10 +87,8 @@ public class ReflectionEntityValidator<T> implements Validator {
 	private void nullCheck(Object value, String field, Errors errors) {
 		if (value == null) {
 			errors.rejectValue(field, "entityvalidator.nullable");
-		} else if (value instanceof String) {
-			if (((String) value).isEmpty()) {
-				errors.rejectValue(field, "entityvalidator.nullable");
-			}
+		} else if (value instanceof String && ((String) value).isEmpty()) {
+			errors.rejectValue(field, "entityvalidator.nullable");
 		}
 	}
 

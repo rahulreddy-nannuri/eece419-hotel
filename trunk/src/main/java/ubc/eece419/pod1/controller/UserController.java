@@ -52,6 +52,12 @@ public class UserController extends CRUDController<User> {
 	}
 
 	@Override
+	@Secured(Roles.ADMIN)
+	public ModelAndView list(String filter) {
+		return super.list(filter);
+	}
+
+	@Override
 	public ModelAndView save(User bound, BindingResult errors,
 			@RequestParam(value = "view", required = false) String view) {
 
@@ -107,7 +113,10 @@ public class UserController extends CRUDController<User> {
 		if (view != null && view.length() > 0) {
 			return new ModelAndView("redirect:" + view);
 		}
-		return redirectToListView();
+		if (SecurityUtils.isAdmin()) {
+			return redirectToListView();
+		}
+		return redirectToMainPage();
 	}
 
 	@Override

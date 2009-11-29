@@ -168,10 +168,8 @@ public class RoomTypeController extends CRUDController<RoomType> {
 	@Secured(Roles.ADMIN)
 	public ModelAndView delete(Long id) {
 		RoomType roomType = roomTypeRepository.findById(id);
-		if (roomType != null) {
-			if (roomType.getRooms().size() > 0) {
-				return new ModelAndView("roomtype/error", "errorMessage", "Cannot delete a room type while rooms exist using that room type.");
-			}
+		if (roomType != null && roomType.getRooms().size() > 0) {
+			return new ModelAndView("roomtype/error", "errorMessage", "Cannot delete a room type while rooms exist using that room type.");
 		}
 		return super.delete(id);
 	}
