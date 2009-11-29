@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.util.HashMap;
@@ -38,7 +37,7 @@ public class RoomTypeController extends CRUDController<RoomType> {
 
 	@Autowired
     RoomTypeRepository roomTypeRepository;
-	
+
 	public RoomTypeController() {
 		addValidator(new ReflectionEntityValidator<RoomType>(this));
 	}
@@ -109,33 +108,33 @@ public class RoomTypeController extends CRUDController<RoomType> {
 
 	@RequestMapping("/**/search")
 	public ModelAndView search(Search search, Errors errors) {
-		
+
 		List<RoomType> filtered = new ArrayList<RoomType>();
 		Map<RoomType, Integer> availability = new HashMap<RoomType, Integer>();
-		
+
 		DateMidnight checkIn = new DateMidnight(search.getCheckIn());
 		DateMidnight checkOut = new DateMidnight(search.getCheckOut());
-		
+
 		if(Days.daysBetween(checkIn, checkOut).getDays() <= 0) {
 			errors.rejectValue("checkOut", "search.invaliddaterange");
 		} else {
 			if(new DateMidnight().minusDays(1).isAfter(checkIn)) {
 				errors.rejectValue("checkIn", "search.pastdate");
 			}
-			
+
 			if(checkOut.isBeforeNow()) {
 				errors.rejectValue("checkOut", "search.pastdate");
 			}
 		}
-		
+
 		if(!errors.hasErrors()) {
 			filtered = roomTypeRepository.findByPriceAndOccupancyAndAttributes(search.getMinPrice(), search.getMaxPrice(), search.getOccupancy(), search.getAttributeMap());
-			
+
 			for (RoomType type : filtered) {
 				int numberAvailable = roomTypeRepository.numberAvailable(type, search.checkIn, search.checkOut);
 				availability.put(type, numberAvailable);
 			}
-	
+
 			// this needs to be in a separate loop to avoid threading errors
 			// remove unavailable rooms
 			for (Map.Entry<RoomType, Integer> type : availability.entrySet()) {
@@ -168,6 +167,12 @@ public class RoomTypeController extends CRUDController<RoomType> {
 	@Override
 	@Secured(Roles.ADMIN)
 	public ModelAndView delete(Long id) {
+		RoomType roomType = roomTypeRepository.findById(id);
+		if (roomType != null) {
+			if (roomType.getRooms().size() > 0) {
+				return new ModelAndView("roomtype/error", "errorMessage", "Cannot delete a room type while rooms exist using that room type.");
+			}
+		}
 		return super.delete(id);
 	}
 
