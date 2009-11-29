@@ -1,10 +1,12 @@
 package ubc.eece419.pod1.validator;
 
+import static java.util.Arrays.asList;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.String;
+
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 
@@ -13,8 +15,6 @@ import org.springframework.validation.Validator;
 
 import ubc.eece419.pod1.controller.CRUDController;
 import ubc.eece419.pod1.dao.GenericRepository;
-
-import static java.util.Arrays.asList;
 
 public class ReflectionEntityValidator<T> implements Validator {
 
