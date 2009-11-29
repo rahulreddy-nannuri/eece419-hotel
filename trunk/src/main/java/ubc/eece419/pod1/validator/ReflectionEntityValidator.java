@@ -82,7 +82,7 @@ public class ReflectionEntityValidator<T> implements Validator {
 						}
 					} catch (ClassCastException ex) {
 						// value wasn't a Number
-						errors.rejectValue(fieldName, "entityvalidator.nonnumeric");
+						// spring will automatically add error code typeMismatch.java.lang.Double
 					}
 				}
 			}
@@ -90,10 +90,13 @@ public class ReflectionEntityValidator<T> implements Validator {
 	}
 
 	private void nullCheck(Object value, String field, Errors errors) {
-		if (value == null) {
-			errors.rejectValue(field, "entityvalidator.nullable");
-		} else if (value instanceof String && ((String) value).isEmpty()) {
-			errors.rejectValue(field, "entityvalidator.nullable");
+		// don't duplicate errors
+		if (!errors.hasFieldErrors(field)) {
+			if (value == null) {
+				errors.rejectValue(field, "entityvalidator.nullable");
+			} else if (value instanceof String && ((String) value).isEmpty()) {
+				errors.rejectValue(field, "entityvalidator.nullable");
+			}
 		}
 	}
 
