@@ -29,9 +29,16 @@
 			<li class="row${idx.index % 2}">
 				<h3>Username: <c:out value="${reservation.user.username}" /></h3>
 				<c:choose>
-					<c:when test="${reservation.stayRecord != null}">
+					<c:when test="${reservation.checkedOut}">
 						<p>Room: #<c:out value="${reservation.stayRecord.room.number}"/></p>
 						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
+					</c:when>
+					<c:when test="${reservation.checkedIn}">
+						<p>Room: #<c:out value="${reservation.stayRecord.room.number}"/></p>
+						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
+						<ul class="nav">
+							<li><a href="/reservation/edit?id=<c:out value="${reservation.id}" />">Edit</a></li>						
+						</ul>
 					</c:when>
 					<c:otherwise>
 						<p>Room Type: <c:out value="${reservation.roomType.name}" /></p>

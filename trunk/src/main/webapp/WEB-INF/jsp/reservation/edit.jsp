@@ -27,13 +27,24 @@
 					<form:input path="quotedPrice" />
 					<form:errors cssClass="error" path="quotedPrice" />
 				</li>
+				<li>
+					<table class="chargeables">
+					<tr><th>Chargeable Items:</th></tr>
+					<c:forEach items="${reservation.chargeableItems}" var="citem">
+					<tr>
+						<td>${citem.name}</td><td><fmt:formatNumber type="currency" value="${citem.price}"/></td>
+					</tr>
+					</c:forEach>
+					</table>
+					<a href="/reservation/charge?reservationId=${reservation.id}">add chargeable item</a>
+				</li>
 			</ol>
-
+			
 			<input type="submit"  value="Save" />
 		</fieldset>
 	</form:form>
-
 </c:set>
+
 
 <%-- use the default room sidebar --%>
 <c:set var="sidebar" scope="request">

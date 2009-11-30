@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -22,6 +23,8 @@ import javax.persistence.Transient;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import ubc.eece419.pod1.validator.NonNegative;
+
 @Entity
 @NamedQueries({
 @NamedQuery(name = "Reservation.findUncheckedInReservationsByUser",
@@ -31,7 +34,7 @@ import org.joda.time.Days;
 	"AND r.stayRecord = null"),
 @NamedQuery(
 	name = "Reservation.findReservationsByUser",
-	query = "SELECT r FROM Reservation r WHERE r.user= :user"),
+	query = "SELECT r FROM Reservation r WHERE r.user= :user order by r.checkIn desc"),
 @NamedQuery(
 	name = "Reservation.findAll",
 	query = "select r from Reservation r order by r.checkIn desc"),
@@ -116,6 +119,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.roomType = roomType;
 	}
 
+	@NonNegative
 	public Double getQuotedPrice() {
 		return quotedPrice;
 	}
@@ -182,13 +186,28 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.bills = bills;
 	}
 
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	public Set<ChargeableItem> getChargeableItems() {
 		return chargeableItems;
 	}
 
 	public void setChargeableItems(Set<ChargeableItem> chargeableItems) {
 		this.chargeableItems = chargeableItems;
+	}
+
+	@Transient
+	public boolean isCheckedIn() {
+		return stayRecord != null;
+	}
+
+	@Transient
+	public boolean isCheckedOut() {
+		return stayRecord != null && stayRecord.isCheckedOut();
+	}
+
+	@Transient
+	public boolean isBillRequired() {
+		return false;
 	}
 
 }

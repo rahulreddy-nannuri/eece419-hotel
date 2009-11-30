@@ -36,6 +36,7 @@ public class ReflectionEntityValidator<T> implements Validator {
 		this.targetClass = controller.getEntityClass();
 	}
 
+	// this constructor can't handle unoqueness constraints
 	public ReflectionEntityValidator(Class<T> clazz) {
 		this.targetClass = clazz;
 	}

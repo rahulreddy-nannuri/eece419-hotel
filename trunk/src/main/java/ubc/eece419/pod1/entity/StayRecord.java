@@ -23,7 +23,6 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	private Date checkOutDate;
 	private Room room;
 	private Reservation reservation;
-	private Double price;
 
 	protected StayRecord() {
 		// JPA ctor.
@@ -33,7 +32,6 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 		setReservation(reservation);
 		this.room = room;
 		this.checkInDate = checkIn;
-		this.price = reservation.getQuotedPrice();
 	}
 
 	@JoinColumn(nullable = false)
@@ -92,12 +90,9 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	}
 
 	@Override
+	@Transient
 	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
+		return reservation.getQuotedPrice();
 	}
 
 	@Transient

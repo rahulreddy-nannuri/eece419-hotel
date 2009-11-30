@@ -4,12 +4,16 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import ubc.eece419.pod1.dao.ItemTypeRepository;
 import ubc.eece419.pod1.dao.ReservationRepository;
-import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Bill;
+import ubc.eece419.pod1.entity.ChargeableItem;
 import ubc.eece419.pod1.entity.Reservation;
-import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.security.SecurityUtils;
 import ubc.eece419.pod1.validator.ReflectionEntityValidator;
@@ -33,7 +37,7 @@ public class ReservationController extends CRUDController<Reservation> {
 	@Autowired
 	ReservationRepository reservationRepository;
 	@Autowired
-	UserRepository userRepository;
+	ItemTypeRepository itemTypeRepository;
 
 	@ModelAttribute("dateFormat")
 	public SimpleDateFormat exposeDateFormat() {
@@ -104,15 +108,34 @@ public class ReservationController extends CRUDController<Reservation> {
 		return super.save(bound, errors, view);
 	}
 
+	@Secured(Roles.USER)
 	@RequestMapping("**/view")
-	public ModelAndView view(@RequestParam(value = "userId", required = false) Long userId) {
-		List<Reservation> reservations = null;
-		if (userId == null) {
-			reservations = reservationRepository.findAll();
-		} else {
-			User user = userRepository.findById(userId);
-			reservations = reservationRepository.findReservationsByUser(user);
-		}
+	public ModelAndView view() {
+		List<Reservation> reservations = reservationRepository.findReservationsByUser(SecurityUtils.getCurrentUser());
 		return new ModelAndView("reservation/view", "reservations", reservations);
+	}
+
+	@Secured(Roles.STAFF)
+	@RequestMapping("**/charge")
+	public ModelAndView charge(@RequestParam(value="reservationId") Long id, ChargeableItem chargeableItem, BindingResult errors,
+			HttpServletRequest request) {
+		log.info("adding " + chargeableItem + " to Reservation[" + id + "]");
+
+		if (!"GET".equals(request.getMethod())) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "entityvalidator.nullable");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "entityvalidator.nullable");
+		}
+
+		if (errors.hasErrors() || chargeableItem == null || "GET".equals(request.getMethod())) {
+			ModelAndView mav = new ModelAndView("reservation/charge", "reservationId", id);
+			mav.addObject(chargeableItem);
+			mav.addObject("itemTypes", itemTypeRepository.findAll());
+			return mav;
+		}
+
+		Reservation reservation = reservationRepository.findById(id);
+		reservation.getChargeableItems().add(chargeableItem);
+		reservationRepository.save(reservation);
+		return new ModelAndView("redirect:/reservation/edit?id=" + id);
 	}
 }
