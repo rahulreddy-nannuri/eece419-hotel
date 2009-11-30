@@ -38,12 +38,16 @@
 						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
 						<ul class="nav">
 							<li><a href="/reservation/edit?id=<c:out value="${reservation.id}" />">Edit</a></li>						
+							<li><a href="/reservation/checkout?id=<c:out value="${reservation.id}" />">Check Out</a></li>
 						</ul>
 					</c:when>
 					<c:otherwise>
 						<p>Room Type: <c:out value="${reservation.roomType.name}" /></p>
 						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
 						<ul class="nav">
+							<c:if test="${reservation.canCheckIn}">
+								<li><a href="/reservation/checkin?id=<c:out value="${reservation.id}" />">Check In</a></li>
+							</c:if>
 							<li><a href="/reservation/edit?id=<c:out value="${reservation.id}" />">Edit</a></li>
 							<li><a href="/reservation/cancel?id=<c:out value="${reservation.id}" />">Cancel</a></li>
 							<li><a href="/reservation/delete?id=<c:out value="${reservation.id}" />">Delete</a></li>

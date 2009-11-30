@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.joda.time.DateMidnight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.annotation.Secured;
@@ -21,11 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import ubc.eece419.pod1.dao.BillRepository;
 import ubc.eece419.pod1.dao.ItemTypeRepository;
 import ubc.eece419.pod1.dao.ReservationRepository;
+import ubc.eece419.pod1.dao.RoomRepository;
+import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.entity.Bill;
 import ubc.eece419.pod1.entity.ChargeableItem;
 import ubc.eece419.pod1.entity.Reservation;
+import ubc.eece419.pod1.entity.Room;
+import ubc.eece419.pod1.entity.RoomType;
+import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.security.Roles;
 import ubc.eece419.pod1.security.SecurityUtils;
 import ubc.eece419.pod1.validator.ReflectionEntityValidator;
@@ -38,6 +45,12 @@ public class ReservationController extends CRUDController<Reservation> {
 	ReservationRepository reservationRepository;
 	@Autowired
 	ItemTypeRepository itemTypeRepository;
+	@Autowired
+	BillRepository billRepository;
+	@Autowired
+	RoomRepository roomRepository;
+	@Autowired
+	StayRecordRepository stayRecordRepository;
 
 	@ModelAttribute("dateFormat")
 	public SimpleDateFormat exposeDateFormat() {
@@ -145,4 +158,40 @@ public class ReservationController extends CRUDController<Reservation> {
 		reservationRepository.save(reservation);
 		return new ModelAndView("redirect:/reservation/edit?id=" + reservationId);
 	}
+
+	@RequestMapping("**/checkout")
+	public ModelAndView checkout(@RequestParam(value = "id") Long id) {
+		Reservation reservation = reservationRepository.findById(id);
+		reservation.getStayRecord().setCheckOutDate(new Date());
+
+		if (new DateMidnight().isBefore(new DateMidnight(reservation.getCheckOut()))) {
+			// early check-out
+			// always use reservation start date, not stayRecord check-in, in case they showed up late
+			double shortPrice = Reservation.calculatePrice(reservation.getRoomType(),
+				reservation.getCheckIn(), new Date());
+
+			if (shortPrice < reservation.getStayRecord().getPrice()) {
+				reservation.getStayRecord().setPrice(shortPrice);
+			}
+		}
+
+		Bill bill = new Bill(reservation);
+		bill = billRepository.save(bill);
+
+		return new ModelAndView("checkout/confirm", "bill", bill);
+	}
+
+	@RequestMapping("**/checkin")
+	public ModelAndView checkin(@RequestParam(value = "id") Long id) {
+		Reservation reservation = reservationRepository.findById(id);
+
+		RoomType roomType = reservation.getRoomType();
+		Room room = roomRepository.findAvailableRoomByRoomType(roomType);
+
+		StayRecord sr = new StayRecord(reservation, room, new Date());
+		stayRecordRepository.save(sr);
+
+		return new ModelAndView("checkin/confirm");
+	}
+
 }
