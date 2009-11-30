@@ -10,17 +10,18 @@
 				var newURL = "/reservation/list?" + options;
 				$(location).attr("href", newURL);
 			});
+			
+			var filterByUser = function() {
+				var options = escape("u|" + $("#username-filter").val());
+				var newURL = "/reservation/list?filter=" + options;
+				$(location).attr("href", newURL);
+			}	
 			$("#username-filter-submit").click(filterByUser);
 			$("#username-filter").keypress(function(e) {
 				if(e.which == 13) {
 					filterByUser();
 				}
-			});
-			var filterByUser = function() {
-				var options = escape("u|" + $("#username-filter").val());
-				var newURL = "/reservation/list?filter=" + options;
-				$(location).attr("href", newURL);
-			}		
+			});	
 		});
 		/* ]]> */
 	</script>
