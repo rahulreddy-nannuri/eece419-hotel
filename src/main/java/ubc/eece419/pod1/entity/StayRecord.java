@@ -12,9 +12,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-
 @Entity
 public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	private static final long serialVersionUID = 7095043273136850580L;
@@ -23,6 +20,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	private Date checkOutDate;
 	private Room room;
 	private Reservation reservation;
+	private Double price;
 
 	protected StayRecord() {
 		// JPA ctor.
@@ -32,6 +30,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 		setReservation(reservation);
 		this.room = room;
 		this.checkInDate = checkIn;
+		this.price = reservation.getQuotedPrice();
 	}
 
 	@JoinColumn(nullable = false)
@@ -85,14 +84,16 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	@Override
 	@Transient
 	public String getName() {
-		Days duration = Days.daysBetween(new DateTime(startDate()), new DateTime(endDate()));
-		return duration.getDays() + "-day stay";
+		return Reservation.duration(startDate(), endDate()) + "-day stay";
 	}
 
 	@Override
-	@Transient
 	public Double getPrice() {
-		return reservation.getQuotedPrice();
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	@Transient
@@ -107,4 +108,5 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	private Date endDate() {
 		return isCheckedOut() ? checkOutDate : reservation.getCheckOut();
 	}
+
 }

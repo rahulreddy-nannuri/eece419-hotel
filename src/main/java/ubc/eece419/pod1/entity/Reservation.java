@@ -76,9 +76,14 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.quotedPrice = calculatePrice(roomType, checkIn, checkOut);
 	}
 
+
+	public static int duration(Date checkIn, Date checkOut) {
+		// don't allow free zero-day stays
+		return Math.max(1, Days.daysBetween(new DateTime(checkIn), new DateTime(checkOut)).getDays());
+	}
+
 	public static double calculatePrice(RoomType roomType, Date checkIn, Date checkOut) {
-		Days duration = Days.daysBetween(new DateTime(checkIn), new DateTime(checkOut));
-		return roomType.getDailyRate() * duration.getDays();
+		return roomType.getDailyRate() * duration(checkIn, checkOut);
 	}
 
 	@JoinColumn(nullable = false)
@@ -155,8 +160,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 
 	@Transient
 	public String getName() {
-		Days duration = Days.daysBetween(new DateTime(checkIn), new DateTime(checkOut));
-		return duration.getDays() + "-day reservation";
+		return duration(checkIn, checkOut) + "-day reservation";
 	}
 
 	@Transient

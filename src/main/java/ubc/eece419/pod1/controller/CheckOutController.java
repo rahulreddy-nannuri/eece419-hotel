@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.joda.time.DateMidnight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import ubc.eece419.pod1.dao.BillRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Bill;
+import ubc.eece419.pod1.entity.Reservation;
 import ubc.eece419.pod1.entity.StayRecord;
 import ubc.eece419.pod1.entity.User;
 import ubc.eece419.pod1.formcommand.Checkout;
@@ -82,6 +85,18 @@ public class CheckOutController extends BaseWizardFormController {
 
 		StayRecord stayRecord = stayRecordRepository.findById(checkout.getSelectedStayRecord());
 		stayRecord.setCheckOutDate(new Date());
+
+		if (new DateMidnight().isBefore(new DateMidnight(stayRecord.getReservation().getCheckOut()))) {
+			// early check-out
+			// always use reservation start date, not stayRecord check-in, in case they showed up late
+			double shortPrice = Reservation.calculatePrice(stayRecord.getRoom().getRoomType(),
+				stayRecord.getReservation().getCheckIn(), new Date());
+
+			if (shortPrice < stayRecord.getPrice()) {
+				stayRecord.setPrice(shortPrice);
+			}
+		}
+
 		stayRecordRepository.save(stayRecord);
 
 		Bill bill = new Bill(stayRecord.getReservation());

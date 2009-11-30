@@ -37,7 +37,7 @@ ${js}
 				</c:when>
 				<c:otherwise>
 					<%-- customer --%>
-					<li><a href="/reservation/view">Bookings</a></li>
+					<li><a href="/reservation/mine">Bookings</a></li>
 				</c:otherwise>
 			</c:choose>
 		</ul>

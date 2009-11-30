@@ -109,10 +109,10 @@ public class ReservationController extends CRUDController<Reservation> {
 	}
 
 	@Secured(Roles.USER)
-	@RequestMapping("**/view")
-	public ModelAndView view() {
+	@RequestMapping("**/mine")
+	public ModelAndView mine() {
 		List<Reservation> reservations = reservationRepository.findReservationsByUser(SecurityUtils.getCurrentUser());
-		return new ModelAndView("reservation/view", "reservations", reservations);
+		return new ModelAndView("reservation/mine", "reservations", reservations);
 	}
 
 	@Secured(Roles.STAFF)
