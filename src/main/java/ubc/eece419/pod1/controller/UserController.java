@@ -73,6 +73,12 @@ public class UserController extends CRUDController<User> {
 			old = userRepository.findById(bound.getId());
 			// can't change username
 			bound.setUsername(old.getUsername());
+			bound.setRoles(old.getRoles());
+		} else {
+			// only admins can create non-user users
+			if (!SecurityUtils.isAdmin()) {
+				bound.setRoles(Roles.USER);
+			}
 		}
 
 		if (hasError(bound, errors)) {
@@ -82,11 +88,6 @@ public class UserController extends CRUDController<User> {
 		if (!(bound.isNewEntity() || bound.equals(SecurityUtils.getCurrentUser()))) {
 			// only admins can edit /other/ users
 			SecurityUtils.assertAdmin();
-		}
-
-		// TODO: is this a validation step? for now, it'll just take effect silently
-		if (!SecurityUtils.isAdmin()) {
-			bound.setRoles(Roles.USER);
 		}
 
 		if (!bound.isNewEntity()) {
