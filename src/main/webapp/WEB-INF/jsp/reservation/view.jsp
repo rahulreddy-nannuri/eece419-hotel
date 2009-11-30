@@ -8,7 +8,7 @@
 		<c:forEach items="${reservations}" var="reservation" varStatus="idx">
 			<li class="row${idx.index % 2}">
 				<c:choose>
-					<c:when test="${reservation.stayRecord != null}">
+					<c:when test="${reservation.checkedIn}">
 						<p>Room: #<c:out value="${reservation.stayRecord.room.number}"/></p>
 						<p>Date: <fmt:formatDate value="${reservation.checkIn}"/> - <fmt:formatDate value="${reservation.checkOut}"/>
 					</c:when>

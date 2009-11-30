@@ -21,7 +21,6 @@ public class ReservationDao extends GenericDao<Reservation> implements Reservati
 				return em.createNamedQuery("Reservation.findCheckedIn").getResultList();
 			}
 		}
-
 		return findAll();
 	}
 

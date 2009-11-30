@@ -36,8 +36,8 @@ ${js}
 					<li><a href="/reservation">Reservations</a></li>
 				</c:when>
 				<c:otherwise>
-					<%-- register customer --%>
-					<li><a href="/reservation/view?userId=${currentuser.id}">Bookings</a></li>
+					<%-- customer --%>
+					<li><a href="/reservation/view">Bookings</a></li>
 				</c:otherwise>
 			</c:choose>
 		</ul>

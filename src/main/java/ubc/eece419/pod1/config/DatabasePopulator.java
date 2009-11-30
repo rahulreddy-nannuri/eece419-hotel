@@ -16,12 +16,14 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import ubc.eece419.pod1.dao.ImageRepository;
+import ubc.eece419.pod1.dao.ItemTypeRepository;
 import ubc.eece419.pod1.dao.ReservationRepository;
 import ubc.eece419.pod1.dao.RoomRepository;
 import ubc.eece419.pod1.dao.RoomTypeRepository;
 import ubc.eece419.pod1.dao.StayRecordRepository;
 import ubc.eece419.pod1.dao.UserRepository;
 import ubc.eece419.pod1.entity.Image;
+import ubc.eece419.pod1.entity.ItemType;
 import ubc.eece419.pod1.entity.PaymentInfo;
 import ubc.eece419.pod1.entity.Reservation;
 import ubc.eece419.pod1.entity.Room;
@@ -54,6 +56,8 @@ public class DatabasePopulator implements InitializingBean {
 	ReservationRepository reservationRepository;
 	@Autowired
 	ImageRepository imageRepository;
+	@Autowired
+	ItemTypeRepository itemTypeRepository;
 
 	public void setPenthouseImage(Resource penthouseImage) {
 		this.penthouseImage = penthouseImage;
@@ -242,6 +246,24 @@ public class DatabasePopulator implements InitializingBean {
 			doubleBed.setName("Double");
 			doubleBed.setData(getResourceAsByte(doubleBedImage));
 			imageRepository.save(doubleBed);
+		}
+
+		if (itemTypeRepository.findAll().size() > 0) {
+			log.info("Database already has item types, not adding defaults");
+		} else {
+			ItemType astiffdrink = new ItemType();
+			astiffdrink.setName("A Stiff Drink");
+			astiffdrink.setDescription("delicious!");
+			astiffdrink.setPrice(7d);
+			astiffdrink.setSku("MB-DC7");
+			itemTypeRepository.save(astiffdrink);
+
+			ItemType marshmallow = new ItemType();
+			marshmallow.setName("Marshmallow Flavour Pillow");
+			marshmallow.setDescription("delicious!");
+			marshmallow.setPrice(20d);
+			marshmallow.setSku("FP-M100");
+			itemTypeRepository.save(marshmallow);
 		}
 	}
 
