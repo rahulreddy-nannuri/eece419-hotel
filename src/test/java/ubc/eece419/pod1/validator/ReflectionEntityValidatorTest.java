@@ -12,6 +12,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
 import ubc.eece419.pod1.dao.GenericRepository;
@@ -54,7 +55,6 @@ public class ReflectionEntityValidatorTest {
 	@SuppressWarnings("unchecked")
 	public void setUp() {
 		repo = context.mock(GenericRepository.class);
-		errors = context.mock(Errors.class);
 
 		context.checking(new Expectations() {{
 			allowing(repo).getEntityClass();
@@ -75,6 +75,8 @@ public class ReflectionEntityValidatorTest {
 	public void testValidateOk() {
 		ExampleEntity entity = new ExampleEntity();
 
+		errors = new BeanPropertyBindingResult(entity, "entity");
+
 		context.checking(new Expectations() {{
 			one(repo).findAll();
 			will(returnValue(Collections.emptyList()));
@@ -88,14 +90,16 @@ public class ReflectionEntityValidatorTest {
 		ExampleEntity entity = new ExampleEntity();
 		entity.notNull = null;
 
+		errors = new BeanPropertyBindingResult(entity, "entity");
+
 		context.checking(new Expectations() {{
 			one(repo).findAll();
 			will(returnValue(Collections.emptyList()));
-
-			one(errors).rejectValue("notNull", "entityvalidator.nullable");
 		}});
 
 		rev.validate(entity, errors);
+
+		assertTrue(errors.getFieldError("notNull").getCode().equals("entityvalidator.nullable"));
 	}
 
 	@Test
@@ -103,17 +107,19 @@ public class ReflectionEntityValidatorTest {
 		ExampleEntity entity = new ExampleEntity();
 		entity.unique = "duplicate";
 
+		errors = new BeanPropertyBindingResult(entity, "entity");
+
 		final ExampleEntity duplicate = new ExampleEntity();
 		duplicate.unique = "duplicate";
 
 		context.checking(new Expectations() {{
 			one(repo).findAll();
 			will(returnValue(Arrays.asList(duplicate)));
-
-			one(errors).rejectValue("unique", "entityvalidator.unique");
 		}});
 
 		rev.validate(entity, errors);
+
+		assertTrue(errors.getFieldError("unique").getCode().equals("entityvalidator.unique"));
 	}
 
 	@Test
@@ -121,14 +127,16 @@ public class ReflectionEntityValidatorTest {
 		ExampleEntity entity = new ExampleEntity();
 		entity.notEmpty = "";
 
+		errors = new BeanPropertyBindingResult(entity, "entity");
+
 		context.checking(new Expectations() {{
 			one(repo).findAll();
 			will(returnValue(Collections.emptyList()));
-
-			one(errors).rejectValue("notEmpty", "entityvalidator.nullable");
 		}});
 
 		rev.validate(entity, errors);
+
+		assertTrue(errors.getFieldError("notEmpty").getCode().equals("entityvalidator.nullable"));
 	}
 
 }
