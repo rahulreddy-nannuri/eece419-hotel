@@ -8,7 +8,7 @@ $(function() {
 	$("#price-slider").slider({
 	    range: true,
 	    min: 0,
-	    max: 1000,
+	    max: <c:out value="${maximumDailyRate}"/>,
 	    values: [${search.minPrice}, ${search.maxPrice}],
 	    slide: function(event, ui) {
 	            $("#price-amount").val('$' + ui.values[0] + ' - $' + ui.values[1]);

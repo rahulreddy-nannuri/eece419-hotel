@@ -14,4 +14,6 @@ public interface RoomTypeRepository extends GenericRepository<RoomType> {
 
 	List<String> allAttributes();
 
+	double maximumDailyRate();
+
 }

@@ -158,6 +158,11 @@ public class RoomTypeController extends CRUDController<RoomType> {
 		return roomTypeRepository.allAttributes();
 	}
 
+	@ModelAttribute("maximumDailyRate")
+	public double exposeMaximumDailyRate() {
+		return roomTypeRepository.maximumDailyRate();
+	}
+
 	@Override
 	@Secured(Roles.ADMIN)
 	public ModelAndView edit(Long id) {

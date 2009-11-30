@@ -22,6 +22,7 @@ public class WelcomeController extends AbstractController {
 		ModelAndView mav = new ModelAndView("index");
 		mav.addObject("currentuser", SecurityUtils.getCurrentUserOrNull());
 		mav.addObject("search", new RoomTypeController.Search());
+		mav.addObject("maximumDailyRate", roomTypeRepository.maximumDailyRate());
 		mav.addObject("allAttributes", roomTypeRepository.allAttributes());
 		return mav;
 	}
