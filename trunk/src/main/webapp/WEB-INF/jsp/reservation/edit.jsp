@@ -23,7 +23,7 @@
 					<c:out value="${reservation.checkOut}"/>
 				</li>
 				<li>
-					<form:label path="quotedPrice">Quoted Price</form:label>
+					<form:label path="quotedPrice">Quoted Price:</form:label>
 					<form:input path="quotedPrice" />
 					<form:errors cssClass="error" path="quotedPrice" />
 				</li>
@@ -48,7 +48,7 @@
 
 <%-- use the default room sidebar --%>
 <c:set var="sidebar" scope="request">
-	<jsp:include page="/WEB-INF/jsp/room/sidebar.jsp" />
+	<jsp:include page="/WEB-INF/jsp/checkin/sidebar.jsp" />
 </c:set>
 
 <jsp:include page="/WEB-INF/jsp/template/template.jsp" />
