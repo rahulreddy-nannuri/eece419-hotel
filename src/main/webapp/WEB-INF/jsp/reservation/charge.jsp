@@ -1,10 +1,28 @@
 <%@include file="/WEB-INF/jsp/include.jsp"%>
 
+<c:set var="js" scope="request">
+	$(function () {
+		$("#chargeable-items li a").click(function () {
+			$("#itemId").val(this.href.substr(this.href.lastIndexOf("#") + 1));
+			$("#chargeableItem").submit();
+		});
+	});
+</c:set>
+
 <c:set var="main" scope="request">
-	<h3>Add Chargeable Item</h3>
+	<h3>Add Standard Chargeable Item</h3>
+	<ul id="chargeable-items" class="room-list">
+		<c:forEach items="${itemTypes}" var="it" varStatus="idx">
+			<li class="row${idx.index % 2}">
+				<p><a href="#${it.id}">${it.name}</a> SKU: ${it.sku} Price: <fmt:formatNumber type="currency" value="${it.price}" /></p>
+			</li>
+		</c:forEach>
+		<li><!-- total hack, I just needed a spacer --></li>
+	</ul>
+	<h3>Add Custom Chargeable Item</h3>
 	<form:form commandName="chargeableItem" action="/reservation/charge" cssClass="std-form">
 		<fieldset>
-			<form:hidden path="id" />
+			<input name="itemId" id="itemId" type="hidden" />
 			<input name="reservationId" id="reservationId" value="${reservationId}" type="hidden" />
 			<ol>
 				<li>
