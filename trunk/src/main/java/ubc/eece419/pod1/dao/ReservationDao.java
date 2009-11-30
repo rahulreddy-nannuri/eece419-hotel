@@ -24,7 +24,7 @@ public class ReservationDao extends GenericDao<Reservation> implements Reservati
 				return em.createNamedQuery("Reservation.findNotCheckedIn").getResultList();
 			} else if (filter.equals("current")) {
 				return em.createNamedQuery("Reservation.findCheckedIn").getResultList();
-			} else if (filter.startsWith("u|")) {
+			} else if (filter.startsWith("u|") && filter.length() > 2) {
 				String username = filter.substring(2);
 				User user = userRepository.loadUserByUsername(username);
 				return findReservationsByUser(user);
