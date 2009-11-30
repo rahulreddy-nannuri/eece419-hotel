@@ -264,3 +264,11 @@ img.thumbnail{
 	text-align:center;
 }
 
+#username-filter {
+	width: 100px;
+}
+
+#reservation-filter {
+	margin-right: 25px;
+}
+

@@ -4,10 +4,15 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import ubc.eece419.pod1.entity.Reservation;
 import ubc.eece419.pod1.entity.User;
 
 public class ReservationDao extends GenericDao<Reservation> implements ReservationRepository {
+	
+	@Autowired
+	UserRepository userRepository;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -19,6 +24,10 @@ public class ReservationDao extends GenericDao<Reservation> implements Reservati
 				return em.createNamedQuery("Reservation.findNotCheckedIn").getResultList();
 			} else if (filter.equals("current")) {
 				return em.createNamedQuery("Reservation.findCheckedIn").getResultList();
+			} else if (filter.startsWith("u|")) {
+				String username = filter.substring(2);
+				User user = userRepository.loadUserByUsername(username);
+				return findReservationsByUser(user);
 			}
 		}
 		return findAll();

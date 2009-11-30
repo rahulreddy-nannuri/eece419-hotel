@@ -10,6 +10,17 @@
 				var newURL = "/reservation/list?" + options;
 				$(location).attr("href", newURL);
 			});
+			$("#username-filter-submit").click(filterByUser);
+			$("#username-filter").keypress(function(e) {
+				if(e.which == 13) {
+					filterByUser();
+				}
+			});
+			var filterByUser = function() {
+				var options = escape("u|" + $("#username-filter").val());
+				var newURL = "/reservation/list?filter=" + options;
+				$(location).attr("href", newURL);
+			}		
 		});
 		/* ]]> */
 	</script>
@@ -22,6 +33,9 @@
 			<option value="future" ${(filter == "future") ? "selected" : ""}>Future Reservations</option>
 			<option value="current" ${(filter == "current") ? "selected" : ""}>Current Reservations</option>
 		</select>
+		<label for="username-filter">Username:</label>
+		<input type="text" name="username-filter" id="username-filter" />
+		<input type="button" name="username-filter-submit" id="username-filter-submit" value="Search" />
 	</div>
 	<p><c:out value="${fn:length(reservations)}" /> reservations found.</p>
 	<ul class="room-list">
