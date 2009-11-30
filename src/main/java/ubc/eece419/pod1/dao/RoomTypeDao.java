@@ -168,4 +168,8 @@ public class RoomTypeDao extends GenericDao<RoomType> implements RoomTypeReposit
 		return em.createNativeQuery("select distinct element from RoomType_attributes").getResultList();
 	}
 
+	@Override
+	public double maximumDailyRate() {
+		return ((Number) em.createQuery("select max(r.dailyRate) from RoomType r").getSingleResult()).doubleValue();
+	}
 }
