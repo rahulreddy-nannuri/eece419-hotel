@@ -3,6 +3,7 @@ package ubc.eece419.pod1.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -88,6 +89,7 @@ public class StayRecord extends AbstractEntity<StayRecord> implements Billable {
 	}
 
 	@Override
+	@Column(nullable=false)
 	public Double getPrice() {
 		return price;
 	}
