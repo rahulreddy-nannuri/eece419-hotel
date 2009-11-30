@@ -117,25 +117,32 @@ public class ReservationController extends CRUDController<Reservation> {
 
 	@Secured(Roles.STAFF)
 	@RequestMapping("**/charge")
-	public ModelAndView charge(@RequestParam(value="reservationId") Long id, ChargeableItem chargeableItem, BindingResult errors,
+	public ModelAndView charge(@RequestParam(value="reservationId") Long reservationId,
+			@RequestParam(value="itemId", required=false) Long itemId,
+			ChargeableItem chargeableItem, BindingResult errors,
 			HttpServletRequest request) {
-		log.info("adding " + chargeableItem + " to Reservation[" + id + "]");
+		log.info("adding " + chargeableItem + " to Reservation[" + reservationId + "]");
 
-		if (!"GET".equals(request.getMethod())) {
+		boolean viewing = "GET".equals(request.getMethod());
+
+		if (itemId != null) {
+			chargeableItem = new ChargeableItem(itemTypeRepository.findById(itemId));
+			viewing = false;
+		} else if (!viewing) {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "entityvalidator.nullable");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "entityvalidator.nullable");
 		}
 
-		if (errors.hasErrors() || chargeableItem == null || "GET".equals(request.getMethod())) {
-			ModelAndView mav = new ModelAndView("reservation/charge", "reservationId", id);
+		if (viewing || errors.hasErrors() || chargeableItem == null) {
+			ModelAndView mav = new ModelAndView("reservation/charge", "reservationId", reservationId);
 			mav.addObject(chargeableItem);
 			mav.addObject("itemTypes", itemTypeRepository.findAll());
 			return mav;
 		}
 
-		Reservation reservation = reservationRepository.findById(id);
+		Reservation reservation = reservationRepository.findById(reservationId);
 		reservation.getChargeableItems().add(chargeableItem);
 		reservationRepository.save(reservation);
-		return new ModelAndView("redirect:/reservation/edit?id=" + id);
+		return new ModelAndView("redirect:/reservation/edit?id=" + reservationId);
 	}
 }
