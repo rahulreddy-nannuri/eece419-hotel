@@ -115,7 +115,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		this.checkOut = checkOut;
 	}
 
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable=false)
 	@ManyToOne
 	public RoomType getRoomType() {
 		return roomType;
@@ -126,6 +126,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 	}
 
 	@NonNegative
+	@Column(nullable=false)
 	public Double getQuotedPrice() {
 		return quotedPrice;
 	}
