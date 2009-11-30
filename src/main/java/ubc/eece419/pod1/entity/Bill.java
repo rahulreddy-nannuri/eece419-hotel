@@ -41,7 +41,8 @@ public class Bill extends AbstractEntity<Bill> {
 		includesReservation = !includesReservation;
 		includesStayRecord = (!includesStayRecord && reservation.getStayRecord() != null);
 
-		this.reservation.getBills().add(this);
+		// this gives Hibernate fits
+		// this.reservation.getBills().add(this);
 	}
 
 	@ManyToOne

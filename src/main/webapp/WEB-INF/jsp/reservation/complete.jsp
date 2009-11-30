@@ -10,7 +10,7 @@
 		</c:when>
 		<c:otherwise>
 			<h2>Reservation Complete</h2>
-			<p>You're reservation has been submitted for processing.</p>
+			<p>Your reservation has been submitted for processing.</p>
 		</c:otherwise>
 	</c:choose>
 </c:set>

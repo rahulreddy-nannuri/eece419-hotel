@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -169,7 +170,7 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		return roomType.getName() + " (" + fmt.format(checkIn) + " - " + fmt.format(checkOut) + ")";
 	}
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	public StayRecord getStayRecord() {
 		return stayRecord;
 	}
@@ -209,9 +210,10 @@ public class Reservation extends AbstractEntity<Reservation> implements Billable
 		return stayRecord != null && stayRecord.isCheckedOut();
 	}
 
+	// for jsp, yuck
 	@Transient
-	public boolean isBillRequired() {
-		return false;
+	public boolean isCanCheckIn() {
+		return !isCheckedIn() && new DateMidnight(checkIn).isBeforeNow();
 	}
 
 }
