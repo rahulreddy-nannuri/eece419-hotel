@@ -62,9 +62,13 @@ public abstract class SecurityUtils {
 	}
 
 	public static User getCurrentUserOrNull() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (principal instanceof User) {
-			return (User) principal;
+		try {
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (principal instanceof User) {
+				return (User) principal;
+			}
+		} catch (Exception ex) {
+			// just return null
 		}
 		return null;
 	}
