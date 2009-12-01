@@ -169,7 +169,7 @@ public class UserController extends CRUDController<User> {
 		}
 
 		user.setPassword(User.encryptPassword(user.getPassword(), user.getUsername()));
-		user.setRoles("ROLE_USER");
+		user.setRoles(Roles.USER);
 		user = userRepository.save(user);
 
 		SecurityUtils.login(user);

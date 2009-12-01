@@ -39,6 +39,8 @@ public class UserControllerTest {
 	public void testSaveEmptyUser(){
 		final User user = new User();
 
+		setLoggedInUser(null);
+
 		context.checking(new Expectations(){{
 			oneOf(userRepository).findAll();
 			will(returnValue(Collections.emptyList()));
